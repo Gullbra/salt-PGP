@@ -1,22 +1,38 @@
 .header {
+  height: var(--header-height);
   width: 100%;
 
   position: fixed;
   top: 0;
-
-  border-bottom: 1px solid #eaeaea;
-
-  backdrop-filter: saturate(180%) blur(5px);
-  background: hsla(0,0%,100%,.8);
 }
 
 .banner {
   height: 3rem;
 
   background-color: black;
-  color: antiquewhite;
+  color: white;
 }
 
 .nav_bar {
-  height:  3rem;
+  height: 4rem;
+
+  backdrop-filter: saturate(180%) blur(5px);
+  background: hsla(0,0%,100%,.8);
+
+  border-bottom: 1px solid #eaeaea;
+}
+
+.container{
+  height: 100%;
+
+  margin-left: var(--site-margin-sides);
+  margin-right: var(--site-margin-sides);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-flow: row; 
+
+  /* 
+  */
 }

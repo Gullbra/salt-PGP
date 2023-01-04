@@ -7,8 +7,18 @@ const Layout = (
   return (
     <>
       <header className={styles.header}>
-        <div className={styles.banner}>hey</div>
-        <nav className={styles.nav_bar}>you</nav>
+        <div className={styles.banner}>
+          <div className={styles.container}>
+            <p>hey</p>
+            <p>world</p>
+          </div>
+        </div>
+        <nav className={styles.nav_bar}>
+          <div className={styles.container}>
+            <p>hey</p>
+            <p>world</p>
+          </div>
+        </nav>
       </header>
       {children}
     </>
