@@ -12,12 +12,32 @@ public class PuppiesController : ControllerBase
 
 	public PuppiesController()
 	{
-		_db = new Db();
+		PuppyDb = new Db();
 	}
 
 	[HttpGet]
 	public List<Puppy> GetAll()
 	{
-		return PuppyDb.GetList();
+		return PuppyDb.GetDb();
+	}
+
+	[HttpPost]
+	public Puppy? PostOne(Puppy puppyToAdd)
+	{
+		return PuppyDb.AddEntry(puppyToAdd);
+	}
+
+	[HttpGet("{id}")]
+	public Puppy? GetOne(int id)
+	{
+		return PuppyDb.GetEntryById(id);
+	}
+
+	[HttpPut("{id}")]
+	public Puppy? EditOne(int id, Puppy puppyToAdd)
+	{
+		return PuppyDb.EditEntryById(id, puppyToAdd);
+
+		// data not stores => Improving our API
 	}
 }
