@@ -10,9 +10,9 @@ public class PuppiesController : ControllerBase
 {
 	private Db PuppyDb;
 
-	public PuppiesController()
+	public PuppiesController(Db db)
 	{
-		PuppyDb = new Db();
+		PuppyDb = db;
 	}
 
 	[HttpGet]
@@ -37,7 +37,5 @@ public class PuppiesController : ControllerBase
 	public Puppy? EditOne(int id, Puppy puppyToAdd)
 	{
 		return PuppyDb.EditEntryById(id, puppyToAdd);
-
-		// data not stores => Improving our API
 	}
 }

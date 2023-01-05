@@ -25,8 +25,10 @@ public class Db : IDb
 
 	public Puppy AddEntry(Puppy puppyToAdd)
 	{
+		//Console.WriteLine(_db.Count());
 		puppyToAdd.Id = _db.Last().Id + 1;
 		_db.Add(puppyToAdd);
+		//Console.WriteLine(_db.Count());
 
 		return puppyToAdd;
 	}
