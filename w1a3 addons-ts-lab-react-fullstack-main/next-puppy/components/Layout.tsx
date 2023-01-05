@@ -1,11 +1,14 @@
 // import React from "react"
 import styles from "../styles/Layout.module.css"
 
+import { Inter } from '@next/font/google'
+const inter = Inter({ subsets: ['latin'] })
+
 const Layout = (
   {children} : {children:React.ReactNode}
 ) => {
   return (
-    <>
+    <font-wrapper className={inter.className}>
       <header className={styles.header}>
         <div className={styles.banner}>
           <div className={styles.container}>
@@ -20,8 +23,10 @@ const Layout = (
           </div>
         </nav>
       </header>
-      {children}
-    </>
+      <main className='main'>
+        {children}
+      </main>
+    </font-wrapper>
   )
 }
 

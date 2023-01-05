@@ -1,5 +1,5 @@
 :root {
-  --header-height: 6rem;
+  --header-height: 7rem;
   --site-margin-sides: 2rem;
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
@@ -17,4 +17,8 @@ a {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+.main {
+  margin-top: calc(var(--header-height));
 }
