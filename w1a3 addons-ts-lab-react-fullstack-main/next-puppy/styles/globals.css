@@ -4,6 +4,12 @@
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+
+  --color-fg: #fff;
+  --color-bg: #000;
+  
+  --color-border-soft: #eaeaea;
+  --color-border-strong: #000;
 }
 
 /* * removing default of links*/
@@ -21,4 +27,21 @@ a {
 
 .main {
   margin-top: calc(var(--header-height));
+  margin-left: var(--site-margin-sides);
+  margin-right: var(--site-margin-sides);
+}
+
+.btn {
+  border: 1.5px solid var(--color-border-strong);
+  color: var(--color-bg);
+  background-color: var(--color-fg);
+
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+  color: var(--color-border-soft);
+  background: var(--color-bg);
 }

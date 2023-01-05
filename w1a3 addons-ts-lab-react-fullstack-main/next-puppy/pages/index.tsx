@@ -8,7 +8,9 @@ export default function Home() {
     <>
       <Layout>
         <Link href={"/MongoTest"}>
-          Click to Test
+          <button className='btn'>
+            Click to Test
+          </button>
         </Link>
       </Layout>
     </>
