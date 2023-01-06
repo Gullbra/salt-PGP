@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "c-start": "npm run compile && node ./dist/server/server.js",
     "start": "node ./dist/server/server.js",
     "compile": "tsc --outDir ./dist",
     "compile:watch": "npm run compile -- --watch *.ts",

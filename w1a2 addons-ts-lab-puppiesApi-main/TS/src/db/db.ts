@@ -24,22 +24,12 @@ const dogBreeds:string[] = [
 
 
 class Puppy implements IPuppy {
-  // public id: number
-  // public breed: string
-  // public name: string
-  // public birthDate: string
-
   constructor (
     public id:number, 
     public breed:string, 
     public name:string, 
     public birthDate:string
-  ) {
-    // this.id = id
-    // this.breed = breed
-    // this.name = name
-    // this.birthDate = birthDate
-  }
+  ) {}
 }
 
 export class Db {
