@@ -1,14 +1,13 @@
-
-import express, { response } from "express";
+import express from "express";
 import { Request, Response, Application } from 'express';
 import axios from 'axios'
 import fs from 'fs'
 import path from "path";
 
 const app: Application = express()
-const port:number = 3000
+const port: number = 3000
 
-const fetch = () => {
+const fetch = (): Promise<{ data: JSON }>  => {
   return process.env.development
     ? fs.promises
         .readFile(path.join(__dirname, '..', 'mock', 'mock.data.json'))
