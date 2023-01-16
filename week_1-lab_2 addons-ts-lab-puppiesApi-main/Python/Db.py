@@ -5,7 +5,7 @@ class Puppy:
         self.name = name
         self.breed = breed
         self.birth_date = birth_date
-        if pup_id is not None:
+        if pup_id is not None and type(pup_id) == 'int':
             self.id = pup_id
 
 
@@ -21,8 +21,14 @@ class Db:
     def add_one(self, **kwargs):
         if not kwargs.get('name') or not kwargs.get('breed') or not kwargs.get('birth_date'):
             raise Exception("Invalid input")
-        # if kwargs.get('id'):
-
+        """
+        if kwargs.get('id'):
+            if not type(kwargs.get('id')) == 'int':
+                raise Exception('Invalid Id provided')
+            for pup in self.__db:
+                if kwargs.get('id') == pup.id:
+                    raise Exception('Id provided is already used')
+        """
         new_puppy = Puppy(
             kwargs.get('name'),
             kwargs.get('breed'),
@@ -35,8 +41,6 @@ class Db:
 
         self.__db.append(new_puppy)
 
-        # if not type(puppy_id) == 'int':
-        #    raise Exception('Invalid Id provided')
         return new_puppy
 
 

@@ -9,8 +9,7 @@ app = Flask(__name__)
 
 PuppyDB = Db([
     Puppy('Miyumi', 'Akita', '2018-03-10', 0),
-    Puppy('Tova', 'Poodle', '2017-06-30', 1)
-])
+    Puppy('Tova', 'Poodle', '2017-06-30', 1)])
 
 
 @app.get("/api/puppies")
