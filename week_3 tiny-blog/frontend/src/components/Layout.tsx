@@ -1,8 +1,10 @@
 import React from "react";
 import '../styles/styling-Layout.css'
+import { HashLink } from 'react-router-hash-link';
+import { capitalize } from "../util/capitalize";
 
 const Layout = (
-  {children}: {children: React.ReactNode}
+  {children, setOfTags}: {children: React.ReactNode, setOfTags: Set<string>}
 ) => {
   return (
     <>
@@ -13,6 +15,16 @@ const Layout = (
       <flex-wrapper class="site__wrapper">
         <aside className="site__sidebar">
           <nav>this is a nav bar</nav>
+          {setOfTags && Array.from(setOfTags).sort().map((tag, index) => (
+            <HashLink
+              smooth
+              className="sidebar__nav-item"
+              //smooth 
+              to={`/#${tag}Section`} 
+              key={index}
+            >{capitalize(tag)}
+            </HashLink>
+          ))}
         </aside>
         <main className="site__main">
           {children}

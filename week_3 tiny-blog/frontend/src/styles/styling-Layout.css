@@ -20,6 +20,17 @@
   flex-shrink: 0;
 }
 
+.sidebar__nav-item {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar__nav-item:hover {
+  background-color: rgb(170, 170, 159);
+}
+
 .site__main {
   flex-grow: 1;
   height: 100%;

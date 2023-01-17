@@ -25,12 +25,21 @@ function App() {
     }
   }, [])
 
+  const setOfTags = new Set<string>()
+  if (postState) {
+    postState?.forEach(post => {
+      post.tags.forEach(tag => {
+        setOfTags.add(tag)
+      })
+    })
+  }
+
   return (
     <>
-      <Layout>
-        <BrowserRouter>
+      <BrowserRouter>
+        <Layout setOfTags={setOfTags}>
           <Routes>
-            <Route path='/' element={<PostList postState={postState}/>}/>
+            <Route path='/' element={<PostList postState={postState} setOfTags={setOfTags}/>}/>
             {postState && postState.map((post, index) => (
               <Route
                 key={index}
@@ -39,8 +48,8 @@ function App() {
               />
             ))} 
           </Routes>          
-        </BrowserRouter>
-      </Layout>
+        </Layout>
+      </BrowserRouter>
     </>
   );
 }
