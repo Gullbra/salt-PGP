@@ -4,3 +4,25 @@
   justify-content: center;
   background-color: var(--color-background-1);
 }
+
+.site__wrapper {
+  width: 100vw;
+  height: calc(100vh - var(--height-header));
+  display: flex;
+  flex-direction: row;
+}
+
+.site__sidebar {
+  width: 125px;
+  height: 100%;
+  background-color: beige;
+
+  flex-shrink: 0;
+}
+
+.site__main {
+  flex-grow: 1;
+  height: 100%;
+
+  overflow-y: scroll;
+}

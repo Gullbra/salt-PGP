@@ -12,3 +12,8 @@
   --color-background-1: antiquewhite;
 }
 
+react-render,
+flex-wrapper {
+  display: block;
+}
+
