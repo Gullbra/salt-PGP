@@ -40,10 +40,20 @@ def get_puppy(puppy_id):
 
 
 @app.patch("/api/puppies/<puppy_id>")
-def get_puppy(puppy_id):
+def update_puppy(puppy_id):
     try:
         return json.dumps(
             PuppyDB.update_one(puppy_id, **request.json),
+            default=lambda pup: pup.__dict__)
+    except Exception as e:
+        return str(e)
+
+
+@app.delete("/api/puppies/<puppy_id>")
+def delete_pup(puppy_id):
+    try:
+        return json.dumps(
+            PuppyDB.delete_one(puppy_id),
             default=lambda pup: pup.__dict__)
     except Exception as e:
         return str(e)

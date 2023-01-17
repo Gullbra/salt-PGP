@@ -49,18 +49,24 @@ class Db:
         return puppy_match[0]
 
     def update_one(self, pup_id, **kwargs):
-        pass
+        puppy_match = [pup for pup in self.__db if pup.id == int(pup_id)]
+        if len(puppy_match) == 0:
+            raise Exception(f'No puppy with Id {pup_id} found')
+        # db_index = self.__db.index(puppy_match)
+        db_index = next((i for i, pup in enumerate(self.__db) if pup.id == int(pup_id)))
 
+        if kwargs.get('name'): puppy_match[0].name = kwargs.get('name')
+        if kwargs.get('breed'): puppy_match[0].breed = kwargs.get('breed')
+        if kwargs.get('birth_date'): puppy_match[0].birth_date = kwargs.get('birth_date')
 
-"""
-PuppyDB = Db([
-    Puppy('Miyumi', 'Akita', '2018-03-10', 0),
-    Puppy('Tova', 'Poodle', '2017-06-30', 1)
-])
+        self.__db[db_index] = puppy_match[0]
+        return puppy_match[0]
 
-PuppyDB.add_one(breed='shephard', name='dogmeat', birth_date='2230-03-30')
-
-print(
-    PuppyDB.get_all()[len(PuppyDB.get_all()) - 1].__dict__
-)
-"""
+    def delete_one(self, pup_id):
+        for index, pup in enumerate(self.__db):
+            if pup.id == int(pup_id):
+                break
+        else:
+            raise ValueError(f'No puppy with Id {pup_id} found')
+        self.__db.pop(index)
+        return pup
