@@ -13,11 +13,18 @@
 }
 
 .site__sidebar {
-  width: 125px;
+  width: 0px;
   height: 100%;
   background-color: beige;
 
+  transition: all 0.3s ease-in-out;
+
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.--open {
+  width: 125px;
 }
 
 .sidebar__nav-item {

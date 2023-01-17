@@ -10,14 +10,18 @@ const PostList = ({postState, setOfTags}: {postState: IPost[] | null, setOfTags:
     <list-wrapper>
       {postState 
         ? (
-          Array.from(setOfTags).sort().map((tag, index) => (
-            <section key={index} id={`${tag}Section`}>
-              <h3>{capitalize(tag)}</h3>
-              {postState
-                .filter((post => post.tags.includes(tag)))
-                .map((post, index) => <PostCard key={index} post={post}/>)}
-            </section>
-          ))
+          Array.from(setOfTags)
+            .sort()
+            .map((tag, index) => (
+              <section key={index} id={`${tag}Section`}>
+                <h3>{capitalize(tag)}</h3>
+
+                {postState
+                  .filter((post => post.tags.includes(tag)))
+                  .map((post, index) => <PostCard key={index} post={post}/>)
+                }
+              </section>
+            ))
         ) : (
           <p>Loading</p>
         )

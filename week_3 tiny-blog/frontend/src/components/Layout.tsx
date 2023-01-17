@@ -9,6 +9,7 @@ const Layout = (
 
   const [ showSidebar, setShowSidebar ] = useState<boolean>(true)
 
+  console.log(showSidebar)
   return (
     <>
       <header className="site__header">
@@ -19,27 +20,24 @@ const Layout = (
       </header>
 
       <flex-wrapper class="site__wrapper">
-
-        {showSidebar && (
-          <aside className="site__sidebar">
+        
+          <aside className={showSidebar ? 'site__sidebar --open' : "site__sidebar"}>
             <nav onClick={() => setShowSidebar(false)}>this is a nav bar</nav>
             {setOfTags && Array.from(setOfTags).sort().map((tag, index) => (
               <HashLink
                 smooth
                 className="sidebar__nav-item"
-                //smooth 
                 to={`/#${tag}Section`} 
                 key={index}
               >{capitalize(tag)}
               </HashLink>
             ))}
           </aside>
-        )}
+        
 
         <main className="site__main">
           {children}
         </main>
-
       </flex-wrapper>
     </>
   )
