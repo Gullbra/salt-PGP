@@ -10,9 +10,13 @@ type Props = {
   setOfTags: Set<string>
 }
 
-const Layout = (
-  {children, setOfTags}: Props
-) => {
+type InternalProps = {
+  showSidebar: boolean,
+  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>
+  setOfTags?: Set<string>
+}
+
+const Layout = ({children, setOfTags}: Props) => {
 
   const [ showSidebar, setShowSidebar ] = useState<boolean>(true)
 
@@ -30,35 +34,33 @@ const Layout = (
   )
 }
 
-const Header = (
-  {showSidebar, setShowSidebar}:{showSidebar:boolean, setShowSidebar:React.Dispatch<React.SetStateAction<boolean>>}
-) => {
+const Header = ({showSidebar, setShowSidebar}:InternalProps) => {
 
   const navigate = useNavigate()
+  const currentURL = useLocation().pathname
 
   return(
     <header className="site__header">
-      <header-column class="header--flex">
-        <p className={showSidebar ? "header__menu-btn --transparent" : "header__menu-btn"} onClick={() => setShowSidebar(true)}>☰</p>
+      <header-column class="header-column--flex">
+        <p className={showSidebar ? "header__menu-btn --transparent" : "header__menu-btn"} onClick={() => !showSidebar && setShowSidebar(true)}>☰</p>
       </header-column>
 
-      <header-column class="header--flex">
-        <h1 className="header__h1">This is a Header</h1>
+      <header-column class="header-column--flex">
+        <h1 className="header__h1">The Retro Blog</h1>
       </header-column>
 
-      <header-column class="header--flex">
-        { useLocation().pathname !=='/' && <p className="header__menu-btn" onClick={() => navigate(-1)}>{"<"}</p>}
+      <header-column class="header-column--flex">
+        <p className={currentURL === '/' ? "header__menu-btn --transparent": "header__menu-btn"} onClick={() => currentURL !== '/' && navigate(-1)}>{"<"}</p>
       </header-column>
     </header>
   )
 }
 
-const Aside = (
-  {showSidebar, setShowSidebar, setOfTags}:{showSidebar:boolean, setShowSidebar:React.Dispatch<React.SetStateAction<boolean>>, setOfTags: Set<string>}
-) => {
+const Aside = ({showSidebar, setShowSidebar, setOfTags}:InternalProps) => {
+
   return(
     <aside className={showSidebar ? 'site__sidebar --open' : "site__sidebar"}>
-      <nav onClick={() => setShowSidebar(false)}>this is a nav bar</nav>
+      <nav className="sidebar__close-btn" onClick={() => setShowSidebar(false)}>Close sidebar X</nav>
       {setOfTags && Array.from(setOfTags).sort().map((tag, index) => (
         <HashLink
           smooth

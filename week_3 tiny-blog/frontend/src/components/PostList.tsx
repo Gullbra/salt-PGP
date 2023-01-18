@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import PostCard from './PostCard';
 import { IPost } from '../interfaces/interfaces';
@@ -11,20 +11,9 @@ type Props = {
 }
 
 const PostList = ({postState, setOfTags}: Props) => {
-    
-  const testFunc = (event:React.MouseEvent<HTMLSpanElement>) => {
-    // console.log(event.target)
-    // console.log(event.currentTarget.parentElement?.nextElementSibling)
 
-    if (
-      event.currentTarget.parentElement?.nextElementSibling?.classList.value.includes('--closed')
-    ) {
-      return event.currentTarget.parentElement?.nextElementSibling?.classList.remove('--closed')
-    }
-    //if (event.currentTarget.parentElement?.nextElementSibling?.classList)
-    return event.currentTarget.parentElement?.nextElementSibling?.classList.add('--closed')
-  }
-
+  const [ collapsedSections, setCollapsedSections ] = useState<Set<string>>(new Set())
+  
   return (
     <list-wrapper>
       {postState 
@@ -33,9 +22,15 @@ const PostList = ({postState, setOfTags}: Props) => {
             .sort()
             .map((tag, index) => (
               <section key={index} id={`${tag}Section`}>
-                <h3>{capitalize(tag)} <span onClick={(event) => testFunc(event)}>click here</span></h3>
+                <h3 onClick={() => {
+                  const newState:Set<string> = new Set(collapsedSections)
+                  collapsedSections.has(tag)
+                    ? newState.delete(tag)
+                    : newState.add(tag)
+                  setCollapsedSections(newState)
+                }}><span>{collapsedSections.has(tag) ? "▸" : "▾"}</span> {capitalize(tag)}</h3>
 
-                <posts-card-wrapper class="section__test">
+                <posts-card-wrapper class={collapsedSections.has(tag) ? "section__test --closed" : "section__test"}>
                   {postState
                     .filter((post => post.tags.includes(tag)))
                     .map((post, index) => <PostCard key={index} post={post}/>)

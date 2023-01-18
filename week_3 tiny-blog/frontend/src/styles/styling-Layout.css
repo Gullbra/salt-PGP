@@ -1,61 +1,83 @@
+
+:root {
+  --header-font-size: 1rem;
+  --margin-site: 1rem;
+  /* --header-font-size: 2rem; */
+}
+
 .site__header {
-
-  padding-left: var(--margin-site);
-  padding-right: var(--margin-site);
-  height: var(--height-header);
-
+  padding-left: calc(2 * var(--margin-site));
+  padding-right: calc(2 * var(--margin-site));  
+  
   display: grid;
-  grid-template-columns: 1fr 18fr 1fr;
+  grid-template-columns: var(--header-font-size) 1fr var(--header-font-size);
 
+  font-family: var(--font-two);
   border-bottom: 1px solid black;
+
+  height: var(--height-header);
+  overflow: hidden;
+}
+
+.header-column--flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* justify-content: space-around; */
 }
 
 .header__h1 {
-  padding-left: 2rem;
+  font-size: var(--header-font-size);
+  font-weight: 400;
 }
 
 .header__menu-btn {
-  font-size: 2rem;
+  font-size: var(--header-font-size);
   transition: all 0.3s ease-in-out;
-
   text-align: center;
-  width:3rem;
-  height:3rem;
-
-  border: 1px solid black;
+  cursor: pointer;
 }
 
 .--transparent {
+  cursor: default;
   opacity: 0%;
 }
 
-.header--flex {
-  display: flex;
-  /* justify-content: space-around; */
-  align-items: center;
-  justify-content: left;
-}
 
 .site__wrapper {
   width: 100vw;
-  height: calc(100vh - var(--height-header));
+  height: calc(100vh - var(--height-header)); 
+
   display: flex;
   flex-direction: row;
+  overflow: hidden;
 }
 
 .site__sidebar {
   width: 0px;
   height: 100%;
-  background-color: beige;
+  
+  /* background-color: beige; */
+  border: none;
+  text-align: center;
+  font-family: var(--font-three);
 
   transition: all 0.3s ease-in-out;
 
   flex-shrink: 0;
   overflow: hidden;
+
+  background-color: rgb(246, 246, 246);
 }
 
 .--open {
-  width: 125px;
+  width: calc(6 * var(--margin-site));
+  border-right: 0.5px solid rgba(34, 33, 33, 0.4);
+}
+
+.sidebar__close-btn {
+  background-color: rgb(211, 211, 211);
+  border-bottom: 0.5px solid rgb(170, 170, 159);
 }
 
 .sidebar__nav-item {
@@ -63,6 +85,7 @@
   width: 100%;
   text-decoration: none;
   color: black;
+  border-bottom: 0.5px solid rgb(170, 170, 159);
 }
 
 .sidebar__nav-item:hover {
@@ -70,6 +93,9 @@
 }
 
 .site__main {
+  margin-left: var(--margin-site);
+  margin-right: var(--margin-site);
+
   flex-grow: 1;
   height: 100%;
 
