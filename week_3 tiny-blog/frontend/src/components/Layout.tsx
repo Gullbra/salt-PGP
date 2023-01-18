@@ -1,14 +1,14 @@
 import React, {useState} from "react";
-import '../styles/styling-Layout.css'
 import { HashLink } from 'react-router-hash-link';
 import { capitalize } from "../util/capitalize";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import '../styles/styling-Layout.css'
 
 type Props = {
   children: React.ReactNode
   setOfTags: Set<string>
 }
-
-
 
 const Layout = (
   {children, setOfTags}: Props
@@ -33,6 +33,9 @@ const Layout = (
 const Header = (
   {showSidebar, setShowSidebar}:{showSidebar:boolean, setShowSidebar:React.Dispatch<React.SetStateAction<boolean>>}
 ) => {
+
+  const navigate = useNavigate()
+
   return(
     <header className="site__header">
       <header-column class="header--flex">
@@ -40,7 +43,11 @@ const Header = (
       </header-column>
 
       <header-column class="header--flex">
-        <h1>This is a Header</h1>
+        <h1 className="header__h1">This is a Header</h1>
+      </header-column>
+
+      <header-column class="header--flex">
+        { useLocation().pathname !=='/' && <p className="header__menu-btn" onClick={() => navigate(-1)}>{"<"}</p>}
       </header-column>
     </header>
   )
