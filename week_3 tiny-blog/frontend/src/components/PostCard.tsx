@@ -16,6 +16,10 @@ const PostCard = ({post}: {post: IPost}) => {
       //onClick={clickFunc}
     >
       <h4>{post.title}</h4>
+
+      <p>{post.body.slice(0,100)}...</p>
+
+      <p>#{post.tags[0]} #{post.tags[1]} #{post.tags[2]}</p>
     </Link>
   )
 }

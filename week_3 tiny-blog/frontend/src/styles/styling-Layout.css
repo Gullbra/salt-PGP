@@ -1,8 +1,33 @@
 .site__header {
   height: var(--height-header);
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
   background-color: var(--color-background-1);
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+
+  /* border-bottom: 1px solid var(--color-dark); */
+}
+
+.header__menu-btn {
+  font-size: 2rem;
+  transition: all 0.3s ease-in-out;
+
+  text-align: center;
+  width:3rem;
+  height:3rem;
+
+  border: 1px solid black;
+}
+
+.--transparent {
+  opacity: 0%;
+}
+
+.header--flex {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .site__wrapper {

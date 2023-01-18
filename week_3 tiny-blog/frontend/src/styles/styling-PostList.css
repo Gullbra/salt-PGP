@@ -1,0 +1,11 @@
+
+.section__test{
+  display: block;
+  height: auto;
+  overflow: hidden;
+}
+
+.--closed {
+  display: none;
+  height: 0;
+}
