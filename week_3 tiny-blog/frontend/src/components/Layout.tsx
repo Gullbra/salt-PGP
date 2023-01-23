@@ -61,15 +61,19 @@ const Aside = ({showSidebar, setShowSidebar, setOfTags}:InternalProps) => {
   return(
     <aside className={showSidebar ? 'site__sidebar --open' : "site__sidebar"}>
       <nav className="sidebar__close-btn" onClick={() => setShowSidebar(false)}>Close sidebar X</nav>
-      {setOfTags && Array.from(setOfTags).sort().map((tag, index) => (
-        <HashLink
-          smooth
-          className="sidebar__nav-item"
-          to={`/#${tag}Section`} 
-          key={index}
-        >{capitalize(tag)}
-        </HashLink>
-      ))}
+      {setOfTags && (
+        Array.from(setOfTags)
+          .sort()
+          .map((tag, index) => (
+            <HashLink
+              smooth
+              className="sidebar__nav-item"
+              to={`/#${tag}Section`} 
+              key={index}
+            >{capitalize(tag)}
+            </HashLink>
+          ))
+      )}
     </aside>
   )
 }
