@@ -2,10 +2,12 @@ import express from "express";
 import { Request, Response, Application } from 'express';
 import fs from 'fs'
 import path from "path";
+import cors from 'cors';
 
 const app: Application = express()
-const port: number = 3000
+const port: number = 3001
 
+app.use(cors({origin: ['http://localhost:3000']}));
 app.use(express.json())
 
 app.route('/api/milk')
