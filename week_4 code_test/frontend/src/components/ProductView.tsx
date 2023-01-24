@@ -1,5 +1,5 @@
 import React from "react";
-import { IMilk } from "../interfaces/mock.db";
+import { IMilk } from "../interfaces/interfaces";
 
 const ProductView = ({product}: {product: IMilk}) => {
   return(

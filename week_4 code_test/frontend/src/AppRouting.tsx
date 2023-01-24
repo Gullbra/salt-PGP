@@ -2,9 +2,9 @@ import { Routes, Route } from 'react-router-dom';
 
 import ProductList from './components/ProductList'
 import ProductView from './components/ProductView'
-import { IMilk } from './interfaces/mock.db';
+import { IMilk, IPagination } from './interfaces/interfaces';
 
-const Routing = ({products}:{products: IMilk[]}) => {
+const Routing = ({products, pagination}:{products: IMilk[], pagination: IPagination}) => {
   const routingArray: {path: string, element: React.ReactNode}[] = [
     {
       path: "*",
@@ -14,6 +14,10 @@ const Routing = ({products}:{products: IMilk[]}) => {
       path: "/",
       element: <ProductList products={products}/>
     },
+    // {
+    //   path: `/?page=${pagination.page}&limit=${pagination.limit}`,
+    //   element: <ProductList products={products}/>
+    // },
     ...products.map(product => ({
       path: `/${product.id}`,
       element: <ProductView product={product}/>

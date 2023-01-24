@@ -9,3 +9,9 @@ export interface IResponseData {
   count: number
   results: IMilk[]
 }
+
+export interface IPagination {
+  page: number
+  limit: number
+  maxPages?: number
+}

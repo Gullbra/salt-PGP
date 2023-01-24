@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-import { IMilk } from "../interfaces/mock.db"
+import { IMilk } from "../interfaces/interfaces"
 import '../styles/styling.ProductList.css'
 
 const ProductList = ({products}:{products: IMilk[]}) => {
