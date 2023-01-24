@@ -7,6 +7,7 @@ interface ILayoutProps {
 }
 
 const Layout = ({children}:ILayoutProps) => {
+
   return (
     <>
       <header className="site__header"><h1>THE MILK STORE</h1></header>

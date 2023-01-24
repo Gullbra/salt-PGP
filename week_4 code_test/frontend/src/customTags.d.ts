@@ -4,7 +4,6 @@ export interface IntrinsicElements {
   "react-render": any;
   "flex-wrapper": any;
   "list-wrapper": any;
-  "header-column": any;
-  "posts-card-wrapper": any;
+  "loading-spinner": any;
   "grid-row": any;
 }
