@@ -1,0 +1,14 @@
+
+.site__header {
+  height: var(--height-header);
+  color: var(--color-dark-pink);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.site__main {
+  background-color: var(--color-lightest-pink);
+  height: calc(100% - var(--height-header));
+}

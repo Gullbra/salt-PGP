@@ -1,5 +1,7 @@
 import React from "react"
 
+import './styles/layout.css'
+
 interface ILayoutProps {
   children: React.ReactNode
 }
@@ -7,8 +9,8 @@ interface ILayoutProps {
 const Layout = ({children}:ILayoutProps) => {
   return (
     <>
-      <header>THE MILK STORE</header>
-      <main>{children}</main>
+      <header className="site__header"><h1>THE MILK STORE</h1></header>
+      <main className="site__main">{children}</main>
     </>
   )
 }

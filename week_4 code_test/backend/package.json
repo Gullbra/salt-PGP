@@ -4,16 +4,18 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --outDir ./dist",
     "start": "cross-env development=true node ./dist/app.js",
-    "production": "node ./dist/app.js"
+    "transpile": "tsc --outDir ./dist",
+    "production": "node ./dist/app.js",
+    "transpile:watch": "npm run transpile -- --watch",
+    "dev": "concurrently \"npm run transpile:watch\" \"npm nodemon ./dist/app.js\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",

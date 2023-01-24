@@ -6,4 +6,5 @@ export interface IntrinsicElements {
   "list-wrapper": any;
   "header-column": any;
   "posts-card-wrapper": any;
+  "grid-row": any;
 }
