@@ -19,7 +19,7 @@
   --color-pastel-green: rgba(185,181,157,255);
 }
 
-.test-class {
+.test-class-1 {
   height: var(--height-search-section);
   width: 100%;
   border: 1px solid black;
@@ -67,20 +67,20 @@
 }
 
 @media screen and (min-width: 700px) {
-  .test-class,
+  .test-class-1,
   .main__list-wrapper {
     width: 700px;
   }
 }
 @media screen and (min-width: 1050px) {
-  .test-class,
+  .test-class-1,
   .main__list-wrapper {
     width: 1050px;
     grid-template-columns: repeat(3, 1fr);
   }
 }
 @media screen and (min-width: 1400px) {
-  .test-class,
+  .test-class-1,
   .main__list-wrapper {
     width: 1400px;
     grid-template-columns: repeat(4, 1fr);
