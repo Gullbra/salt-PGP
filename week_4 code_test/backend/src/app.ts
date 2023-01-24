@@ -24,7 +24,7 @@ app.route('/api/milk')
         res.json({
           ...response, 
           results: response.results.splice(
-            (page-1)*pageLimit, page*pageLimit
+            (page-1)*pageLimit, pageLimit
           )
         })
       })
