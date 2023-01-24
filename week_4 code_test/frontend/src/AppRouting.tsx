@@ -1,7 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-import ProductList from './components/ProductList'
+import { Link } from 'react-router-dom';
 
-const Routing = () => {
+import ProductList from './components/ProductList'
+import { IMilk } from './interfaces/mock.db';
+
+const Routing = ({products}:{products: IMilk[]}) => {
   const routingArray: {path: string, element: React.ReactNode}[] = [
     {
       path: "*",
@@ -9,8 +12,8 @@ const Routing = () => {
     },
     {
       path: "/",
-      element: <ProductList/>
-    }
+      element: <ProductList products={products}/>
+    },
   ]
 
   return (
