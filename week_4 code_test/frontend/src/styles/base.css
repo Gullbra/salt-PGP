@@ -20,6 +20,11 @@
   --color-grey: rgba(246,246,246,255);
 }
 
+@media screen and (max-width: 350px) {
+  html {
+    font-size: 12px;
+  }
+}
 
 react-render {
   display: block;

@@ -11,4 +11,6 @@
 .site__main {
   background-color: var(--color-lightest-pink);
   height: calc(100% - var(--height-header));
+
+  overflow-y: scroll;
 }
