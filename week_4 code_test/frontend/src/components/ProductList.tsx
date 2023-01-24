@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 
 import { IMilk } from "../interfaces/mock.db"
 
@@ -7,14 +8,14 @@ const ProductList = ({products}:{products: IMilk[]}) => {
 
   return (
     <>
-     {products.map((product, index) => (
-      <div key={index}>
-        <p>{product.name}</p>
-        <p>{product.type}</p>
-        <p>{product.storage}</p>
-        <p>{product.id}</p>
-      </div>
-     ))}
+      {products.map((product, index) => (
+        <Link key={index} to={`/${product.id}`}>
+          <p>{product.name}</p>
+          <p>{product.type}</p>
+          <p>{product.storage}</p>
+          <p>{product.id}</p>
+        </Link>
+      ))}
     </>
   )
 }

@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 import ProductList from './components/ProductList'
+import ProductView from './components/ProductView'
 import { IMilk } from './interfaces/mock.db';
 
 const Routing = ({products}:{products: IMilk[]}) => {
@@ -14,6 +14,10 @@ const Routing = ({products}:{products: IMilk[]}) => {
       path: "/",
       element: <ProductList products={products}/>
     },
+    ...products.map(product => ({
+      path: `/${product.id}`,
+      element: <ProductView product={product}/>
+    }))
   ]
 
   return (
