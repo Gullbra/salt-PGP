@@ -7,6 +7,13 @@ import cors from 'cors';
 const app: Application = express()
 const port: number = 3001
 
+export interface IMilk {
+  name: string
+  type: string
+  storage: number
+  id: string
+}
+
 app.use(cors({origin: ['http://localhost:3000']}));
 app.use(express.json())
 
@@ -19,6 +26,23 @@ app.route('/api/milk')
       .readFile(path.join(__dirname, '..', '..','mock', 'db.milk.json'))
       .then(data => {
         return JSON.parse(data.toString())
+      })
+      .then(response => {
+        if (req.query?.filter === "getAllTypes") {
+          const setOfTypes = new Set()
+          response.results.forEach((product: IMilk) => {
+            setOfTypes.add(product.type)
+          });
+          response.types = Array.from(setOfTypes)
+        } 
+        else if (req.query?.filter) {
+          const newResults = response.results.filter((product: IMilk) => {
+            return product.type === req.query.filter
+          });
+          response.results = newResults
+          response.filteredCount = newResults.length
+        }
+        return response
       })
       .then(response => {
         res.json({
