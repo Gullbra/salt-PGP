@@ -13,8 +13,6 @@ interface IListProps {
 
 const ProductList = ({products, pagination, setPagination}:IListProps) => {
   
-  // const paginationArr = Array.from({length: pagination.maxPages || 1}, (_, i) => i++)
-
   const paginationHandler = (page:number) => {
     setPagination ((prev) => {return {...prev, page: page}})
   } 
@@ -29,7 +27,7 @@ const ProductList = ({products, pagination, setPagination}:IListProps) => {
             className="main__product-card"
           >
             <grid-row class="product-card__image-wrapper">
-              <img src="milk.png" alt={`Picture: ${product.name}`} className="product-card__product-image"/>
+              <img src="milk.png" alt={`${product.name}`} className="product-card__product-image"/>
             </grid-row>
             <grid-row class="product-card__info-wrapper">
               <p className="info__name">{product.name}</p>
@@ -43,16 +41,26 @@ const ProductList = ({products, pagination, setPagination}:IListProps) => {
       </list-wrapper>
 
       {pagination.maxPages && (
-        <section className="test-class-1">
-          {pagination.page !== 1 && <button type="button" onClick={() => paginationHandler(1)}>{"<<"}</button>}
-          {/* <button type="button" onClick={() => paginationHandler(pagination.page-1)}>{"<"}</button> */}
-          {pagination.page-2 > 0 && (<span>...</span>)}
-          {pagination.page-1 > 0 && (<button type="button" onClick={() => paginationHandler(pagination.page-1)}>{`${pagination.page-1}`}</button>)}
-          <button type="button"><b>{`${pagination.page}`}</b></button>
-          {pagination.page+1 <= pagination.maxPages && (<button type="button" onClick={() => paginationHandler(pagination.page+1)}>{`${pagination.page+1}`}</button>)}
-          {pagination.page+2 <= pagination.maxPages && (<span>...</span>)}
-          {/* <button type="button">{">"}</button> */}
-          {pagination.page !== pagination.maxPages && <button type="button" onClick={() => paginationHandler(pagination.maxPages || 1)}>{">>"}</button>}
+        <section className="main__pagination-section">
+          <div>
+            {pagination.page > 1 && <button onClick={() => paginationHandler(pagination.page-1)} type="button" className="pagination-btn">{"< prev"}</button>}
+          </div>
+
+          <div>
+            {pagination.page > 3 && <button onClick={() => paginationHandler(1)} type="button" className="pagination-btn">{"1"}</button>}
+            {pagination.page > 4 && <button className="pagination-btn">...</button>}
+            {pagination.page > 2 && <button onClick={() => paginationHandler(pagination.page-2)} type="button" className="pagination-btn">{`${pagination.page-2}`}</button>}
+            {pagination.page > 1 && <button onClick={() => paginationHandler(pagination.page-1)} type="button" className="pagination-btn">{`${pagination.page-1}`}</button>}
+            <button type="button" className="pagination-btn current-page">{pagination.page}</button>
+            {pagination.maxPages - pagination.page >= 1 && <button onClick={() => paginationHandler(pagination.page+1)} type="button" className="pagination-btn">{`${pagination.page+1}`}</button>}
+            {pagination.maxPages - pagination.page >= 2 && <button onClick={() => paginationHandler(pagination.page+2)} type="button" className="pagination-btn">{`${pagination.page+2}`}</button>}
+            {pagination.maxPages - pagination.page >= 4 && <button className="pagination-btn">...</button>}
+            {pagination.maxPages - pagination.page >= 3 && <button onClick={() => paginationHandler(pagination.maxPages || 1)} type="button" className="pagination-btn">{`${pagination.maxPages || 1}`}</button>}
+          </div>
+
+          <div>
+            {pagination.page < pagination.maxPages && <button onClick={() => paginationHandler(pagination.page+1)} type="button" className="pagination-btn">{"next >"}</button>}
+          </div>
         </section>
       )}
       
