@@ -21,6 +21,7 @@ app.route('/api/milk')
   .get((req:Request, res:Response) => {
     const pageLimit = req.query?.limit ? Number(req.query?.limit) : 6
     const page = req.query?.page ? Number(req.query?.page) : 1
+    console.log(req.query.filter)
 
     fs.promises
       .readFile(path.join(__dirname, '..', '..','mock', 'db.milk.json'))
@@ -28,14 +29,14 @@ app.route('/api/milk')
         return JSON.parse(data.toString())
       })
       .then(response => {
-        if (req.query?.filter === "getAllTypes") {
+        if (req.query?.getTypes) {
           const setOfTypes = new Set()
           response.results.forEach((product: IMilk) => {
             setOfTypes.add(product.type)
           });
           response.types = Array.from(setOfTypes)
-        } 
-        else if (req.query?.filter) {
+        }
+        if (req.query?.filter) {
           const newResults = response.results.filter((product: IMilk) => {
             return product.type === req.query.filter
           });

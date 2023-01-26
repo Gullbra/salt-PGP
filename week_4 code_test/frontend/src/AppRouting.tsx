@@ -2,15 +2,15 @@ import { Routes, Route } from 'react-router-dom';
 
 import ProductList from './components/ProductList'
 import ProductView from './components/ProductView'
-import { IMilk, IPagination } from './interfaces/interfaces';
+import { IMilk, IPagination, IResponseData } from './interfaces/interfaces';
 
 interface IRoutingProps {
-  products: IMilk[]
+  productState: IResponseData
   pagination: IPagination
   setPagination: React.Dispatch<React.SetStateAction<IPagination>>
 }
 
-const Routing = ({products, pagination, setPagination}:IRoutingProps) => {
+const Routing = ({productState, pagination, setPagination}:IRoutingProps) => {
   const routingArray: {path: string, element: React.ReactNode}[] = [
     {
       path: "*",
@@ -18,9 +18,9 @@ const Routing = ({products, pagination, setPagination}:IRoutingProps) => {
     },
     {
       path: "/",
-      element: <ProductList products={products} pagination={pagination} setPagination={setPagination}/>
+      element: <ProductList productState={productState} pagination={pagination} setPagination={setPagination}/>
     },
-    ...products.map(product => ({
+    ...productState.results.map(product => ({
       path: `/${product.id}`,
       element: <ProductView product={product}/>
     }))

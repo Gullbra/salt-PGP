@@ -1,17 +1,17 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-import { IMilk } from "../interfaces/interfaces"
+import { IMilk, IResponseData } from "../interfaces/interfaces"
 import '../styles/styling.ProductList.css'
 import { IPagination } from "../interfaces/interfaces"
 
 interface IListProps {
-  products: IMilk[]
+  productState: IResponseData
   pagination: IPagination
   setPagination: React.Dispatch<React.SetStateAction<IPagination>>
 }
 
-const ProductList = ({products, pagination, setPagination}:IListProps) => {
+const ProductList = ({productState, pagination, setPagination}:IListProps) => {
   
   const paginationHandler = (page:number) => {
     setPagination ((prev) => {return {...prev, page: page}})
@@ -19,10 +19,13 @@ const ProductList = ({products, pagination, setPagination}:IListProps) => {
 
   return (
     <flex-wrapper class="--flex-center">
-      <section className="test-class-1">Test</section>
+      <section className="test-class-1">
+        <input type="text" placeholder=" Search"/>
+        <p>{productState.filteredCount ? `Showing ${productState.filteredCount} of ${productState.count} products`: `${productState.count} products`}</p>
+      </section>
 
       <list-wrapper class="main__list-wrapper">
-        {products.map((product, index) => (
+        {productState.results.map((product, index) => (
           <Link key={index} to={`/${product.id}`}
             className="main__product-card"
           >

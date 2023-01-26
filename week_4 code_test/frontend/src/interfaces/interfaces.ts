@@ -5,9 +5,18 @@ export interface IMilk {
   id: string
 }
 
-export interface IResponseData {
-  count: number
+export interface IProductState {
   results: IMilk[]
+  count: number
+  types?: string[]
+  filteredCount?: number
+}
+
+export interface IResponseData {
+  results: IMilk[]
+  count: number
+  types?: string[]
+  filteredCount?: number
 }
 
 export interface IPagination {

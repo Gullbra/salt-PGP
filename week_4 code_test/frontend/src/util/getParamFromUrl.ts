@@ -1,7 +1,7 @@
-export const getParamFromUrl =(query:string, param:string):(number | null) => {
+export const getParamFromUrl =(query:string, param:string):(string | null) => {
   if (!query) return null
-  const match = query.match(new RegExp(`([?]|[&])${param}=[\\d]+`))
+  const match = query.match(new RegExp(`([?]|[&])${param}=[^?&]+`))
   return match
-    ? Number(match[0].split('=')[1])
+    ? match[0].split('=')[1]
     : null
 }

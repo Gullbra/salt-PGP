@@ -24,11 +24,8 @@
   width: 100%;
   border: 1px solid black;
 
-  padding-left: 1.8rem;
-  padding-right: 1rem;
-
-  /* position: sticky;
-  top: 0; */
+  padding-left: calc(calc(100vw - 20rem)/2);
+  padding-right: calc(calc(100vw - 20rem)/2);
 }
 
 .main__pagination-section {
@@ -82,23 +79,32 @@
 }
 
 @media screen and (min-width: 700px) {
-  .test-class-1,
   .main__list-wrapper {
     width: 700px;
   }
+  .test-class-1 {
+    padding-left: calc(calc(100vw - 2*20rem - 30px)/2);
+    padding-right: calc(calc(100vw - 2*20rem - 30px)/2);
+  }
 }
 @media screen and (min-width: 1050px) {
-  .test-class-1,
   .main__list-wrapper {
     width: 1050px;
     grid-template-columns: repeat(3, 1fr);
   }
+  .test-class-1 {
+    padding-left: calc(calc(100vw - 3*20rem - 2*30px)/2);
+    padding-right: calc(calc(100vw - 3*20rem - 2*30px)/2);
+  }
 }
 @media screen and (min-width: 1400px) {
-  .test-class-1,
   .main__list-wrapper {
     width: 1400px;
     grid-template-columns: repeat(4, 1fr);
+  }
+  .test-class-1 {
+    padding-left: calc(calc(100vw - 4*20rem - 3*30px)/2);
+    padding-right: calc(calc(100vw - 4*20rem - 3*30px)/2);
   }
 }
 
