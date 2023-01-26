@@ -9,19 +9,26 @@ interface IListProps {
   productState: IResponseData
   pagination: IPagination
   setPagination: React.Dispatch<React.SetStateAction<IPagination>>
+  setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProductList = ({productState, pagination, setPagination}:IListProps) => {
+const ProductList = ({productState, pagination, setPagination, setLoadingProducts}:IListProps) => {
   
   const paginationHandler = (page:number) => {
     setPagination ((prev) => {return {...prev, page: page}})
+    setLoadingProducts(true)
   } 
 
   return (
     <flex-wrapper class="--flex-center">
       <section className="test-class-1">
-        <input type="text" placeholder=" Search"/>
-        <p>{productState.filteredCount ? `Showing ${productState.filteredCount} of ${productState.count} products`: `${productState.count} products`}</p>
+        <div>
+          <input type="text" placeholder=" Search"/>
+          <p>{productState.filteredCount ? `Showing ${productState.filteredCount} of ${productState.count} products`: `${productState.count} products`}</p>
+        </div>
+        <div>
+          
+        </div>
       </section>
 
       <list-wrapper class="main__list-wrapper">
