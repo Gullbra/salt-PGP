@@ -18,35 +18,39 @@ function App() {
   const [ productState, setProductsState ] = useState<IResponseData | null>(null)
   //const [ loadingProducts, setLoadingProducts ] = useState<boolean>(true)
 
-  useEffect (() => {
-    if (!pagination.maxPages) {
-      fetching(pagination.page, pagination.limit, true, getParamFromUrl(urlSearchQuery, "filter"))
-        .then(response => {
-          if (!response) return
-          
-          const newPageState = {} as IPagination
+  if (!pagination.maxPages) {
+    fetching(pagination.page, pagination.limit, true, getParamFromUrl(urlSearchQuery, "filter"))
+      .then(response => {
+        if (!response) return
+        
+        const newPageState = {} as IPagination
 
-          const urlLimit = Number(getParamFromUrl(urlSearchQuery, "limit"))
-          if (urlLimit) {
-            newPageState.limit = urlLimit
-          }
+        const urlLimit = Number(getParamFromUrl(urlSearchQuery, "limit"))
+        if (urlLimit) {
+          newPageState.limit = urlLimit
+        }
 
-          newPageState.maxPages = Math.ceil((response.data.filteredCount || response.data.count) / (urlLimit || pagination.limit))
+        newPageState.maxPages = Math.ceil((response.data.filteredCount || response.data.count) / (urlLimit || pagination.limit))
 
-          const urlPage = Number(getParamFromUrl(urlSearchQuery, "page"))
-          if (urlPage && urlPage <= newPageState.maxPages && urlPage > 0) {
-            newPageState.page = urlPage
-          }
+        const urlPage = Number(getParamFromUrl(urlSearchQuery, "page"))
+        if (urlPage && urlPage <= newPageState.maxPages && urlPage > 0) {
+          newPageState.page = urlPage
+        }
 
-          setPagination((prev) => {return {...prev, ...newPageState}})
-        })
-    }
-  }, [])
+        setPagination((prev) => {return {...prev, ...newPageState}})
+      })
+  }
 
   useEffect(() => {
     if (pagination.maxPages){
       const urlFilter = getParamFromUrl(urlSearchQuery, "filter")
-      navigate(`/?page=${pagination.page}&limit=${pagination.limit}${urlFilter ? `&filter=${urlFilter}` :""}`)
+      navigate(`/?page=${pagination.page}&limit=${pagination.limit}${
+        urlFilter 
+          ? Array.isArray(urlFilter) 
+            ? urlFilter.map(item => `&filter=${item}`).join('')
+            : `&filter=${urlFilter}`
+          : ""
+      }`)
       fetching(pagination.page, pagination.limit, productState?.types ?false :true, urlFilter ?urlFilter :null)
         .then(response => {
           if (!response) return
