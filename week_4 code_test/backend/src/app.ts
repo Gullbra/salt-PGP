@@ -19,53 +19,38 @@ app.use(express.json())
 
 app.route('/api/milk')
   .get((req:Request, res:Response) => {
+
     const pageLimit = req.query.limit ? Number(req.query?.limit) : 6
     const page = req.query.page ? Number(req.query?.page) : 1
-    const filters = req.query.filter 
-      ? Array.isArray(req.query?.filter) 
-        ? req.query?.filter.map(filter => String(filter))
-        : String(req.query?.filter)
+    const getTypes = String(req.query.getTypes) === "true"
+    const filters = req.query.filter
+      ? String(req.query.filter).split(',')
       : null
 
     fs.promises
       .readFile(path.join(__dirname, '..', '..','mock', 'db.milk.json'))
-      .then(data => {
-        return JSON.parse(data.toString())
-      })
+      .then(data => JSON.parse(data.toString()))
       .then(response => {
-        if (req.query.getTypes) {
+        if (getTypes) {
           const setOfTypes = new Set()
           response.results.forEach((product: IMilk) => {
             setOfTypes.add(product.type)
           });
+
           response.types = Array.from(setOfTypes)
         }
 
         if (filters) {
-          let newResults
-
-          if (Array.isArray(filters)) {
-            newResults = response.results.filter((product: IMilk) => {
+            const filteredResults = response.results.filter((product: IMilk) => {
               return filters.includes(product.type)
             });
-          } else {
-            newResults = response.results.filter((product: IMilk) => {
-              return product.type === req.query.filter
-            });
-          }
 
-          response.results = newResults
-          response.filteredCount = newResults.length
+          response.results = filteredResults
+          response.count = filteredResults.length
         }
-        return response
-      })
-      .then(response => {
-        res.json({
-          ...response, 
-          results: response.results.splice(
-            (page-1)*pageLimit, pageLimit
-          )
-        })
+
+        response.results = response.results.splice((page-1)*pageLimit, pageLimit)
+        res.json(response)
       })
       .catch(err => res.send(err.message))
   })
