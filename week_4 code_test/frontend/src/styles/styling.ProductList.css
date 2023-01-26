@@ -28,7 +28,7 @@
   padding-right: calc(calc(100vw - 20rem)/2);
 }
 
-.main__pagination-section {
+.main__pageState-section {
   height: var(--height-search-section);
   width: 100%;
 
@@ -165,7 +165,7 @@
   color: var(--color-pastel-green);
 }
 
-.pagination-btn {
+.pageState-btn {
   background-color: inherit;
   font-size: 1.2em;
 

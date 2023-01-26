@@ -7,15 +7,15 @@ import { IPagination } from "../interfaces/interfaces"
 
 interface IListProps {
   productState: IResponseData
-  pagination: IPagination
-  setPagination: React.Dispatch<React.SetStateAction<IPagination>>
+  pageState: IPagination
+  setPageState: React.Dispatch<React.SetStateAction<IPagination>>
   setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProductList = ({productState, pagination, setPagination, setLoadingProducts}:IListProps) => {
+const ProductList = ({productState, pageState, setPageState, setLoadingProducts}:IListProps) => {
   
-  const paginationHandler = (page:number) => {
-    setPagination ((prev) => {return {...prev, page: page}})
+  const pageStateHandler = (page:number) => {
+    setPageState ((prev) => {return {...prev, page: page}})
     setLoadingProducts(true)
   } 
 
@@ -50,26 +50,26 @@ const ProductList = ({productState, pagination, setPagination, setLoadingProduct
         ))}
       </list-wrapper>
 
-      {pagination.maxPages && (
-        <section className="main__pagination-section">
+      {pageState.maxPages && (
+        <section className="main__pageState-section">
           <div>
-            {pagination.page > 1 && <button onClick={() => paginationHandler(pagination.page-1)} type="button" className="pagination-btn">{"< prev"}</button>}
+            {pageState.page > 1 && <button onClick={() => pageStateHandler(pageState.page-1)} type="button" className="pageState-btn">{"< prev"}</button>}
           </div>
 
           <div>
-            {pagination.page > 3 && <button onClick={() => paginationHandler(1)} type="button" className="pagination-btn">{"1"}</button>}
-            {pagination.page > 4 && <button className="pagination-btn">...</button>}
-            {pagination.page > 2 && <button onClick={() => paginationHandler(pagination.page-2)} type="button" className="pagination-btn">{`${pagination.page-2}`}</button>}
-            {pagination.page > 1 && <button onClick={() => paginationHandler(pagination.page-1)} type="button" className="pagination-btn">{`${pagination.page-1}`}</button>}
-            <button type="button" className="pagination-btn current-page">{pagination.page}</button>
-            {pagination.maxPages - pagination.page >= 1 && <button onClick={() => paginationHandler(pagination.page+1)} type="button" className="pagination-btn">{`${pagination.page+1}`}</button>}
-            {pagination.maxPages - pagination.page >= 2 && <button onClick={() => paginationHandler(pagination.page+2)} type="button" className="pagination-btn">{`${pagination.page+2}`}</button>}
-            {pagination.maxPages - pagination.page >= 4 && <button className="pagination-btn">...</button>}
-            {pagination.maxPages - pagination.page >= 3 && <button onClick={() => paginationHandler(pagination.maxPages || 1)} type="button" className="pagination-btn">{`${pagination.maxPages || 1}`}</button>}
+            {pageState.page > 3 && <button onClick={() => pageStateHandler(1)} type="button" className="pageState-btn">{"1"}</button>}
+            {pageState.page > 4 && <button className="pageState-btn">...</button>}
+            {pageState.page > 2 && <button onClick={() => pageStateHandler(pageState.page-2)} type="button" className="pageState-btn">{`${pageState.page-2}`}</button>}
+            {pageState.page > 1 && <button onClick={() => pageStateHandler(pageState.page-1)} type="button" className="pageState-btn">{`${pageState.page-1}`}</button>}
+            <button type="button" className="pageState-btn current-page">{pageState.page}</button>
+            {pageState.maxPages - pageState.page >= 1 && <button onClick={() => pageStateHandler(pageState.page+1)} type="button" className="pageState-btn">{`${pageState.page+1}`}</button>}
+            {pageState.maxPages - pageState.page >= 2 && <button onClick={() => pageStateHandler(pageState.page+2)} type="button" className="pageState-btn">{`${pageState.page+2}`}</button>}
+            {pageState.maxPages - pageState.page >= 4 && <button className="pageState-btn">...</button>}
+            {pageState.maxPages - pageState.page >= 3 && <button onClick={() => pageStateHandler(pageState.maxPages || 1)} type="button" className="pageState-btn">{`${pageState.maxPages || 1}`}</button>}
           </div>
 
           <div>
-            {pagination.page < pagination.maxPages && <button onClick={() => paginationHandler(pagination.page+1)} type="button" className="pagination-btn">{"next >"}</button>}
+            {pageState.page < pageState.maxPages && <button onClick={() => pageStateHandler(pageState.page+1)} type="button" className="pageState-btn">{"next >"}</button>}
           </div>
         </section>
       )}

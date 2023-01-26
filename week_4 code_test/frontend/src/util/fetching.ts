@@ -1,7 +1,7 @@
 import { IResponseData } from "../interfaces/interfaces"
 import axios from "axios"
 
-export default async function fetching (page:number, limit:number, getTypes:boolean=false, filter?:(string | string[] | null)):Promise<{ data: IResponseData} | void> {
+export default async function fetching (page:number, limit:number, getTypes:boolean=false, filter?:(string | string[] | null)):Promise<{ data: IResponseData}> {
   const devENV = {
     DEV_domain: "http://localhost:3001"
   }
@@ -22,6 +22,5 @@ export default async function fetching (page:number, limit:number, getTypes:bool
 
   return axios
     .get(url)
-    .catch(err => console.error(err))
     .finally(() => console.log("📮 axios called"))
 }
