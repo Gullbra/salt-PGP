@@ -7,7 +7,7 @@ interface ILayoutProps {
 }
 
 const Layout = ({children}:ILayoutProps) => {
-  // console.log("🖌 layout rendered")
+  // TODO: add sidebar menu for mobile view with useWindowDimensions hook + debounce
   return (
     <>
       <header className="site__header"><h1>THE MILK STORE</h1></header>

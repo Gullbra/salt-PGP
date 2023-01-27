@@ -13,7 +13,6 @@ import fetching from './util/fetching';
 let initialLoad = true
 
 function App() {
-  // console.log("🖌 app rendered")
   const navigate = useNavigate()
   const urlSearchQuery = useLocation().search
   const urlPath = useLocation().pathname
@@ -27,8 +26,6 @@ function App() {
   const [ pageState, setPageState ] = useState<IPagination>({} as IPagination)
   const [ productState, setProductState ] = useState<IResponseData>({} as IResponseData)
   const [ loadingProducts, setLoadingProducts ] = useState<boolean>(true)
-
-  // console.log({urlVariables, pageState, productState})
 
   useEffect(()=>{
     if (initialLoad) {

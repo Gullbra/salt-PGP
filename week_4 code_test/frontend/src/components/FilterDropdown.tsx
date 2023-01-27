@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-import '../styles/styling.components.FilterDropdown.css'
+import '../styles/styling.component.FilterDropdown.css'
 import { IPagination, IResponseData } from "../interfaces/interfaces";
 
 interface IFilterDropdown {
