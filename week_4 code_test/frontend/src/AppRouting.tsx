@@ -30,7 +30,7 @@ const Routing = ({productState, setProductState, pageState, setPageState, setLoa
     },
     ...productState.results.map(product => ({
       path: `/${product.id}`,
-      element: <ProductView product={product}/>
+      element: <ProductView product={product} pageState={pageState}/>
     }))
   ]
 

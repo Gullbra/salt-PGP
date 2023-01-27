@@ -15,6 +15,7 @@ function App() {
   // console.log("🖌 app rendered")
   const navigate = useNavigate()
   const urlSearchQuery = useLocation().search
+  const urlPath = useLocation().pathname
 
   const urlVariables = {
     filters: getParamFromUrl(urlSearchQuery, "filter") as string[],
@@ -26,7 +27,7 @@ function App() {
   const [ productState, setProductState ] = useState<IResponseData>({} as IResponseData)
   const [ loadingProducts, setLoadingProducts ] = useState<boolean>(true)
 
-  console.log({urlVariables, pageState, productState})
+  // console.log({urlVariables, pageState, productState})
 
   useEffect(()=>{
     if (initialLoad) {
@@ -49,13 +50,15 @@ function App() {
 
         setLoadingProducts(false)
         
-        navigate(
-          `/?page=${urlVariables.page || 1}&limit=${urlVariables.limit || 6}${
-            urlVariables.filters 
-              ? urlVariables.filters.map(filter => `&filter=${filter}`).join('')
-              : ""
-          }`
-        )
+        if (urlPath === '/'){
+          navigate(
+            `/?page=${urlVariables.page || 1}&limit=${urlVariables.limit || 6}${
+              urlVariables.filters 
+                ? urlVariables.filters.map(filter => `&filter=${filter}`).join('')
+                : ""
+            }`
+          )
+        }
       })
       .catch(err => console.log(err))
     }
