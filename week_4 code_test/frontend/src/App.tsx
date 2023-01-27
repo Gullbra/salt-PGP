@@ -23,7 +23,7 @@ function App() {
   }
 
   const [ pageState, setPageState ] = useState<IPagination>({} as IPagination)
-  const [ productState, setProductsState ] = useState<IResponseData>({} as IResponseData)
+  const [ productState, setProductState ] = useState<IResponseData>({} as IResponseData)
   const [ loadingProducts, setLoadingProducts ] = useState<boolean>(true)
 
   console.log({urlVariables, pageState, productState})
@@ -34,7 +34,7 @@ function App() {
       fetching(
         urlVariables.page || 1, 
         urlVariables.limit || 6,
-        productState.types ? false : true,
+        true,
         urlVariables.filters
       ).then(response => {
 
@@ -45,7 +45,7 @@ function App() {
           filters: urlVariables.filters
         })
 
-        setProductsState({
+        setProductState({
           ...response.data
         })
 
@@ -111,7 +111,7 @@ function App() {
           if (!response) return
           console.log(response.data)
 
-          setProductsState((prev) => {
+          setProductState((prev) => {
             return {
               ...prev, 
               ...response.data
@@ -126,7 +126,10 @@ function App() {
   return (
     <Layout>
       {!loadingProducts && productState 
-        ? <Routing productState={productState} pageState={pageState} setPageState={setPageState} setLoadingProducts={setLoadingProducts}/>
+        ? <Routing 
+          productState={productState} setProductState={setProductState} 
+          pageState={pageState} setPageState={setPageState} 
+          setLoadingProducts={setLoadingProducts}/>
         : <flex-wrapper class="--flex-center-spinner"><loading-spinner class="lds-hourglass"></loading-spinner></flex-wrapper>
       }
     </Layout>

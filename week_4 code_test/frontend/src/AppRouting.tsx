@@ -6,12 +6,15 @@ import { IPagination, IResponseData } from './interfaces/interfaces';
 
 interface IRoutingProps {
   productState: IResponseData
+  setProductState: React.Dispatch<React.SetStateAction<IResponseData>>
+
   pageState: IPagination
   setPageState: React.Dispatch<React.SetStateAction<IPagination>>
+
   setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Routing = ({productState, pageState, setPageState, setLoadingProducts}:IRoutingProps) => {
+const Routing = ({productState, setProductState, pageState, setPageState, setLoadingProducts}:IRoutingProps) => {
   console.log("🖌 routing rendered")
   const routingArray: {path: string, element: React.ReactNode}[] = [
     {
@@ -21,7 +24,7 @@ const Routing = ({productState, pageState, setPageState, setLoadingProducts}:IRo
     {
       path: "/",
       element: <ProductList 
-        productState={productState} 
+        productState={productState} setProductState={setProductState}
         pageState={pageState} setPageState={setPageState} 
         setLoadingProducts={setLoadingProducts}/>
     },

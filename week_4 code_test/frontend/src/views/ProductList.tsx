@@ -1,22 +1,65 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { IMilk, IResponseData } from "../interfaces/interfaces"
 import '../styles/styling.ProductList.css'
 import { IPagination } from "../interfaces/interfaces"
+import fetching from "../util/fetching"
 
 interface IListProps {
   productState: IResponseData
+  setProductState: React.Dispatch<React.SetStateAction<IResponseData>>
+
   pageState: IPagination
   setPageState: React.Dispatch<React.SetStateAction<IPagination>>
+
   setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProductList = ({productState, pageState, setPageState, setLoadingProducts}:IListProps) => {
-  
+const ProductList = ({productState, setProductState, pageState, setPageState, setLoadingProducts}:IListProps) => {
+  const navigate = useNavigate()
+
   const pageStateHandler = (page:number) => {
+    /*
+    setPageState ((prev) => {return {...prev, page: page}})
+
+    navigate(
+      `/?page=${page}&limit=${pageState.limit}${
+        pageState.filters 
+          ? pageState.filters.map(filter => `&filter=${filter}`).join('')
+          : ""
+      }`
+    )
+
+    setLoadingProducts(false)
+    */
     setPageState ((prev) => {return {...prev, page: page}})
     setLoadingProducts(true)
+
+    fetching(
+      page,
+      pageState.limit,
+      false,
+      pageState.filters
+    ).then(response => {
+
+      setProductState({
+        ...response.data
+      })
+
+      setLoadingProducts(false)
+      
+      navigate(
+        `/?page=${page}&limit=${pageState.limit}${
+          pageState.filters 
+            ? pageState.filters.map(filter => `&filter=${filter}`).join('')
+            : ""
+        }`
+      )
+    })
+    .catch(err => console.log(err))
+
+
   } 
 
   return (
