@@ -8,9 +8,8 @@ import Routing from './AppRouting';
 import { IPagination, IResponseData } from './interfaces/interfaces';
 import { getParamFromUrl } from './util/getParamFromUrl';
 import fetching from './util/fetching';
-import { count } from 'console';
 
-let isLoading = false
+let initialLoad = true
 
 function App() {
   console.log("🖌 app rendered")
@@ -18,7 +17,7 @@ function App() {
   const urlSearchQuery = useLocation().search
 
   const urlVariables = {
-    filters: getParamFromUrl(urlSearchQuery, "filter"),
+    filters: getParamFromUrl(urlSearchQuery, "filter") as string[],
     page: Number(getParamFromUrl(urlSearchQuery, "page")),
     limit: Number(getParamFromUrl(urlSearchQuery, "limit")),
   }
@@ -27,25 +26,42 @@ function App() {
   const [ productState, setProductsState ] = useState<IResponseData>({} as IResponseData)
   const [ loadingProducts, setLoadingProducts ] = useState<boolean>(true)
 
-  //console.log(urlVariables)
-  console.log({pageState, productState})
+  console.log({urlVariables, pageState, productState})
 
-  if (isLoading === false) {
-    isLoading = true
-    fetching(
-      urlVariables.page || 1, 
-      urlVariables.limit || 6,
-      productState.types ? false : true,
-      urlVariables.filters
-    ).then(response => {
-      setPageState({
-        page: urlVariables.page || 1, 
-        limit: urlVariables.limit || 6,
-        maxPages: Math.ceil(response.data.count / urlVariables.limit || 6)
+  useEffect(()=>{
+    if (initialLoad) {
+      initialLoad = false
+      fetching(
+        urlVariables.page || 1, 
+        urlVariables.limit || 6,
+        productState.types ? false : true,
+        urlVariables.filters
+      ).then(response => {
+
+        setPageState({
+          page: urlVariables.page || 1, 
+          limit: urlVariables.limit || 6,
+          maxPages: Math.ceil(response.data.count / (urlVariables.limit || 6)),
+          filters: urlVariables.filters
+        })
+
+        setProductsState({
+          ...response.data
+        })
+
+        setLoadingProducts(false)
+        
+        navigate(
+          `/?page=${urlVariables.page || 1}&limit=${urlVariables.limit || 6}${
+            urlVariables.filters 
+              ? urlVariables.filters.map(filter => `&filter=${filter}`).join('')
+              : ""
+          }`
+        )
       })
-    })
-    .catch(err => console.log(err))
-  }
+      .catch(err => console.log(err))
+    }
+  }, [])
 
   /*
 
@@ -54,8 +70,6 @@ function App() {
 
     server = maxPages, types, results, count => client
   */
-
-
 
   /*
   if (!pageState.maxPages && !loadingProducts) {

@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
-import ProductList from './components/ProductList'
-import ProductView from './components/ProductView'
+import ProductList from './views/ProductList'
+import ProductView from './views/ProductView'
 import { IPagination, IResponseData } from './interfaces/interfaces';
 
 interface IRoutingProps {

@@ -7,7 +7,7 @@ import cors from 'cors';
 const app: Application = express()
 const port: number = 3001
 
-export interface IMilk {
+interface IMilk {
   name: string
   type: string
   storage: number

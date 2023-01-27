@@ -1,7 +1,10 @@
 import { IResponseData } from "../interfaces/interfaces"
 import axios from "axios"
 
-export default async function fetching (page:number, limit:number, getTypes:boolean=false, filter?:(string | string[] | null)):Promise<{ data: IResponseData}> {
+export default async function fetching (
+  page:number, limit:number, getTypes:boolean=false, filter?:(string[] | null)
+):Promise<{ data: IResponseData}> {
+
   const devENV = {
     DEV_domain: "http://localhost:3001"
   }
@@ -11,13 +14,9 @@ export default async function fetching (page:number, limit:number, getTypes:bool
     url += `&getTypes=${getTypes}`
   }
   if (filter) {
-    if(Array.isArray(filter)) {
-      filter.forEach(item => {
-        url += `&filter=${item}`
-      })
-    } else {
-      url += `&filter=${filter}`
-    }
+    filter.forEach(item => {
+      url += `&filter=${item}`
+    })
   }
 
   return axios
