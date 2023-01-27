@@ -124,6 +124,9 @@
   display: grid;
 
   grid-template-rows: 6fr 4fr;
+
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2); 
+
 }
 
 .product-card__image-wrapper {
@@ -176,6 +179,9 @@
 
   color: var(--color-darker-grey);
   border: 1px solid var(--color-darker-grey);
+
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.2); 
+
 }
 
 

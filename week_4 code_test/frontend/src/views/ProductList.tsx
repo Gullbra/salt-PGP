@@ -1,10 +1,11 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 import { IMilk, IResponseData } from "../interfaces/interfaces"
-import '../styles/styling.ProductList.css'
+import '../styles/styling.view.ProductList.css'
 import { IPagination } from "../interfaces/interfaces"
 import fetching from "../util/fetching"
+import FilterDropdown from '../components/FilterDropdown'
 
 interface IListProps {
   productState: IResponseData
@@ -20,8 +21,8 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
   const navigate = useNavigate()
 
   const pageStateHandler = (page:number) => {
-    /*
     setPageState ((prev) => {return {...prev, page: page}})
+    setLoadingProducts(true)
 
     navigate(
       `/?page=${page}&limit=${pageState.limit}${
@@ -31,43 +32,28 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
       }`
     )
 
-    setLoadingProducts(false)
-    */
-    setPageState ((prev) => {return {...prev, page: page}})
-    setLoadingProducts(true)
-
     fetching(
       page,
       pageState.limit,
       false,
       pageState.filters
     ).then(response => {
-
-      setProductState({
-        ...response.data
-      })
-
+      setProductState((prev) => { return {...prev, ...response.data}})
       setLoadingProducts(false)
-      
-      navigate(
-        `/?page=${page}&limit=${pageState.limit}${
-          pageState.filters 
-            ? pageState.filters.map(filter => `&filter=${filter}`).join('')
-            : ""
-        }`
-      )
     })
     .catch(err => console.log(err))
-
-
-  } 
+  }
 
   return (
     <flex-wrapper class="--flex-center">
       <section className="test-class-1">
         <div>
           <input type="text" placeholder=" Search"/>
-          <p>{productState.filteredCount ? `Showing ${productState.filteredCount} of ${productState.count} products`: `${productState.count} products`}</p>
+          <p>{
+            // productState.count === 99 ? "We've got 99 products, but a b**ch ain't one! (we're not traffickers)" :
+            `Showing ${productState.results.length} of ${productState.count} products`}</p>
+
+          <FilterDropdown productState={productState} pageState={pageState}/>
         </div>
         <div>
           

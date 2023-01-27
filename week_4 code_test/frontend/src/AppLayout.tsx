@@ -7,7 +7,7 @@ interface ILayoutProps {
 }
 
 const Layout = ({children}:ILayoutProps) => {
-  console.log("🖌 layout rendered")
+  // console.log("🖌 layout rendered")
   return (
     <>
       <header className="site__header"><h1>THE MILK STORE</h1></header>

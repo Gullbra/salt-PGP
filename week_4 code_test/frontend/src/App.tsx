@@ -12,7 +12,7 @@ import fetching from './util/fetching';
 let initialLoad = true
 
 function App() {
-  console.log("🖌 app rendered")
+  // console.log("🖌 app rendered")
   const navigate = useNavigate()
   const urlSearchQuery = useLocation().search
 
@@ -45,9 +45,7 @@ function App() {
           filters: urlVariables.filters
         })
 
-        setProductState({
-          ...response.data
-        })
+        setProductState({...response.data})
 
         setLoadingProducts(false)
         
@@ -62,66 +60,6 @@ function App() {
       .catch(err => console.log(err))
     }
   }, [])
-
-  /*
-
-    *OnPageLoad =>
-    client = page, limit, getTypes, filter => server
-
-    server = maxPages, types, results, count => client
-  */
-
-  /*
-  if (!pageState.maxPages && !loadingProducts) {
-    fetching(pageState.page, pageState.limit, true, getParamFromUrl(urlSearchQuery, "filter"))
-      .then(response => {
-        if (!response) return
-        
-        const newPageState = {} as IPagination
-
-        const urlLimit = Number(getParamFromUrl(urlSearchQuery, "limit"))
-        if (urlLimit) {
-          newPageState.limit = urlLimit
-        }
-
-        newPageState.maxPages = Math.ceil((response.data.filteredCount || response.data.count) / (urlLimit || pageState.limit))
-
-        const urlPage = Number(getParamFromUrl(urlSearchQuery, "page"))
-        if (urlPage && urlPage <= newPageState.maxPages && urlPage > 0) {
-          newPageState.page = urlPage
-        }
-
-        setLoadingProducts(true)
-        setPageState((prev) => {return {...prev, ...newPageState}})
-      })
-  }
-
-  useEffect(() => {
-    if (pageState.maxPages && loadingProducts){
-      const urlFilter = getParamFromUrl(urlSearchQuery, "filter")
-      navigate(`/?page=${pageState.page}&limit=${pageState.limit}${
-        urlFilter 
-          ? Array.isArray(urlFilter) 
-            ? urlFilter.map(item => `&filter=${item}`).join('')
-            : `&filter=${urlFilter}`
-          : ""
-      }`)
-      fetching(pageState.page, pageState.limit, productState?.types ? false : true, urlFilter ? urlFilter : null)
-        .then(response => {
-          if (!response) return
-          console.log(response.data)
-
-          setProductState((prev) => {
-            return {
-              ...prev, 
-              ...response.data
-            }
-          })
-          setLoadingProducts(false)
-        })
-    }
-  }, [pageState])
-  */
 
   return (
     <Layout>

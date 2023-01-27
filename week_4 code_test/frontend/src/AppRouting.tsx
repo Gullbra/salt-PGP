@@ -15,7 +15,7 @@ interface IRoutingProps {
 }
 
 const Routing = ({productState, setProductState, pageState, setPageState, setLoadingProducts}:IRoutingProps) => {
-  console.log("🖌 routing rendered")
+  // console.log("🖌 routing rendered")
   const routingArray: {path: string, element: React.ReactNode}[] = [
     {
       path: "*",
