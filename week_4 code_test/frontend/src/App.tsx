@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import './styles/base.css';
 import './styles/loadingSpinner.css'
+
 import Layout from './AppLayout';
 import Routing from './AppRouting';
 import { IPagination, IResponseData } from './interfaces/interfaces';
@@ -32,6 +33,7 @@ function App() {
   useEffect(()=>{
     if (initialLoad) {
       initialLoad = false
+
       fetching(
         urlVariables.page || 1, 
         urlVariables.limit || 6,
@@ -45,9 +47,7 @@ function App() {
           maxPages: Math.ceil(response.data.count / (urlVariables.limit || 6)),
           filters: urlVariables.filters
         })
-
         setProductState({...response.data})
-
         setLoadingProducts(false)
         
         if (urlPath === '/'){
@@ -68,9 +68,10 @@ function App() {
     <Layout>
       {!loadingProducts && productState 
         ? <Routing 
-          productState={productState} setProductState={setProductState} 
-          pageState={pageState} setPageState={setPageState} 
-          setLoadingProducts={setLoadingProducts}/>
+            productState={productState} setProductState={setProductState} 
+            pageState={pageState} setPageState={setPageState} 
+            setLoadingProducts={setLoadingProducts}
+          />
         : <flex-wrapper class="--flex-center-spinner"><loading-spinner class="lds-hourglass"></loading-spinner></flex-wrapper>
       }
     </Layout>

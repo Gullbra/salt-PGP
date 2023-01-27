@@ -6,4 +6,5 @@ export interface IntrinsicElements {
   "list-wrapper": any;
   "loading-spinner": any;
   "grid-row": any;
+  "grid-column": any
 }

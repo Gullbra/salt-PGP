@@ -1,9 +1,8 @@
 import React from "react"
 import { Link, useNavigate } from "react-router-dom"
 
-import { IResponseData } from "../interfaces/interfaces"
 import '../styles/styling.view.ProductList.css'
-import { IPagination } from "../interfaces/interfaces"
+import { IPagination, IResponseData } from "../interfaces/interfaces"
 import fetching from "../util/fetching"
 import FilterDropdown from '../components/FilterDropdown'
 
@@ -21,7 +20,13 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
   const navigate = useNavigate()
 
   const pageStateHandler = (input:{page?: number, filters?: string[]}) => {
-    setPageState ((prev) => {return {...prev, page: input.page || 1, filters: input.filters || pageState.filters}})
+    setPageState ((prev) => {
+      return {
+        ...prev, 
+        page: input.page || 1, 
+        filters: input.filters || pageState.filters
+      }
+    })
     setLoadingProducts(true)
 
     navigate(
@@ -40,7 +45,7 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
     ).then(response => {
       setProductState((prev) => { return {...prev, ...response.data}})
       setLoadingProducts(false)
-      setPageState((prev) => {return{...prev, maxPages: Math.ceil(response.data.count / pageState.limit)}})
+      setPageState((prev) => { return {...prev, maxPages: Math.ceil(response.data.count / pageState.limit)}})
     })
     .catch(err => console.log(err))
   }
@@ -49,7 +54,7 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
     <flex-wrapper class="--flex-center">
       <section className="test-class-1">
         <div>
-          <input type="text" placeholder=" Search"/>
+          <input type="text" placeholder=" Search - not yet implemented"/>
           <p>{
             // productState.count === 99 ? "We've got 99 products, but a b**ch ain't one! (we're not traffickers)" :
             `Showing ${productState.results.length} of ${productState.count} products`}</p>
