@@ -48,7 +48,6 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
 
         <menu className="checkbox-menu">
           <button className="filter-btn" onClick={handleFilterChange}>Apply filter</button>
-          <hr />
           <ul ref={filterList}>
             {productState.types?.map((filter, index) => {
               return(
