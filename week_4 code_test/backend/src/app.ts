@@ -26,6 +26,7 @@ app.route('/api/milk')
     const filters = req.query.filter
       ? String(req.query.filter).split(',')
       : null
+    const search = req.query.search ? String(req.query.search) : null
 
     fs.promises
       .readFile(path.join(__dirname, '..', '..','mock', 'db.milk.json'))
@@ -41,14 +42,18 @@ app.route('/api/milk')
         }
 
         if (filters) {
-            const filteredResults = response.results.filter((product: IMilk) => {
-              return filters.includes(product.type)
-            });
-
-          response.results = filteredResults
-          response.count = filteredResults.length
+          response.results = response.results.filter((product: IMilk) => {
+            return filters.includes(product.type)
+          });
         }
 
+        if (search) {
+          response.results = response.results.filter((product: IMilk) => {
+            return new RegExp(search, "i").test(product.name)
+          })
+        }
+
+        response.count = response.results.length
         response.results = response.results.splice((page-1)*pageLimit, pageLimit)
         res.json(response)
       })
