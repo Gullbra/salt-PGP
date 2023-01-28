@@ -4,8 +4,9 @@ import { Link, useNavigate } from "react-router-dom"
 import '../styles/styling.view.ProductList.css'
 import { IPagination, IResponseData } from "../interfaces/interfaces"
 import fetching from "../util/fetching"
-import FilterDropdown from '../components/FilterDropdown'
+import FilterAndSearch from '../components/FilterAndSearch'
 import Pagination from '../components/Pagination'
+
 
 interface IListProps {
   productState: IResponseData
@@ -17,7 +18,7 @@ interface IListProps {
   setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ProductList = ({productState, setProductState, pageState, setPageState, setLoadingProducts}:IListProps) => {
+const ProductListView = ({productState, setProductState, pageState, setPageState, setLoadingProducts}:IListProps) => {
   const navigate = useNavigate()
 
   const pageStateHandler = (input:{page?: number, filters?: string[]}) => {
@@ -49,22 +50,14 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
 
   return (
     <flex-wrapper class="--flex-center">
-      <section className="test-class-1">
-        <div>
-          <input type="text" placeholder=" Search - not yet implemented"/>
-          <p>{`Showing ${productState.results.length} of ${productState.count} products`}</p>
-
-          <FilterDropdown productState={productState} pageState={pageState} pageStateHandler={pageStateHandler}/>
-        </div>
-        <div>
-          
-        </div>
+      <section className="main__section-filter-search">
+        <FilterAndSearch pageState={pageState} productState={productState} pageStateHandler={pageStateHandler}/>
       </section>
 
-      <list-wrapper class="main__list-wrapper">
+      <section className="main__list-section">
         {productState.results.map((product, index) => (
           <Link key={index} to={`/${product.id}`}
-            className="main__product-card"
+            className="list-section__product-card"
           >
             <grid-row class="product-card__image-wrapper">
               <img src="milk.png" alt={`${product.name}`} className="product-card__product-image"/>
@@ -78,12 +71,11 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
             </grid-row>
           </Link>
         ))}
-      </list-wrapper>
+      </section>
 
       <Pagination pageState={pageState} pageStateHandler={pageStateHandler}/>
-      
     </flex-wrapper> 
   )
 }
 
-export default ProductList
+export default ProductListView

@@ -5,11 +5,11 @@ export default async function fetching (
   page:number, limit:number, getTypes:boolean=false, filter?:(string[] | null)
 ):Promise<{ data: IResponseData}> {
 
-  const devENV = {
+  const DEV_ENV = {
     DEV_domain: "http://localhost:3001"
   }
   
-  let url = `${devENV.DEV_domain}/api/milk/?page=${page}&limit=${limit}`
+  let url = `${DEV_ENV.DEV_domain}/api/milk/?page=${page}&limit=${limit}`
   if (getTypes){
     url += `&getTypes=${getTypes}`
   }

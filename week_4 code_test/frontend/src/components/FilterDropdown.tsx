@@ -12,7 +12,7 @@ interface IFilterDropdown {
 const FilterDropdown = ({productState, pageState, pageStateHandler}:IFilterDropdown) => {
   const filterList = useRef<HTMLUListElement>(null)
 
-  const handleClick = () => {
+  const handleFilterChange = () => {
     const newFilters: string[] = []
 
     if(filterList.current?.children) {
@@ -30,9 +30,9 @@ const FilterDropdown = ({productState, pageState, pageStateHandler}:IFilterDropd
 
   return (
     <div className="dropdown">
-      <button className="filter-btn" onClick={handleClick}>Apply filter</button>
+      <button className="filter-btn" onClick={handleFilterChange}>Apply filter</button>
 
-      <ul className="checkbox-dropdown-list" ref={filterList}>
+      <ul className="checkbox-menu" ref={filterList}>
         {productState.types?.map((filter, index) => {
           return(
             <li key={index} className="filter-option">

@@ -1,6 +1,8 @@
 import React from "react";
 import { IPagination } from "../interfaces/interfaces";
 
+import '../styles/styling.component.Pagination.css'
+
 interface IPaginationComponent{
   pageState: IPagination
   pageStateHandler: (input: {

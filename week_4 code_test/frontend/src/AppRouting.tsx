@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import ProductList from './views/ProductList'
+import ProductListView from './views/ProductListView'
 import ProductView from './views/ProductView'
 import { IPagination, IResponseData } from './interfaces/interfaces';
 
@@ -15,7 +15,6 @@ interface IRoutingProps {
 }
 
 const Routing = ({productState, setProductState, pageState, setPageState, setLoadingProducts}:IRoutingProps) => {
-  // console.log("🖌 routing rendered")
   const routingArray: {path: string, element: React.ReactNode}[] = [
     {
       path: "*",
@@ -23,7 +22,7 @@ const Routing = ({productState, setProductState, pageState, setPageState, setLoa
     },
     {
       path: "/",
-      element: <ProductList 
+      element: <ProductListView 
         productState={productState} setProductState={setProductState}
         pageState={pageState} setPageState={setPageState} 
         setLoadingProducts={setLoadingProducts}/>

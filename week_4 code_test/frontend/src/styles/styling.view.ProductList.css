@@ -1,26 +1,11 @@
 
-.test-class-1 {
+.main__section-filter-search {
   height: var(--height-search-section);
   width: 100%;
   border: 1px solid black;
 
   padding-left: calc(calc(100vw - 20rem)/2);
   padding-right: calc(calc(100vw - 20rem)/2);
-}
-
-.main__pageState-section {
-  height: var(--height-search-section);
-  width: 100%;
-
-  padding-left: calc(calc(100vw - 20rem)/2);
-  padding-right: calc(calc(100vw - 20rem)/2);
-
-  font-size: 0.6rem;
-  height: 6rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .--flex-center {
@@ -30,7 +15,7 @@
   width: 100%;
 }
 
-.main__list-wrapper {
+.main__list-section {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,12 +25,10 @@
   padding-top: 1rem;
 
   width: 100%;
-  /* height: calc(100vh - var(--height-search-section) - var(--height-header));
-  overflow-y:scroll; */
 }
 
 @media screen and (min-width: 650px) {
-  .main__list-wrapper {
+  .main__list-section {
 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -59,36 +42,36 @@
 }
 
 @media screen and (min-width: 700px) {
-  .main__list-wrapper {
+  .main__list-section {
     width: 700px;
   }
-  .test-class-1 {
+  .main__section-filter-search {
     padding-left: calc(calc(100vw - 2*20rem - 30px)/2);
     padding-right: calc(calc(100vw - 2*20rem - 30px)/2);
   }
 }
 @media screen and (min-width: 1050px) {
-  .main__list-wrapper {
+  .main__list-section {
     width: 1050px;
     grid-template-columns: repeat(3, 1fr);
   }
-  .test-class-1 {
+  .main__section-filter-search {
     padding-left: calc(calc(100vw - 3*20rem - 2*30px)/2);
     padding-right: calc(calc(100vw - 3*20rem - 2*30px)/2);
   }
 }
 @media screen and (min-width: 1400px) {
-  .main__list-wrapper {
+  .main__list-section {
     width: 1400px;
     grid-template-columns: repeat(4, 1fr);
   }
-  .test-class-1 {
+  .main__section-filter-search {
     padding-left: calc(calc(100vw - 4*20rem - 3*30px)/2);
     padding-right: calc(calc(100vw - 4*20rem - 3*30px)/2);
   }
 }
 
-.main__product-card {
+.list-section__product-card {
   border: 2px solid var(--color-dark-grey);
   text-decoration: none;
 
@@ -146,27 +129,4 @@
 }
 .info__storage {
   color: var(--color-pastel-green);
-}
-
-.pageState-btn {
-  background-color: inherit;
-  font-size: 1.2em;
-
-  width: 2.3em;
-  height: 3em;
-
-  border-radius: 0.3em;
-
-  color: var(--color-darker-grey);
-  border: 1px solid var(--color-darker-grey);
-
-  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.2); 
-
-}
-
-
-
-.current-page {
-  border-color: black;
-  color: black;
 }
