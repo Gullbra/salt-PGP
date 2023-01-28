@@ -26,12 +26,12 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
       page: input.page || 1, 
       filters: input.filters || pageState.filters
     }})
-    setLoadingProducts(true)
     navigate(`/?page=${input.page || 1}&limit=${pageState.limit}${
       input.filters || pageState.filters 
-        ? (input.filters || pageState.filters).map(filter => `&filter=${filter}`).join('')
-        : ""
+      ? (input.filters || pageState.filters).map(filter => `&filter=${filter}`).join('')
+      : ""
     }`)
+    let loadingSpinnerOnSlowConnections = setTimeout(()=> setLoadingProducts(true), 300)
 
     fetching(
       input.page || 1,
@@ -39,6 +39,7 @@ const ProductList = ({productState, setProductState, pageState, setPageState, se
       false,
       input.filters || pageState.filters
     ).then(response => {
+      clearTimeout(loadingSpinnerOnSlowConnections)
       setProductState((prev) => { return {...prev, ...response.data}})
       setLoadingProducts(false)
       setPageState((prev) => { return {...prev, maxPages: Math.ceil(response.data.count / pageState.limit)}})
