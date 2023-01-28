@@ -1,3 +1,7 @@
+.box {
+  border: 1px solid black;
+}
+
 .section-search-filter__filter-dropdown {
   font-size: 1.2rem;
   width: 15rem;
@@ -26,11 +30,11 @@
   color: white;
 }
 
-.section-search-filter__filter-dropdown:hover .checkbox-menu {
+.section-search-filter__filter-dropdown:hover .dropdown-menu {
   max-height: 100vh;
   transition: all 0.5s ease-out;
 }
-.checkbox-menu {
+.dropdown-menu {
   max-height: 0;
 
   list-style: none;
@@ -59,22 +63,20 @@
 }
 .filter-btn:hover {
   background-color: var(--color-pastel-green);
-  color: white;
-  
+  color: white;  
 }
-
-
-
-
 
 .filter-option:hover {
   /* 
+  transition: all 0.1s ease-in-out; 
   */
-  transition: all 0.3s ease-in-out; 
+  box-shadow: inset 0px 1px 3px 0px white;
   background-color: var(--color-dark-grey);
 }
 .filter-label {
-  box-shadow: inset 0px -2px 2px 0px var(--color-dark-grey);
+  box-shadow: inset 0px -1px 1px 0px var(--color-dark-grey);
+  border-bottom: 1px solid var(--color-darker-grey);
+
   padding-top: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -83,6 +85,7 @@
   width: 100%;
   cursor: pointer;
 }
+
 .filter-input {
   margin-right: 1rem;
 }

@@ -29,7 +29,7 @@
   cursor: pointer;
 }
 
-.checkbox-menu {
+.dropdown-menu {
   list-style: none;
   background-color: white;
   border-radius: 0rem 0rem 0.5rem 0.5rem ;
@@ -40,7 +40,7 @@
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); 
 }
 
-.dropdown:hover .checkbox-menu {
+.dropdown:hover .dropdown-menu {
   display: block;
 }
 

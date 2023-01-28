@@ -47,31 +47,34 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
 
   return (
     <>
-      <div>
-        <input type="text" ref={searchInput} placeholder=" Search - not yet implemented"/>
+      <div className="box">
+        <input type="text" ref={searchInput} placeholder=" Search"/>
         <button type="button" onClick={handleSearch}>search</button>
         {pageState.search !== null 
-          ? <span onClick={() => pageStateHandler({search: null})} className="active-filters-card">
+          ? <span onClick={() => {
+              console.log("testing remove search")
+              pageStateHandler({search: null})
+            }} className="active-filters-card">
               <span>{decodeURIComponent(pageState.search)}</span>
             </span> 
           : ""
         }
       </div>
 
-      <div className="section-search-filter__filter-dropdown">
+      <div className="box section-search-filter__filter-dropdown">
         <label className="filter-dropdown__dropdown-label">
           <p className="label__text">Filter</p>
 
           {pageState.filters?.map((filter, index) => (
             <span 
-              //onClick={() => pageStateHandler({filters: pageState.filters.filter(item => item !==filter)})} 
+              onClick={() => pageStateHandler({filters: pageState.filters.filter(item => item !==filter)})} 
               key={index} className="active-filters-card">
               <span>{decodeURIComponent(filter)}</span>
             </span>
           ))}
         </label>
 
-        <menu className="checkbox-menu">
+        <menu className="dropdown-menu">
           <button className="filter-btn" onClick={handleFilterChange}>Apply filter</button>
           <ul ref={filterSelect}>
             {productState.types?.map((filter, index) => {
@@ -90,7 +93,7 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
         </menu>
       </div> 
 
-      <div>
+      <div className="box">
         <p>{`Showing ${productState.results.length} of ${productState.count} products`}</p>
       </div>
 

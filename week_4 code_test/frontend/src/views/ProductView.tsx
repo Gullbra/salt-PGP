@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { IMilk, IPagination } from "../interfaces/interfaces";
 import '../styles/styling.view.ProductView.css'
-import { createUrlFromParams } from "../util/getParamFromUrl";
+import { createUrlFromParams } from "../util/urlManipulation";
 
 const ProductView = ({product, pageState}: {product: IMilk, pageState: IPagination}) => {
   const navigate = useNavigate()

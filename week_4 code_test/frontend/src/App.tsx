@@ -7,7 +7,7 @@ import './styles/loadingSpinner.css'
 import Layout from './AppLayout';
 import Routing from './AppRouting';
 import { IPagination, IResponseData } from './interfaces/interfaces';
-import { createUrlFromParams, getParamFromUrl } from './util/getParamFromUrl';
+import { createUrlFromParams, getParamFromUrl } from './util/urlManipulation';
 import fetching from './util/fetching';
 
 let initialLoad = true
@@ -58,8 +58,7 @@ function App() {
             urlVariables.search || null
           ))
         }
-      })
-      .catch(err => console.log(err))
+      }).catch(err => console.log(err))
     }
   }, [])
 

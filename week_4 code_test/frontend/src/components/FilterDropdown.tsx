@@ -32,7 +32,7 @@ const FilterDropdown = ({productState, pageState, pageStateHandler}:IFilterDropd
     <div className="dropdown">
       <button className="filter-btn" onClick={handleFilterChange}>Apply filter</button>
 
-      <ul className="checkbox-menu" ref={filterList}>
+      <ul className="dropdown-menu" ref={filterList}>
         {productState.types?.map((filter, index) => {
           return(
             <li key={index} className="filter-option">

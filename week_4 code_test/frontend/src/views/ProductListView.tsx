@@ -6,14 +6,14 @@ import { IPagination, IResponseData } from "../interfaces/interfaces"
 import fetching from "../util/fetching"
 import FilterAndSearch from '../components/FilterAndSearch'
 import Pagination from '../components/Pagination'
-import { createUrlFromParams } from "../util/getParamFromUrl"
+import { createUrlFromParams } from "../util/urlManipulation"
 
 
 interface IListProps {
   productState: IResponseData
   setProductState: React.Dispatch<React.SetStateAction<IResponseData>>
 
-  pageState: IPagination
+  pageState: IPagination;
   setPageState: React.Dispatch<React.SetStateAction<IPagination>>
 
   setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>
@@ -23,36 +23,32 @@ const ProductListView = ({productState, setProductState, pageState, setPageState
   const navigate = useNavigate()
 
   const pageStateHandler = (input:{page?: number, filters?: string[], search?:(string | null)}) => {
-    setPageState ((prev) => { return {
-      ...prev, 
-      page: input.page || 1, 
-      filters: input.filters || pageState.filters
-    }})
     navigate(createUrlFromParams(
       input.page || 1,
       pageState.limit,
       input.filters || pageState.filters,
-      input.search || pageState.search
+      input.search === null ? null : input.search || pageState.search
     ))
-    let loadingSpinnerOnSlowConnections = setTimeout(()=> setLoadingProducts(true), 200)
+    let loadingSpinnerOnSlowConnections = setTimeout(() => setLoadingProducts(true), 200)
 
     fetching(
       input.page || 1,
       pageState.limit,
       false,
       input.filters || pageState.filters,
-      input.search || pageState.search
+      input.search === null ? null : input.search || pageState.search
     ).then(response => {
       clearTimeout(loadingSpinnerOnSlowConnections)
       setProductState((prev) => { return {...prev, ...response.data}})
       setLoadingProducts(false)
       setPageState((prev) => { return {
-        ...prev, 
+        ...prev,
+        page: input.page || 1, 
+        filters: input.filters || pageState.filters,
+        search: input.search === null ? null : input.search || pageState.search,
         maxPages: Math.ceil(response.data.count / pageState.limit),
-        search: input.search === null ? null : input.search || pageState.search
       }})
-    })
-    .catch(err => console.log(err))
+    }).catch(err => console.log(err))
   }
 
   return (
