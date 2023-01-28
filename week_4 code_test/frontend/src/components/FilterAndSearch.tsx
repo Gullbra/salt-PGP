@@ -10,17 +10,19 @@ interface IPaginationComponent{
   pageStateHandler: (input: {
     page?: number;
     filters?: string[];
+    search?: string | null;
   }) => void
 }
 
 const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginationComponent) => {
-  const filterList = useRef<HTMLUListElement>(null)
+  const filterSelect = useRef<HTMLUListElement>(null)
+  const searchInput = useRef<HTMLInputElement>(null)
 
   const handleFilterChange = () => {
     const newFilters: string[] = []
 
-    if(filterList.current?.children) {
-      Array.from(filterList.current?.children).forEach(node => {
+    if(filterSelect.current?.children) {
+      Array.from(filterSelect.current?.children).forEach(node => {
         const inputNode = node.children[0].children[0] as HTMLInputElement
 
         if (inputNode.checked) {
@@ -32,23 +34,46 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
     pageStateHandler({filters: newFilters})
   }
 
+  const handleSearch = () => {
+    if (searchInput.current?.value && searchInput.current?.value.trim().length > 0) {
+      console.log(
+        "click",
+        encodeURIComponent(searchInput.current?.value.trim())
+      )
+      const returnVar = encodeURIComponent(searchInput.current?.value.trim())
+      pageStateHandler({search: returnVar})
+    }
+  }
+
   return (
     <>
+      <div>
+        <input type="text" ref={searchInput} placeholder=" Search - not yet implemented"/>
+        <button type="button" onClick={handleSearch}>search</button>
+        {pageState.search !== null 
+          ? <span onClick={() => pageStateHandler({search: null})} className="active-filters-card">
+              <span>{decodeURIComponent(pageState.search)}</span>
+            </span> 
+          : ""
+        }
+      </div>
+
       <div className="section-search-filter__filter-dropdown">
-
-
         <label className="filter-dropdown__dropdown-label">
           <p className="label__text">Filter</p>
 
           {pageState.filters?.map((filter, index) => (
-            <span key={index} className="active-filters-card"><span>{decodeURIComponent(filter)}</span></span>
+            <span 
+              //onClick={() => pageStateHandler({filters: pageState.filters.filter(item => item !==filter)})} 
+              key={index} className="active-filters-card">
+              <span>{decodeURIComponent(filter)}</span>
+            </span>
           ))}
         </label>
 
-
         <menu className="checkbox-menu">
           <button className="filter-btn" onClick={handleFilterChange}>Apply filter</button>
-          <ul ref={filterList}>
+          <ul ref={filterSelect}>
             {productState.types?.map((filter, index) => {
               return(
                 <li key={index} className="filter-option">
@@ -65,15 +90,14 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
         </menu>
       </div> 
 
-      {/* 
-      <div>
-        <input type="text" placeholder=" Search - not yet implemented"/>
-        <button>search</button>
-      </div>
-
       <div>
         <p>{`Showing ${productState.results.length} of ${productState.count} products`}</p>
       </div>
+
+      {/* 
+
+
+
 
       */}
     </>

@@ -2,7 +2,7 @@ import { IResponseData } from "../interfaces/interfaces"
 import axios from "axios"
 
 export default async function fetching (
-  page:number, limit:number, getTypes:boolean=false, filter?:(string[] | null)
+  page:number, limit:number, getTypes:boolean=false, filter?:(string[] | null), search?:(string | null)
 ):Promise<{ data: IResponseData}> {
 
   const DEV_ENV = {
@@ -17,6 +17,9 @@ export default async function fetching (
     filter.forEach(item => {
       url += `&filter=${item}`
     })
+  }
+  if (search) {
+    url += `&search=${search}`
   }
 
   return axios

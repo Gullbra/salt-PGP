@@ -9,11 +9,10 @@ export const getParamFromUrl = (query:string, param:string):(string | string[] |
     : null
 }
 
-export const createUrlFromParams = (page:number, limit:number, getType:boolean ,filters:string[]):string => {
-  
-  return `/?page=${page}&limit=${limit}${getType ? `&getType=${getType}`: ""}${
+export const createUrlFromParams = (page:number, limit:number, filters:string[], search:(string | null)):string => {
+  return `/?page=${page}&limit=${limit}${
     filters 
-      ? filters.map(item => `&filter=${item}`).join('')
+      ? filters.map(filter => `&filter=${filter}`).join('')
       : ""
-  }`
+  }${search ? `&search=${search}`: ""}`
 }

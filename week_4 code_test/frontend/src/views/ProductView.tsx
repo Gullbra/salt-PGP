@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { IMilk, IPagination } from "../interfaces/interfaces";
 import '../styles/styling.view.ProductView.css'
+import { createUrlFromParams } from "../util/getParamFromUrl";
 
 const ProductView = ({product, pageState}: {product: IMilk, pageState: IPagination}) => {
   const navigate = useNavigate()
@@ -16,13 +17,12 @@ const ProductView = ({product, pageState}: {product: IMilk, pageState: IPaginati
     <>
       <flex-wrapper class="main__flex-wrapper">
         <button className="flex-wrapper__back-btn" onClick={() => {
-          navigate(
-            `/?page=${pageState.page || 1}&limit=${pageState.limit || 6}${
-              pageState.filters 
-                ? pageState.filters.map(filter => `&filter=${filter}`).join('')
-                : ""
-            }`
-          )
+          navigate(createUrlFromParams(
+            pageState.page || 1,
+            pageState.limit || 6,
+            pageState.filters,
+            pageState.search || null
+          ))
         }}>{"< back"}</button>
 
         <article className="flex-wrapper__article">

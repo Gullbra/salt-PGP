@@ -24,4 +24,5 @@ export interface IPagination {
   limit: number
   maxPages?: number
   filters: string[]
+  search: string | null
 }
