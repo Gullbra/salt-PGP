@@ -21,17 +21,15 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
   const handleFilterChange = () => {
     const newFilters: string[] = []
 
-    if(filterSelect.current?.children) {
+    if(filterSelect.current?.children) { 
       Array.from(filterSelect.current?.children).forEach(node => {
-        const inputNode = node.children[0].children[0] as HTMLInputElement
-
-        if (inputNode.checked) {
-          newFilters.push(encodeURIComponent(inputNode.value))
+        if (node.classList.contains("--menu-item-selected")) {
+          newFilters.push(`${encodeURIComponent(node.getAttribute('value') || "")}`)
         }
       });
+      console.log(newFilters)
+      pageStateHandler({filters: [...pageState.filters , ...newFilters]})  
     }
-
-    pageStateHandler({filters: newFilters})
   }
 
   const handleSearch = () => {
@@ -75,20 +73,24 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
         </label>
 
         <menu className="dropdown-menu">
-          <button className="filter-btn" onClick={handleFilterChange}>Apply filter</button>
+          <button className="filter-btn" onClick={handleFilterChange}>Apply new filters</button>
           <ul ref={filterSelect}>
-            {productState.types?.map((filter, index) => {
-              return(
-                <li key={index} className="filter-option">
-                  <label className="filter-label">
-                    {pageState.filters?.includes(encodeURIComponent(filter))
-                      ? <><input defaultChecked type="checkbox" value={filter} name="filter" className="filter-input"/><span>{` ${filter}`}</span></>
-                      : <><input type="checkbox" value={filter} name="filter" className="filter-input"/><span>{` ${filter}`}</span></>
+            {productState.types
+              ?.filter(type => !pageState.filters?.includes(encodeURIComponent(type)))
+              .map(filter => { return (
+                  <li
+                    key={filter} 
+                    className="dropdown-menu__menu-item"
+                    value={filter}
+                    onClick={event => event.currentTarget.classList.contains("--menu-item-selected") 
+                      ? event.currentTarget.classList.remove("--menu-item-selected")
+                      : event.currentTarget.classList.add("--menu-item-selected")
                     }
-                  </label>
-                </li>
-              )
-            })}
+                  >
+                    {`${filter}`}
+                  </li>
+              )})
+            }
           </ul>
         </menu>
       </div> 
@@ -96,13 +98,6 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
       <div className="box">
         <p>{`Showing ${productState.results.length} of ${productState.count} products`}</p>
       </div>
-
-      {/* 
-
-
-
-
-      */}
     </>
   )
 }
