@@ -28,9 +28,11 @@
 
   background-color: var(--color-pastel-green);
   color: white;
+  transition: all 0.2s ease-in-out;
 }
 .active-filters-card:hover {
   background-color: var(--color-dark-pink);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .dropdown-container {
@@ -123,6 +125,7 @@
 }
 */
 
+/*
 .main__section-filter-search {
   display: flex;
   flex-wrap: wrap;
@@ -143,3 +146,4 @@
 .--prod-count {
   align-self: flex-end;
 }
+*/

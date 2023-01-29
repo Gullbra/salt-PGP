@@ -50,28 +50,11 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
         <div className="box --search">
           <input type="text" ref={searchInput} placeholder=" Search"/>
           <button type="button" onClick={handleSearch}>search</button>
-          {pageState.search !== null 
-            ? <span onClick={() => {
-                console.log("testing remove search")
-                pageStateHandler({search: null})
-              }} className="active-filters-card">
-                <span>{decodeURIComponent(pageState.search)}</span>
-              </span> 
-            : ""
-          }
         </div>
 
         <div className="box --filter section-search-filter__filter-dropdown dropdown-container">
           <label className="filter-dropdown__dropdown-label">
             <p className="label__text">Filter</p>
-
-            {pageState.filters?.map((filter, index) => (
-              <span 
-                onClick={() => pageStateHandler({filters: pageState.filters.filter(item => item !==filter)})} 
-                key={index} className="active-filters-card">
-                <span>{decodeURIComponent(filter)}</span>
-              </span>
-            ))}
           </label>
 
           <menu className="dropdown-menu">
@@ -99,6 +82,22 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
 
       <flex-wrapper>
         {/* //TODO: map filter cards here*/}
+        {pageState.search !== null 
+          ? <span onClick={() => {
+              console.log("testing remove search")
+              pageStateHandler({search: null})
+            }} className="active-filters-card">
+              <span>{"search: " + decodeURIComponent(pageState.search)+ " x "}</span>
+            </span> 
+          : ""
+        }
+        {pageState.filters?.map((filter, index) => (
+          <span 
+            onClick={() => pageStateHandler({filters: pageState.filters.filter(item => item !==filter)})} 
+            key={index} className="active-filters-card">
+            <span>{"filter: " + decodeURIComponent(filter) + " x "}</span>
+          </span>
+        ))}
       </flex-wrapper>
 
       <div className="box --prod-count"
