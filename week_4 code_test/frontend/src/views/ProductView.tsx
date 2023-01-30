@@ -16,14 +16,9 @@ const ProductView = ({product, pageState}: {product: IMilk, pageState: IPaginati
   return(
     <>
       <flex-wrapper class="main__flex-wrapper">
-        <button className="flex-wrapper__back-btn" onClick={() => {
-          navigate(createUrlFromParams(
-            pageState.page || 1,
-            pageState.limit || 6,
-            pageState.filters,
-            pageState.search || null
-          ))
-        }}>{"< back"}</button>
+        <button className="flex-wrapper__back-btn" 
+          onClick={() => navigate(createUrlFromParams({...pageState}))}
+        >{"< back"}</button>
 
         <article className="flex-wrapper__article">
           <grid-column class="article__image-wrapper">

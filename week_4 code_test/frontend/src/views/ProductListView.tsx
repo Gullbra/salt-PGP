@@ -22,30 +22,19 @@ interface IListProps {
 const ProductListView = ({productState, setProductState, pageState, setPageState, setLoadingProducts}:IListProps) => {
   const navigate = useNavigate()
 
-  const pageStateHandler = (input:{page?: number, filters?: string[], search?:(string | null)}) => {
-    navigate(createUrlFromParams(
-      input.page || 1,
-      pageState.limit,
-      input.filters || pageState.filters,
-      input.search === null ? null : input.search || pageState.search
-    ))
+  const pageStateHandler = (input:Partial<IPagination>) => {
+    const newPageState:IPagination = {...pageState, page: 1, ...input}
+
+    navigate(createUrlFromParams(newPageState))
     let loadingSpinnerOnSlowConnections = setTimeout(() => setLoadingProducts(true), 200)
 
-    fetching(
-      input.page || 1,
-      pageState.limit,
-      false,
-      input.filters || pageState.filters,
-      input.search === null ? null : input.search || pageState.search
-    ).then(response => {
+    fetching(false, newPageState)
+    .then(response => {
       clearTimeout(loadingSpinnerOnSlowConnections)
       setProductState((prev) => { return {...prev, ...response.data}})
       setLoadingProducts(false)
       setPageState((prev) => { return {
-        ...prev,
-        page: input.page || 1, 
-        filters: input.filters || pageState.filters,
-        search: input.search === null ? null : input.search || pageState.search,
+        ...newPageState,
         maxPages: Math.ceil(response.data.count / pageState.limit),
       }})
     }).catch(err => console.log(err))
