@@ -28,16 +28,17 @@ const ProductListView = ({productState, setProductState, pageState, setPageState
     navigate(createUrlFromParams(newPageState))
     let loadingSpinnerOnSlowConnections = setTimeout(() => setLoadingProducts(true), 200)
 
-    fetching(false, newPageState)
-    .then(response => {
-      clearTimeout(loadingSpinnerOnSlowConnections)
-      setProductState((prev) => { return {...prev, ...response.data}})
-      setLoadingProducts(false)
-      setPageState((prev) => { return {
-        ...newPageState,
-        maxPages: Math.ceil(response.data.count / pageState.limit),
-      }})
-    }).catch(err => console.log(err))
+    fetching(newPageState)
+      .then(response => {
+        clearTimeout(loadingSpinnerOnSlowConnections)
+        setProductState((prev) => { return {...prev, ...response.data}})
+        setLoadingProducts(false)
+        setPageState({
+          ...newPageState,
+          maxPages: Math.ceil(response.data.count / pageState.limit),
+        })
+      })
+      .catch(err => console.log(err))
   }
 
   return (

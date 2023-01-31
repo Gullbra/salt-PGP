@@ -11,16 +11,6 @@ export const getParamFromUrl = (query:string, param:string):(string | string[] |
     : null
 }
 
-/*
-interface IPagination {
-  page: number
-  limit: number
-  maxPages?: number
-  filters: string[]
-  search: string | null
-}
-*/
-
 export const createUrlFromParams = ({page, limit, filters, search}:IPagination ):string => {
   return `/?page=${page}&limit=${limit}${
     filters 

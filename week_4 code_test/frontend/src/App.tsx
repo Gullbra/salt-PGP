@@ -8,6 +8,7 @@ import Layout from './AppLayout';
 import Routing from './AppRouting';
 import { IPagination, IResponseData } from './interfaces/interfaces';
 import { createUrlFromParams, getParamFromUrl } from './util/urlManipulation';
+import { pageLimitFromWindowSize } from './util/pageLimitFromWindowSize';
 import fetching from './util/fetching';
 
 let initialLoad = true
@@ -17,9 +18,9 @@ function App() {
   const urlSearchQuery = useLocation().search
   const urlPath = useLocation().pathname
 
-  const urlVariables = {
+  const urlVariables:IPagination = {
     page: Number(getParamFromUrl(urlSearchQuery, "page")) || 1,
-    limit: Number(getParamFromUrl(urlSearchQuery, "limit"))|| 6,
+    limit: Number(getParamFromUrl(urlSearchQuery, "limit")) || pageLimitFromWindowSize(),
     filters: getParamFromUrl(urlSearchQuery, "filter") as string[],
     search: getParamFromUrl(urlSearchQuery, "search") as string || null,
   }
@@ -32,11 +33,11 @@ function App() {
     if (initialLoad) {
       initialLoad = false
 
-      fetching(true, {...urlVariables})
+      fetching({...urlVariables}, true)
         .then(response => {
           setPageState({
             ...urlVariables,
-            maxPages: Math.ceil(response.data.count / (urlVariables.limit || 6)),
+            maxPages: Math.ceil(response.data.count / urlVariables.limit),
           })
           setProductState({...response.data})
           setLoadingProducts(false)

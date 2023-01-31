@@ -7,7 +7,7 @@ interface ILayoutProps {
 }
 
 const Layout = ({children}:ILayoutProps) => {
-  // TODO: add sidebar menu for mobile view with useWindowDimensions hook + throttle
+  // TODO: add collapsable sidebar menu for mobile view with useWindowDimensions hook + throttle
   return (
     <>
       <header className="site__header"><h1>THE MILK STORE</h1></header>
