@@ -18,6 +18,7 @@
 	
   <ItemGroup>
 	<ProjectReference Include="..\Katas\k1-fizzbuzz-master\k1-fizzbuzz-master.csproj" />
+	<ProjectReference Include="..\Katas\k2-bowlingball-master\k2-bowlingball-master.csproj" />
   </ItemGroup>
 
 </Project>
