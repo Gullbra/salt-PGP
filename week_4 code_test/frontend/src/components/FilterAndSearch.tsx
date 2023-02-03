@@ -45,20 +45,21 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
 
   return (
     <>
-      <flex-wrapper>
-        {/* //TODO: Add flex */}
-        <div className="box --search">
-          <input type="text" ref={searchInput} placeholder=" Search"/>
-          <button type="button" onClick={handleSearch}>search</button>
+      <flex-wrapper class="filter-and-search-section__selection-wrapper">
+        <div className="box --search__container">
+          <input className="--search__input" type="text" ref={searchInput} placeholder=" Search"/>
+          <button className="--search__btn" type="button" onClick={handleSearch}>search</button>
         </div>
 
         <div className="box --filter section-search-filter__filter-dropdown dropdown-container">
           <label className="filter-dropdown__dropdown-label">
-            <p className="label__text">Filter</p>
+            <p className="label__text">Select Filters</p>
           </label>
 
           <menu className="dropdown-menu">
-            <button className="filter-btn" onClick={handleFilterChange}>Apply new filters</button>
+            {pageState.filters.length !== productState.types?.length && 
+              <button className="filter-btn" onClick={handleFilterChange}>Apply new filters</button>}
+
             <ul ref={filterSelect}>
               {productState.types
                 ?.filter(type => !pageState.filters?.includes(encodeURIComponent(type)))
@@ -80,7 +81,7 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
         </div> 
       </flex-wrapper>
 
-      <flex-wrapper>
+      <flex-wrapper class="filter-and-search-section__cards-wrapper">
         {/* //TODO: map filter cards here*/}
         {pageState.search !== null 
           ? <span onClick={() => {
@@ -112,8 +113,13 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
           </div>
         </menu> */}
       </div>
+
     </>
   )
+
+
+
+
 }
 
 export default FilterAndSearch
