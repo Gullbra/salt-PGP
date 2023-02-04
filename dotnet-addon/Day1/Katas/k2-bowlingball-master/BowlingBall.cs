@@ -1,19 +1,6 @@
 using System;
 
 namespace SaltAddon.Day1.BowlingBall;
-
-/*
-  1 "game" or "line"
-    10 "turns" or "frames"
-      "2 tries"
-        not all down: "normal"
-          score: pins down
-        All down on second try: "spare"
-          score: pins down(10) + pins down next try
-        All down on first try: "strike"
-          score: pins down(10) + pins down two next tries
-*/
-
 public class BowlingBall
 {
 	public int testingScore;
@@ -48,7 +35,6 @@ public class Line
 
 	public int GetScore()
 	{
-
 		int sum = 0;
 		for (int i = 0; i < ListOfTries.Count; i++)
 		{
@@ -88,29 +74,33 @@ public class Try
 {
 	public Try(string result)
 	{
-    if (result == "X") 
-    {
-  		Score = 10;
-      IsStrike = true;
-      IsSpare = false;
-    }
-    else if (result == "/") 
-    {
-			Score = 0;
-			IsStrike = false;
-			IsSpare = true;
-		}
-		else if (result == "-")
+		switch (result)
 		{
-			Score = 0;
-			IsStrike = false;
-			IsSpare = false;
-		}
-		else
-    {
-			Score = Convert.ToInt32(result);
-			IsStrike = false;
-			IsSpare = false;
+			case "X":
+				Score = 10;
+				IsStrike = true;
+				IsSpare = false;
+				break;
+			case "/":
+				Score = 0;
+				IsStrike = false;
+				IsSpare = true;
+				break;
+			case "-":
+				Score = 0;
+				IsStrike = false;
+				IsSpare = false;
+				break;
+			default:
+				if (!int.TryParse(result, out int intResult))
+					throw new ArgumentException("Invalid args for new BowlingBall.Try(args): non-valid string");
+				if (intResult < 0 || intResult > 10)
+					throw new ArgumentException("Invalid args for new BowlingBall.Try(args): outside range");
+
+				Score = intResult;
+				IsStrike = false;
+				IsSpare = false;					
+				break;
 		}
 	}
 

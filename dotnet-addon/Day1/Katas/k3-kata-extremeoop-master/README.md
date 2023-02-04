@@ -5,7 +5,8 @@
 A kata to push the OOP-ing to the max with Object Calisthenics.
 
 > Calisthenics is a form of exercise consisting of a variety of movements which exercise large muscle groups, such as running, standing, grasping, pushing, etc.
-> > https://en.wikipedia.org/wiki/Calisthenics
+>
+> https://en.wikipedia.org/wiki/Calisthenics
 
 The OOP we are going to do will be governed by some very strict rules:
 
@@ -29,8 +30,9 @@ First; don't question these rules. They are here to train you. You don't questio
 
 Like this:
 
-```java
-void collectRows(StringBuffer buffer) {
+```C#
+void collectRows(StringBuffer buffer) 
+{
   for(int i = 0; i < 10; i++)
     doSomething(buf, i);
 }
@@ -48,13 +50,13 @@ No method should have an argument that is either a primitive type or a String.
 
 The Pryce-McKinnon example: don’t do like this:
 
-```java
+```C#
 dog.getBody().getTail().wag();
 ```
 
 Do like this:
 
-```java
+```C#
 dog.expressHappiness();
 ```
 
@@ -72,8 +74,9 @@ No file longer than 50 lines, no package with more than 10 files.
 
 Instead of doing this,
 
-```java
-class Name {
+```C#
+class Name 
+{
   String first;
   String middle;
   String last;
@@ -81,15 +84,18 @@ class Name {
 ```
 
 You may do this:
-```java
-class Name {
+```C#
+class Name
+{
   Surname family;
   GivenNames given;
 }
-class Surname {
+class Surname
+{
   String family;
 }
-class GivenNames {
+class GivenNames
+{
   List names;
 }
 ```
