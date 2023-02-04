@@ -9,6 +9,7 @@ interface IPaginationComponent{
   productState: IResponseData
   pageStateHandler: (input: {
     page?: number;
+    limit?: number
     filters?: string[];
     search?: string | null;
   }) => void
@@ -17,6 +18,7 @@ interface IPaginationComponent{
 const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginationComponent) => {
   const filterSelect = useRef<HTMLUListElement>(null)
   const searchInput = useRef<HTMLInputElement>(null)
+  const limitInput = useRef<HTMLInputElement>(null)
 
   const handleFilterChange = () => {
     const newFilters: string[] = []
@@ -27,19 +29,24 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
           newFilters.push(`${encodeURIComponent(node.getAttribute('value') || "")}`)
         }
       });
-      console.log(newFilters)
       pageStateHandler({filters: pageState.filters?.concat(newFilters) || newFilters})  
     }
   }
 
   const handleSearch = () => {
     if (searchInput.current?.value && searchInput.current?.value.trim().length > 0) {
-      console.log(
-        "click",
-        encodeURIComponent(searchInput.current?.value.trim())
-      )
       const returnVar = encodeURIComponent(searchInput.current?.value.trim())
       pageStateHandler({search: returnVar})
+    }
+  }
+
+  const handlePageLimitChange= () => {
+    const newPageLimit: (undefined | number) = Number(limitInput.current?.value) > productState.count
+      ? productState.count
+      : Number(limitInput.current?.value)
+
+    if (newPageLimit && newPageLimit !== pageState.limit && newPageLimit > 0) {
+      pageStateHandler({limit: newPageLimit})
     }
   }
 
@@ -57,24 +64,23 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
           </label>
 
           <menu className="dropdown-menu">
-            {pageState.filters.length !== productState.types?.length && 
+            {pageState.filters?.length !== productState.types?.length && 
               <button className="filter-btn" onClick={handleFilterChange}>Apply new filters</button>}
 
             <ul ref={filterSelect}>
               {productState.types
                 ?.filter(type => !pageState.filters?.includes(encodeURIComponent(type)))
-                .map(filter => { return (
-                    <li
-                      key={filter} 
-                      className="dropdown-menu__menu-item"
-                      value={filter}
-                      onClick={event => event.currentTarget.classList.contains("--menu-item-selected") 
-                        ? event.currentTarget.classList.remove("--menu-item-selected")
-                        : event.currentTarget.classList.add("--menu-item-selected")
-                        // TODO: add debounce to this onclick
-                      }
-                    >{`${filter}`}</li>
-                )})
+                .map(filter => (
+                  <li className="dropdown-menu__menu-item"
+                    key={filter} 
+                    value={filter}
+                    onClick={event => event.currentTarget.classList.contains("--menu-item-selected") 
+                      ? event.currentTarget.classList.remove("--menu-item-selected")
+                      : event.currentTarget.classList.add("--menu-item-selected")
+                      // TODO: add debounce to this onclick
+                    }
+                  >{`${filter}`}</li>
+                ))
               }
             </ul>
           </menu>
@@ -82,7 +88,6 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
       </flex-wrapper>
 
       <flex-wrapper class="filter-and-search-section__cards-wrapper">
-        {/* //TODO: map filter cards here*/}
         {pageState.search !== null 
           ? <span onClick={() => {
               console.log("testing remove search")
@@ -101,25 +106,20 @@ const FilterAndSearch = ({ pageState, productState, pageStateHandler }: IPaginat
         ))}
       </flex-wrapper>
 
-      <div className="box --prod-count"
-        // TODO: set pagelimit
-        // className="box dropdown-container"
-      >
+      <div className="box dropdown-container --prod-count">
         <p>{`Showing ${productState.results.length} of ${productState.count} products`}</p>
-        {/* <menu className="dropdown-menu">
+        <menu className="dropdown-menu">
           <div>
             <label htmlFor="setPageLimit">set pagelimit: </label>
-            <input type="number" id="setPageLimit" min={1} max={productState.count} defaultValue={pageState.limit}/>
+            <input 
+              type="number" id="setPageLimit" ref={limitInput}
+              defaultValue={pageState.limit} min={1} max={productState.count}/>
+            <button onClick={() => handlePageLimitChange()}>Apply</button>
           </div>
-        </menu> */}
+        </menu>
       </div>
-
     </>
   )
-
-
-
-
 }
 
 export default FilterAndSearch
