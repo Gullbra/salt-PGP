@@ -6,9 +6,10 @@ import './styles/loadingSpinner.css'
 
 import Layout from './AppLayout';
 import Routing from './AppRouting';
-import { IPagination, IResponseData } from './interfaces/interfaces';
+import { ICartItem, IPagination, IResponseData } from './interfaces/interfaces';
 import { createUrlFromParams, getParamFromUrl } from './util/urlManipulation';
 import { pageLimitFromWindowSize } from './util/pageLimitFromWindowSize';
+import { validateAndExtractStorage } from './util/validateAndExtractStorage';
 import fetching from './util/fetching';
 
 let initialLoad = true
@@ -17,21 +18,29 @@ function App() {
   const navigate = useNavigate()
   const urlSearchQuery = useLocation().search
   const urlPath = useLocation().pathname
-
-  const urlVariables:IPagination = {
-    page: Number(getParamFromUrl(urlSearchQuery, "page")) || 1,
-    limit: Number(getParamFromUrl(urlSearchQuery, "limit")) || pageLimitFromWindowSize(),
-    filters: getParamFromUrl(urlSearchQuery, "filter") as string[],
-    search: getParamFromUrl(urlSearchQuery, "search") as string || null,
-  }
-
+  
+  const [ cartState, setCartState ] = useState<ICartItem[]>({} as ICartItem[])
   const [ pageState, setPageState ] = useState<IPagination>({} as IPagination)
   const [ productState, setProductState ] = useState<IResponseData>({} as IResponseData)
   const [ loadingProducts, setLoadingProducts ] = useState<boolean>(true)
 
+  console.log(
+    localStorage.getItem("cartState"),
+    cartState
+  )
+
   useEffect(()=>{
     if (initialLoad) {
       initialLoad = false
+
+      const urlVariables:IPagination = {
+        page: Number(getParamFromUrl(urlSearchQuery, "page")) || 1,
+        limit: Number(getParamFromUrl(urlSearchQuery, "limit")) || pageLimitFromWindowSize(),
+        filters: getParamFromUrl(urlSearchQuery, "filter") as string[],
+        search: getParamFromUrl(urlSearchQuery, "search") as string || null,
+      }
+
+      const cartFromStorage: ICartItem[] = validateAndExtractStorage(localStorage.cartState)
 
       fetching({...urlVariables}, true)
         .then(response => {
@@ -41,6 +50,7 @@ function App() {
           })
           setProductState({...response.data})
           setLoadingProducts(false)
+          setCartState(cartFromStorage)
           
           if (urlPath === '/'){
             navigate(createUrlFromParams({...urlVariables}))

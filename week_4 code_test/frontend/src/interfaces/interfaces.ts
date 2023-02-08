@@ -1,3 +1,12 @@
+
+export interface ICartItem {
+  name: string
+  type: string
+  //storage: number
+  count: number
+  id: string
+}
+
 export interface IMilk {
   name: string
   type: string
