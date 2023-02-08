@@ -19,15 +19,15 @@ function App() {
   const urlSearchQuery = useLocation().search
   const urlPath = useLocation().pathname
   
-  const [ cartState, setCartState ] = useState<ICartItem[]>({} as ICartItem[])
-  const [ pageState, setPageState ] = useState<IPagination>({} as IPagination)
   const [ productState, setProductState ] = useState<IResponseData>({} as IResponseData)
+  const [ pageState, setPageState ] = useState<IPagination>({} as IPagination)
+  const [ cartState, setCartState ] = useState<ICartItem[]>({} as ICartItem[])
   const [ loadingProducts, setLoadingProducts ] = useState<boolean>(true)
 
-  console.log(
-    localStorage.getItem("cartState"),
-    cartState
-  )
+  // console.log(
+  //   localStorage.getItem("cartState"),
+  //   cartState
+  // )
 
   useEffect(()=>{
     if (initialLoad) {
@@ -61,11 +61,12 @@ function App() {
   }, [])
 
   return (
-    <Layout>
+    <Layout cartState={cartState}>
       {!loadingProducts && productState 
         ? <Routing 
             productState={productState} setProductState={setProductState} 
             pageState={pageState} setPageState={setPageState} 
+            cartState={cartState} setCartState={setCartState}
             setLoadingProducts={setLoadingProducts}
           />
         : <flex-wrapper class="--flex-center-spinner"><loading-spinner class="lds-hourglass"></loading-spinner></flex-wrapper>

@@ -2,7 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 
 import ProductListView from './views/ProductListView'
 import ProductView from './views/ProductView'
-import { IPagination, IResponseData } from './interfaces/interfaces';
+import CartView from './views/CartView'
+import { ICartItem, IPagination, IResponseData } from './interfaces/interfaces';
 
 interface IRoutingProps {
   productState: IResponseData
@@ -11,10 +12,13 @@ interface IRoutingProps {
   pageState: IPagination
   setPageState: React.Dispatch<React.SetStateAction<IPagination>>
 
+  cartState: ICartItem[]
+  setCartState: React.Dispatch<React.SetStateAction<ICartItem[]>>
+
   setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Routing = ({productState, setProductState, pageState, setPageState, setLoadingProducts}:IRoutingProps) => {
+const Routing = ({productState, setProductState, pageState, setPageState, setLoadingProducts, cartState, setCartState}:IRoutingProps) => {
   const routingArray: {path: string, element: React.ReactNode}[] = [
     {
       path: "*",
@@ -26,6 +30,10 @@ const Routing = ({productState, setProductState, pageState, setPageState, setLoa
         productState={productState} setProductState={setProductState}
         pageState={pageState} setPageState={setPageState} 
         setLoadingProducts={setLoadingProducts}/>
+    },
+    {
+      path: "/cart",
+      element: <CartView cartState={cartState} setCartState={setCartState} pageState={pageState}/>
     },
     ...productState.results.map(product => ({
       path: `/${product.id}`,
