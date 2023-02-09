@@ -14,7 +14,6 @@ function NewUserForm(/*{onSubmit}*/) {
           onSubmit={event => {
             event.preventDefault()
 
-            //const newUser = {}
             if (
               email_input.current?.value &&
               password_input.current?.value &&
@@ -23,7 +22,11 @@ function NewUserForm(/*{onSubmit}*/) {
             ) {
               if (password_input.current.value !== confirmed_password_input.current.value) window.alert("Passwords don't match! Idiot!")
               
-              console.log("Am I here?")
+              console.log("...Data exists")
+              /*
+              
+              */
+
               axios.post("http://localhost:8000/api/user", {
                 email: email_input.current.value,
                 password: password_input.current.value,
@@ -32,18 +35,19 @@ function NewUserForm(/*{onSubmit}*/) {
                 .then(res => console.log(res))
                 .catch(err => console.log(err.message))
                 .finally(()=> console.log("📮 axios called"))
-              console.log("end of func")
+
+              console.log("...end of onclick")
             }
 
             // TODO: new FormData(event.currentTarget)
 
-            console.log(
-              "click", 
-              email_input.current.value,
-              password_input.current.value,
-              confirmed_password_input.current.value,
-              type_input.current.value
-            )
+            // console.log(
+            //   "click", 
+            //   email_input.current.value,
+            //   password_input.current.value,
+            //   confirmed_password_input.current.value,
+            //   type_input.current.value
+            // )
 
 
           }} 

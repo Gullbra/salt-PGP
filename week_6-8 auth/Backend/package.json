@@ -4,13 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start":"npm run startDatabaseApi",
+    "start": "npm run startDatabaseApi",
     "startDatabaseApi": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "md5": "^2.3.0",
     "sqlite3": "^5.1.4"
