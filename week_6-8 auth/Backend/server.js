@@ -18,7 +18,7 @@ app.listen(HTTP_PORT, () => console.log(`Server listening to ${DOMAIN}`));
 
 app.route("/").get((req, res, next) => res.json({"message":"Ok"}));
 
-app.route("/api/user")
+app.route("/api/users")
   .get((req, res, next) => {
     const sql = "SELECT * FROM UserData";
     const params = [];
@@ -30,7 +30,7 @@ app.route("/api/user")
     })
   })
   .post((req, res, next) => {
-    console.log("/api/user - called")
+    console.log("/api/users - called")
     const errors=[];
     if (!req.body.email) errors.push("No email provided");
     if (!req.body.password) errors.push("No password provided");
@@ -48,6 +48,7 @@ app.route("/api/user")
     ]
     db.run(sql, paramArr, (err, result)  => {
       console.log("Db.run")
+      console.log({res: result})
       if (err) return res.status(400).json({"error": err.message})
 
       res.json({
@@ -64,7 +65,7 @@ app.route("/api/user")
 
 
 
-app.route("/api/user/:id")
+app.route("/api/users/:id")
   //Get specific user by id endpoint
   .get((req, res, next) => {
       const sql = "select * from UserData where id = ?";

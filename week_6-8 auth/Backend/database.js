@@ -14,8 +14,9 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 
   const users = GetUsersAsJson();
   db.run(
+    //TODO:rew
     `CREATE TABLE UserData (
-    id INT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     email VARCHAR(50),
     password VARCHAR(50),
     role VARCHAR(11),
