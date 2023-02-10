@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+using System.Text.RegularExpressions;
+//using System.Threading.Tasks;
+//using static System.Net.Mime.MediaTypeNames;
 
 namespace SaltAddon.Day1.ExtremeOOP;
-
-
-/*
- Class Iohandler 
- 
- */
-
 
 public class IOhandler
 {
@@ -22,18 +16,53 @@ public class IOhandler
 	public IOhandler (string input) 
 	{
 		inputLines = input.Split('\n').ToList();
+		outputLines = inputLines.Select(LineHandler.LineTranslator).ToList();
 	}
+}
 
-
-	public string returnOutPut(string input)
+internal class LineHandler
+{
+	public static string LineTranslator(string line)
 	{
-		
+		string trimmedLine = line.Trim();
+		string translatedLine = string.Empty;
 
-		return input;
+		if (new Regex("^PRINT").IsMatch(trimmedLine))
+		{
+			translatedLine = PrintHandler.PrintSwitch(trimmedLine);
+		}
+
+		return translatedLine;
 	}
 }
 
 internal class PrintHandler
 {
-	// public check
+	public static string PrintSwitch(string line) 
+	{
+		string translatedLine = string.Empty;
+
+		if (new Regex("[\"].+[\"]").IsMatch(line))
+		{
+			translatedLine = TranslatePrintString(line);
+		}
+		else if (new Regex("[-\\d][0-9]+").IsMatch(line))
+		{
+			translatedLine = TranslatePrintNumber(line);
+		}
+
+		return translatedLine + "\n";
+	}
+
+	private static string TranslatePrintNumber(string line)
+	{
+		MatchCollection matches = new Regex("[-\\d][0-9]+").Matches(line);
+		return matches.Count == 0 ? "" : matches[0].Value;
+	}
+
+	public static string TranslatePrintString(string line)
+	{
+		MatchCollection matches = new Regex("[\"].+[\"]").Matches(line);
+		return matches.Count == 0 ? "" : matches[0].Value.Substring(1, matches[0].Value.Length - 2);
+	}
 }
