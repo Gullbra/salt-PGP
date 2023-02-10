@@ -29,8 +29,16 @@ function App() {
   //   cartState
   // )
 
+  useEffect(() => {
+    if (!initialLoad) {
+      console.log("✨UseEffect: localStorage - cartState")
+      localStorage.cartState = JSON.stringify(cartState)
+    }
+  }, [cartState])
+
   useEffect(()=>{
     if (initialLoad) {
+      console.log("✨UseEffect: initial load")
       initialLoad = false
 
       const urlVariables:IPagination = {
