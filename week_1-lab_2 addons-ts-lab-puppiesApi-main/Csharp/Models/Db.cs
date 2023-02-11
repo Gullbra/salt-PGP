@@ -14,7 +14,7 @@ public class Db : IDb
 		{
 			new Puppy() { Id = 1, Name = "Dogmeat", Breed = "German Sheepherd", BirthDate="2016-10-22"},
 			new Puppy() { Id = 2, Name = "Tova", Breed = "Poodle", BirthDate="2018-03-01"},
-			new Puppy() { Id = 3, Name = "Muyumi", Breed = "Akita", BirthDate="2017-04-12"},
+			new Puppy() { Id = 3, Name = "Miyumi", Breed = "Akita", BirthDate="2017-04-12"},
 		};
 	}
 
