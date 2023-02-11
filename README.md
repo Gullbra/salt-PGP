@@ -11,19 +11,18 @@
   </a>
   resources. For practice, fun and continued learning.
 </p>
-<br/>
 
 ## Week 1-2: Refreshers
 React, next, express and TS refresher. Mostly for those who took december off, but I took the oportunity to look at Python Flask and ASP .NET Core.
 
 * Lab 1: Frontend <a style="margin-right: 4px;" href="https://github.com/Gullbra/salt-PGP/tree/main/week_1-lab_1%20addons-ts-lab-reactBasics-main">link to folder</a><div>
-    <img src="https://skillicons.dev/icons?i=next,ts" title="NextJS and TypeScript" height="25"/>
+    <img src="https://skillicons.dev/icons?i=next,ts" title="NextJS and TypeScript" height="30"/>
   </div>
 
 * Lab 2: API <a style="margin-right: 4px;" href="https://github.com/Gullbra/salt-PGP/tree/main/week_1-lab_1%20addons-ts-lab-reactBasics-main">link to folder</a><div>
-    <img src="https://skillicons.dev/icons?i=express,ts" title="Express and TypeScript" height="25"/> & 
-    <img src="https://skillicons.dev/icons?i=flask,python" title="Flask and Python" height="25"/> &
-    <img src="https://skillicons.dev/icons?i=dotnet,cs" title="ASP.NET and C#" height="25"/>
+    <img src="https://skillicons.dev/icons?i=express,ts" title="Express and TypeScript" height="30"/> & 
+    <img src="https://skillicons.dev/icons?i=flask,python" title="Flask and Python" height="30"/> &
+    <img src="https://skillicons.dev/icons?i=dotnet,cs" title="ASP.NET and C#" height="30"/>
   </div>
 <br/>
 
@@ -31,7 +30,7 @@ React, next, express and TS refresher. Mostly for those who took december off, b
 3 day work on a simple blog with provided mock blog data. Then reviewed each others code. 
 <a href="https://github.com/Gullbra/salt-PGP/tree/main/week_3%20tiny-blog">link to folder</a>
 <div>
-  <img src="https://skillicons.dev/icons?i=react,ts" title="ReactJS and TypeScript" height="25"/>
+  <img src="https://skillicons.dev/icons?i=react,ts" title="ReactJS and TypeScript" height="30"/>
 </div>
 <br/>
 
@@ -40,7 +39,7 @@ A product page for a milk store, with somewhat humorous milk product products.
 Filter, search, order and cart functionality.
 <a href="https://github.com/Gullbra/salt-PGP/tree/main/week_4%20code_test">link to folder</a>
 <div>
-  <img src="https://skillicons.dev/icons?i=react,ts" title="ReactJS and TypeScript" height="25"/>
+  <img src="https://skillicons.dev/icons?i=react,ts" title="ReactJS and TypeScript" height="30"/>
 </div>
 <br/>
 
@@ -48,7 +47,7 @@ Filter, search, order and cart functionality.
 A week for trying new things or building a project. Created a PostgreSql database in pgAdmin, connected it to a backend API in .NET Core. Will in the futer create a react frontend.
 <a href="https://github.com/Gullbra/thriftyHelper">link to repo</a>
 <div>
-  <img src="https://skillicons.dev/icons?i=dotnet,cs,postgres,react,ts" title=".NET Core, C#, PostgreSql, ReactJS and TypeScript" height="25"/>
+  <img src="https://skillicons.dev/icons?i=dotnet,cs,postgres,react,ts" title=".NET Core, C#, PostgreSql, ReactJS and TypeScript" height="30"/>
 </div>
 <br/>
 
@@ -56,6 +55,6 @@ A week for trying new things or building a project. Created a PostgreSql databas
 Was supplied with a non-working JS backend and frontend for an store manager platform, and tasked with re-writting it so it works and adding secure and working JWT authentication.
 <a href="https://github.com/Gullbra/salt-PGP/tree/main/week_6-8%20auth">link to folder</a>
 <div>
-  <img src="https://skillicons.dev/icons?i=sqlite,js,ts,express,react" title=".NET Core, C#, PostgreSql, ReactJS and TypeScript" height="25"/>
+  <img src="https://skillicons.dev/icons?i=sqlite,js,ts,express,react" title="sqlite, JavaScript, TypeScript, ExpressJS and ReactJS" height="30"/>
 </div>
 <br/>
