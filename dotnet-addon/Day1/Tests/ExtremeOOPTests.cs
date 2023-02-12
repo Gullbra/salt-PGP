@@ -9,14 +9,15 @@ namespace SaltAddon.Day1.Tests;
 [TestClass]
 public class ExtremeOOPTests
 {
+
 	[DataTestMethod]
 	[DataRow("", 1)]
 	[DataRow("\n", 2)]
 	[DataRow("PRINT \"Hello\"\nPRINT \"World\"", 2)]
-	public void ShouldSequnceLines(string input, int expected)
+	public void ShouldSequnceInputLines(string input, int expected)
 	{
-		IOhandler TestTranslator = new (input);
-		TestTranslator.inputLines.Count.Should().Be(expected);
+		BasicTranslator TestTranslator = new(input);
+		TestTranslator.InputLines().Count.Should().Be(expected);
 	}
 
 	[DataTestMethod]
@@ -24,18 +25,23 @@ public class ExtremeOOPTests
 	[DataRow("PRINT", "\n")]
 	[DataRow("PRINT \"Hello, World!\"", "Hello, World!\n")]
 	[DataRow("PRINT \"Hi\"\nPRINT \"There\"\nPRINT \"!\"", "Hi\nThere\n!\n")]
-	public void SimpelPrintStringTests(string input, string output)
+	[DataRow("PRINT 123", "123\n")]
+	[DataRow("PRINT -3", "-3\n")]
+	public void SimpelPrintTests(string input, string output)
 	{
-		IOhandler TestTranslator = new(input);
-		string.Join("", TestTranslator.outputLines).Should().Be(output);
+		BasicTranslator TestTranslator = new(input);
+		string.Join("", TestTranslator.OutputLines()).Should().Be(output);
 	}
 
 	[DataTestMethod]
-	[DataRow("PRINT 123", "123\n")]
-	[DataRow("PRINT -3", "-3\n")]
-	public void SimpelPrintNumberTests(string input, string output)
+	[DataRow("variable 0", "A", "0")]
+	[DataRow("B=1", "B", "1")]
+	[DataRow("B =1", "B", "1")]
+	public void VariableTests(string input, string varName, string varValue)
 	{
-		IOhandler TestTranslator = new(input);
-		string.Join("", TestTranslator.outputLines).Should().Be(output);
+		BasicTranslator TestTranslator = new(input);
+		TestTranslator.Variables()
+			.Find(kwp => kwp.Key == varName).Value
+			.Should().Be(varValue);
 	}
 }
