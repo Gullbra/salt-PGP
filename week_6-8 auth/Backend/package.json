@@ -2,13 +2,13 @@
   "name": "week-6-8-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "./API/server.js",
+  "main": "",
   "author": "",
   "license": "ISC",
 
   "scripts": {
-    "start": "node .dist/API/server.js",
-    "dev": "nodemon .src/API/server.ts",
+    "start": "node ./dist/API/server.js",
+    "dev": "nodemon ./src/API/server.ts",
     "transpile": "tsc"
   },
   "dependencies": {

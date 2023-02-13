@@ -5,18 +5,19 @@ const sqlite3 = verbose();
 import fs from "fs";
 import { IProductsSQL, IStoreSQL, IUserSQL } from '../interfaces/interfaces';
 
-const DBSOURCE = path.join("@root", "database", "db.sqlite")
+const DBSOURCE = path.join("database", "db.sqlite")
+//const DBSOURCE = "./db.sqlite"
 
 const getUsersAsJson = (): Promise<IUserSQL[]> => fs.promises
-  .readFile("@root/database/mock/User_Mock_data.json")
+  .readFile("./database/mock/User_Mock_data.json")
   .then(data => JSON.parse(data.toString()));
 
 const getStoresAsJson = (): Promise<IStoreSQL[]> => fs.promises
-  .readFile("@root/database/mock/Store_Mock_data.json")
+  .readFile("./database/mock/Store_Mock_data.json")
   .then(data => JSON.parse(data.toString()));
 
 const getProductsAsJson = (): Promise<IProductsSQL[]> => fs.promises
-  .readFile("@root/database/mock/Products_Mock_data.json")
+  .readFile("./database/mock/Products_Mock_data.json")
   .then(data => JSON.parse(data.toString()))
 
 let db = new sqlite3.Database(DBSOURCE, (err) => {
