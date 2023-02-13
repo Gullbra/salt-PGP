@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently -k \"cd Backend && npm start && cd ..\" \"cd Frontend && npm run dev && cd ..\""
+    "dev": "concurrently -k \"cd Backend && npm run dev && cd ..\" \"cd Frontend && npm run dev && cd ..\""
   },
   "keywords": [],
   "author": "",

@@ -1,44 +1,44 @@
 [
   {
     "name": "Hansen and Sons",
-    "uniqueStoreId": 1
+    "store_id": 1
   },
   {
     "name": "Littel, Walter and Bartoletti",
-    "uniqueStoreId": 2
+    "store_id": 2
   },
   {
     "name": "Kassulke-Cole",
-    "uniqueStoreId": 3
+    "store_id": 3
   },
   {
     "name": "Steuber LLC",
-    "uniqueStoreId": 4
+    "store_id": 4
   },
   {
     "name": "Collier, Kassulke and Schinner",
-    "uniqueStoreId": 5
+    "store_id": 5
   },
   {
     "name": "Smith Group",
-    "uniqueStoreId": 6
+    "store_id": 6
   },
   {
     "name": "Rolfson, Pollich and McDermott",
-    "uniqueStoreId": 7
+    "store_id": 7
   },
   {
     "name": "Metz, Schaden and Bashirian",
-    "uniqueStoreId": 8
+    "store_id": 8
   },
   {
     "id": 8,
     "name": "Yundt-Russel",
-    "uniqueStoreId": 9
+    "store_id": 9
   },
   {
     "id": 5,
     "name": "Rice-Kovacek",
-    "uniqueStoreId": 10
+    "store_id": 10
   }
 ]

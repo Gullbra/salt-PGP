@@ -1,57 +1,66 @@
-// Create express app
-import express from "express";
-const app = express();
-import db from "./database.js";
+import express, { Application, 
+  Request, 
+  Response, 
+  //NextFunction 
+} from "express";
+
+import db from "./database.js"
 import md5 from "md5";
 import bodyParser from "body-parser";
-
 import cors from 'cors'
-app.use(cors())
 
+const app: Application = express();
+
+app.use(cors())
+//app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const HTTP_PORT = 8000;
-const DOMAIN = `http://localhost:${HTTP_PORT}`
+const HTTP_PORT:number = 8000;
+const DOMAIN:string = `http://localhost:${HTTP_PORT}`
 
 app.listen(HTTP_PORT, () => console.log(`Server listening to ${DOMAIN}`));
 
-app.route("/").get((req, res, next) => res.json({"message":"Ok"}));
+app.route("/")
+  .get((_, res: Response) => res.json({"message":"Ok"}));
+
+
 
 app.route("/api/users")
-  .get((req, res, next) => {
-    const sql = "SELECT * FROM UserData";
-    const params = [];
+  .get((_, res: Response) => {
+    const sql:string = "SELECT * FROM UserData";
+    const params:string[] = [];
     
+    res.send("hey")
     db.all(sql, params, (err, rows) => {
       if (err) return res.status(400).json({"error": err.message});
           
-      res.json({ "message": "success", "data": rows})
+      return res.json({ "message": "success", "data": rows})
     })
   })
-  .post((req, res, next) => {
-    console.log("/api/users - called")
-    const errors=[];
-    if (!req.body.email) errors.push("No email provided");
-    if (!req.body.password) errors.push("No password provided");
-    if (!req.body.role) errors.push("No role provided");
-    // if (!req.body.storeId) errors.push("No storeId provided");
-    console.log("errors:", errors)
+  .post((req: Request, res: Response) => {
+    
+    const reqBody = req.body as {email: string, password: string, role: string} 
+    const errors:string[] = [];
+    if (!reqBody.email) errors.push("No email provided");
+    if (!reqBody.password) errors.push("No password provided");
+    if (!reqBody.role) errors.push("No role provided");
+    // if (!reqBody.storeId) errors.push("No storeId provided");
+
     if (errors.length) return res.status(400).json({"error": errors.join(",")});
 
     const sql = 'INSERT INTO UserData (email, password, role, storeId) VALUES (?,?,?,?)'
     const paramArr = [
-      req.body.email,
-      md5(req.body.password),
-      req.body.role,
+      reqBody.email,
+      md5(reqBody.password),
+      reqBody.role,
       //req.body.storeId
     ]
-    db.run(sql, paramArr, (err, result)  => {
-      console.log("Db.run")
-      console.log({res: result})
+    
+    return db.run(sql, paramArr, (err:(Error | null), result:string[]) => {
       if (err) return res.status(400).json({"error": err.message})
 
-      res.json({
+      return res.json({
           "message": "success",
           "data": {
             email: paramArr[0],
@@ -61,8 +70,11 @@ app.route("/api/users")
           // "id" : this.lastID
       })
     });
+    /*
+    */
   })
 
+/*
 
 
 app.route("/api/users/:id")
@@ -196,3 +208,5 @@ app.get("/api/store/:id", (req, res, next) => {
 app.use(function(req, res){
     res.status(404);
 });
+
+*/

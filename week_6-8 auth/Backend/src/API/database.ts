@@ -1,16 +1,19 @@
 import pkg from 'sqlite3';
-
+import path from 'path';
 const {verbose} = pkg;
-
-import fs from "fs";
-
 const sqlite3 = verbose();
-const DBSOURCE = "db.sqlite"
+import fs from "fs";
+import { IProductsSQL, IStoreSQL, IUserSQL } from '../interfaces/interfaces';
+
+const DBSOURCE = path.join("@root", "database", "db.sqlite")
+
+const GetUsersAsJson = () => JSON.parse(fs.readFileSync("@root/database/mock/User_Mock_data.json").toString()) as IUserSQL[];
+const GetStoresAsJson = () => JSON.parse(fs.readFileSync("@root/database/mock/Store_Mock_data.json").toString()) as IStoreSQL[];
+const GetProductsAsJson = () => JSON.parse(fs.readFileSync("@root/database/mock/Products_Mock_data.json").toString()) as IProductsSQL[];
 
 let db = new sqlite3.Database(DBSOURCE, (err) => {
   if (err) throw err
-
-  console.log('Connected to the SQLite database.');
+  console.log(`\nConnected to SQLite database at \"${DBSOURCE}\"`);
 
   const users = GetUsersAsJson();
   db.run(
@@ -27,7 +30,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 
       // Table just created, creating some rows
       const insert = 'INSERT INTO UserData (id, email, password, role, storeId) VALUES (?,?,?,?,?)';
-      users.map(newUser => db.run(
+      users.map((newUser) => db.run(
         insert, 
         [newUser.id, newUser.email, newUser.password, newUser.role, newUser.uniqueStoreId]
       ))
@@ -79,16 +82,10 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
   );
 });
 
-function GetUsersAsJson() {
-  return JSON.parse(fs.readFileSync("./mockData/User_Mock_data.json"));
-}
+// ** Close connection:
+// db.close
 
-function GetStoresAsJson() {
-  return JSON.parse(fs.readFileSync("./mockData/Store_Mock_data.json"));
-}
-
-function GetProductsAsJson() {
-  return JSON.parse(fs.readFileSync("./mockData/Products_Mock_data.json"));
-}
+// ** Database vars:
+// sqlite3.OPEN_CREATE; sqlite3.OPEN_READWRITE; sqlite3.OPEN_READONLY
 
 export default db;
