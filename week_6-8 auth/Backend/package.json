@@ -5,7 +5,6 @@
   "main": "",
   "author": "",
   "license": "ISC",
-
   "scripts": {
     "start": "node ./dist/API/server.js",
     "dev": "nodemon ./src/API/server.ts",

@@ -14,15 +14,6 @@ export interface IUserTS {
   storeId: number
 }
 
-export interface IStoreSQL {
-  store_id: number //pk serial
-  name: string
-}
-export interface IStoreTS {
-  storeid: number
-  name: string
-}
-
 export interface IProductsSQL {
   product_id: number //pk serial
   title: string
@@ -42,4 +33,13 @@ export interface IProductsTS {
   price: string
   quantity: number
   category: string
+}
+
+export interface IStoreSQL {
+  store_id: number //pk serial
+  name: string
+}
+export interface IStoreTS {
+  storeid: number
+  name: string
 }
