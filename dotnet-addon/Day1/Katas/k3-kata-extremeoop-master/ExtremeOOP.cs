@@ -39,7 +39,7 @@ public class Translator
 		string translatedLine = string.Empty;
 
 		if (new Regex("^PRINT($|\\s)").IsMatch(trimmedLine))
-			translatedLine = PrintHandler.PrintSwitch(trimmedLine);
+			translatedLine = PrintHandler.PrintSwitch(trimmedLine, variableList);
 		else if (new Regex("=").IsMatch(trimmedLine))
 			VariableIstantiater(trimmedLine);
 		else if (new Regex("^variable ").IsMatch(trimmedLine))
@@ -82,7 +82,7 @@ public class Translator
 
 internal class PrintHandler
 {
-	public static string PrintSwitch(string line)
+	public static string PrintSwitch(string line, List<KeyValuePair<string, string>> variableList)
 	{
 		string translatedLine = string.Empty;
 
@@ -90,7 +90,17 @@ internal class PrintHandler
 			translatedLine = TranslatePrintString(line);
 		else if (new Regex("[-\\d][0-9]+").IsMatch(line))
 			translatedLine = TranslatePrintNumber(line);
+		else if (new Regex("\\s[a-zA-Z]$").IsMatch(line))
+			translatedLine = TranslatePrintVariable(line, variableList);
 		return translatedLine + "\n";
+	}
+
+	private static string TranslatePrintVariable(string line, List<KeyValuePair<string, string>> variableList)
+	{
+		MatchCollection matches = new Regex("\\s[a-zA-Z]$").Matches(line);
+		return matches.Count == 0
+			? ""
+			: variableList.Find(kwp => kwp.Key == matches[0].Value.Trim()).Value;
 	}
 
 	private static string TranslatePrintNumber(string line)

@@ -37,11 +37,21 @@ public class ExtremeOOPTests
 	[DataRow("variable 0", "A", "0")]
 	[DataRow("B=1", "B", "1")]
 	[DataRow("B =1", "B", "1")]
+	[DataRow("variable 0\nB=1", "B", "1")]
 	public void VariableTests(string input, string varName, string varValue)
 	{
 		BasicTranslator TestTranslator = new(input);
 		TestTranslator.Variables()
 			.Find(kwp => kwp.Key == varName).Value
 			.Should().Be(varValue);
+	}
+
+	[DataTestMethod]
+	[DataRow("A=12\nPRINT A", "12\n")]
+
+	public void PrintVariableTests(string input, string output)
+	{
+		BasicTranslator TestTranslator = new(input);
+		string.Join("", TestTranslator.OutputLines()).Should().Be(output);
 	}
 }
