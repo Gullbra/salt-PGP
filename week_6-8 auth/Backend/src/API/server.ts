@@ -12,12 +12,12 @@ const app: Application = express();
 app.use(cors())
 app.use(express.json())
 
-const HTTP_PORT: number = 8000;
-const DOMAIN: string = `http://localhost:${HTTP_PORT}`
+const ENV_PORT: number = Number(process.env.ENV_PORT) || 8000;
+const ENV_DOMAIN: string = process.env.ENV_DOMAIN || `http://localhost:${ENV_PORT}`
 
-app.listen(HTTP_PORT, () => console.log(`Server listening to ${DOMAIN}`));
+app.listen(ENV_PORT, () => console.log(`Server listening to ${ENV_DOMAIN}`));
 
-app.route("/").get((_, res: Response) => res.json({"message":"Ok"}));
+app.route("/").get((_, res: Response) => res.json({ "message" : "Ok" }));
 
 app.route("/api/users")
   .get((_, res: Response) => {
@@ -28,9 +28,12 @@ app.route("/api/users")
     const params:string[] = [];
     
     db.all(sql, params, (err, rows) => {
-      if (err) return res.status(400).json({"error": err.message});
-          
-      return res.json({ "message": "success", "data": rows})
+      if (err) return res.status(400).json({ "error": err.message })
+
+      return res.json({ 
+        "message": "success", 
+        "data": rows
+      })
     })
   })
   .post((req: Request, res: Response) => {
@@ -42,14 +45,14 @@ app.route("/api/users")
     req.body.role ? newUserArr.push(req.body.role) : errors.push("No role provided");
     req.body.storeId ? newUserArr.push(req.body.storeId) : errors.push("No storeId provided");
 
-    if (errors.length) return res.status(400).json({"error": errors.join(",")});
+    if (errors.length) return res.status(400).json({ "error": errors.join(",") });
 
     const sql = `
       INSERT INTO user_data (email, password, role, store_id) 
       VALUES (?,?,?,?);
     `    
-    return db.run(sql, newUserArr, function (this: RunResult, err:(Error | null)) {
-      if (err) return res.status(400).json({"error": err.message})
+    return db.run(sql, newUserArr, function (this: RunResult, err: (Error | null)) {
+      if (err) return res.status(400).json({ "error": err.message })
 
       return res.json({
         "message": "success",
@@ -63,70 +66,67 @@ app.route("/api/users")
       })
     });
   })
-  .patch((req: Request, res: Response) => {
-    //db.run()
-  })
 
 app.route("/api/users/:userId")
-  .get((req, res) => {
+  .get((req: Request, res: Response) => {
     const sql = `
       SELECT * 
       FROM user_data 
       WHERE user_id = ?;
     `;
-    const params = [req.params.userId];
-    db.get(sql, params, (err, row) => {
-        if (err) return res.status(400).json({"error":err.message});
+    const params = [ req.params.userId ];
 
-        return res.json({
-            "message": "success",
-            "data": row
-        })
+    db.get(sql, params, (err, row) => {
+      if (err) return res.status(400).json({ "error": err.message });
+
+      return res.json({
+        "message": "success",
+        "data": row
+      })
     });
   })
-// //Patch a specific user
-// .patch( (req, res, next) => {
-//     const data = {
-//         email: req.body.email,
-//         password : req.body.password,
-//         role : req.body.role,
-//         storeId: req.body.storeId
-//     }
-//     db.run(
-//         `UPDATE UserData set 
-//           email = COALESCE(?,email), 
-//           password = COALESCE(?,password)
-//           role = COALESCE(?,role)
-//           storeId = COALESCE(?,storeId)
-//           WHERE id = ?`,
-//         [data.email, data.password, data.role, data.storeId, req.params.id],
-//         function (err, result) {
-//             if (err){
-//                 res.status(400).json({"error": res.message})
-//                 return;
-//             }
-//             res.json({
-//                 message: "success",
-//                 data: data,
-//                 changes: this.changes
-//             })
-//         });
-// })
-// .delete((req, res, next) => {
-//   db.run(
-//       'DELETE FROM UserData WHERE id = ?',
-//       req.params.id,
-//       function (err, result) {
-//           if (err){
-//               res.status(400).json({"error": res.message})
-//               return;
-//           }
-//           res.json({"message":"deleted", changes: this.changes})
-//       });
-// })
+  // .patch( (req, res, next) => {
+  //     const data = {
+  //         email: req.body.email,
+  //         password : req.body.password,
+  //         role : req.body.role,
+  //         storeId: req.body.storeId
+  //     }
+  //     db.run(
+  //         `UPDATE UserData set 
+  //           email = COALESCE(?,email), 
+  //           password = COALESCE(?,password)
+  //           role = COALESCE(?,role)
+  //           storeId = COALESCE(?,storeId)
+  //           WHERE id = ?`,
+  //         [data.email, data.password, data.role, data.storeId, req.params.id],
+  //         function (err, result) {
+  //             if (err){
+  //                 res.status(400).json({"error": res.message})
+  //                 return;
+  //             }
+  //             res.json({
+  //                 message: "success",
+  //                 data: data,
+  //                 changes: this.changes
+  //             })
+  //         });
+  // })
+  // .delete((req, res, next) => {
+  //   db.run(
+  //       'DELETE FROM UserData WHERE id = ?',
+  //       req.params.id,
+  //       function (err, result) {
+  //           if (err){
+  //               res.status(400).json({"error": res.message})
+  //               return;
+  //           }
+  //           res.json({"message":"deleted", changes: this.changes})
+  //       });
+  // })
 
 app.route("/api/products")
-  .get((req, res, next) => {
+  .get((_, res: Response) => {
     const sql = `
       SELECT *
       FROM product_data;
@@ -134,11 +134,11 @@ app.route("/api/products")
     const params: string[] = [];
 
     db.all(sql, params, (err, rows) => {
-      if (err) return res.status(400).json({"error":err.message});
+      if (err) return res.status(400).json({ "error": err.message });
 
       return res.json({
-          "message":"success",
-          "data":rows
+        "message": "success",
+        "data": rows
       })
     });
   })
@@ -180,25 +180,25 @@ app.route("/api/products")
   })
 
 app.route("/api/products/:productId")
-  .get((req, res, next) => {
+  .get((req: Request, res: Response) => {
     const sql = `
       SELECT * 
       FROM product_data 
       WHERE product_id = ?;
     `;
-    const params = [req.params.productId];
+    const params = [ req.params.productId ];
     db.get(sql, params, (err, row) => {
-      if (err) return res.status(400).json({"error":err.message});
+      if (err) return res.status(400).json({ "error": err.message });
 
       return res.json({
-          "message":"success",
-          "data":row
+        "message":"success",
+        "data":row
       })
     });
   });
 
 app.route("/api/stores")
-  .get((req, res, next) => {
+  .get((_, res: Response) => {
     const sql = `
       SELECT * 
       FROM store_data;
@@ -219,14 +219,14 @@ app.route("/api/stores")
 
     req.body.name ? newStoreArr.push(req.body.name) : errors.push("No name provided");
 
-    if (errors.length) return res.status(400).json({"error": errors.join(",")});
+    if (errors.length) return res.status(400).json({ "error": errors.join(",") });
 
     const sql = `
       INSERT INTO store_data (name) 
       VALUES (?);
     `    
-    return db.run(sql, newStoreArr, function (this: RunResult, err:(Error | null)) {
-      if (err) return res.status(400).json({"error": err.message})
+    return db.run(sql, newStoreArr, function (this: RunResult, err: (Error | null)) {
+      if (err) return res.status(400).json({ "error": err.message })
 
       return res.json({
         "message": "success",
@@ -239,21 +239,21 @@ app.route("/api/stores")
   })
 
 app.route("/api/stores/:storeId")
-  .get((req, res, next) => {
+  .get((req: Request, res: Response) => {
     const sql = `
       SELECT * 
       FROM store_data 
       WHERE store_id = ?  
     `;
-    const params = [req.params.storeId];
+    const params = [ req.params.storeId ];
     db.get(sql, params, (err, row) => {
-        if (err) return res.status(400).json({"error":err.message});
+      if (err) return res.status(400).json({ "error": err.message });
 
-        return res.json({
-            "message":"success",
-            "data":row
-        })
+      return res.json({
+        "message":"success",
+        "data":row
+      })
     });
   });
 
-app.route('*').all((_,res) => res.status(404).json({message: "These are not the droids you're looking for"}))
+app.route('*').all((_, res: Response) => res.status(404).json({ message: "These aren't the droids you're looking for" }))
