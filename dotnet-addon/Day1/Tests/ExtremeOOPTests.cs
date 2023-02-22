@@ -54,4 +54,14 @@ public class ExtremeOOPTests
 		BasicTranslator TestTranslator = new(input);
 		string.Join("", TestTranslator.OutputLines()).Should().Be(output);
 	}
+
+	[DataTestMethod]
+	[DataRow("PRINT 1 + 2 - 3", "0\n")]
+	[DataRow("PRINT 4 + -3", "1\n")]
+
+	public void PrintCalculationsTests(string input, string output)
+	{
+		BasicTranslator TestTranslator = new(input);
+		string.Join("", TestTranslator.OutputLines()).Should().Be(output);
+	}
 }

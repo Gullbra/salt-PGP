@@ -88,6 +88,8 @@ internal class PrintHandler
 
 		if (new Regex("[\"].+[\"]").IsMatch(line))
 			translatedLine = TranslatePrintString(line);
+		else if (new Regex("[\\s](-|[+])[\\s]").IsMatch(line))
+			translatedLine = Calculator.Calc(line[5..], variableList);
 		else if (new Regex("[-\\d][0-9]+").IsMatch(line))
 			translatedLine = TranslatePrintNumber(line);
 		else if (new Regex("\\s[a-zA-Z]$").IsMatch(line))
@@ -112,6 +114,48 @@ internal class PrintHandler
 	public static string TranslatePrintString(string line)
 	{
 		MatchCollection matches = new Regex("[\"].+[\"]").Matches(line);
-		return matches.Count == 0 ? "" : matches[0].Value.Substring(1, matches[0].Value.Length - 2);
+		return matches.Count == 0 ? "" : matches[0].Value[1..^1];
+	}
+}
+
+internal class Calculator
+{
+	internal static string Calc(string line, List<KeyValuePair<string, string>> variableList)
+	{
+		MatchCollection matches = new Regex("(^|\\s)(-\\d+|\\d+|[+]|-)").Matches(line);
+
+		string operatorString = string.Empty;
+		int currentValue = 0;
+
+		List<string> testList = new();
+		foreach (Match match in matches)
+		{
+			string matchedString = match.Value.Trim();
+			if (new Regex("(^|^[-])\\d+$").IsMatch(matchedString))
+			{
+				testList.Add(matchedString);
+				if (operatorString == "+")
+				{
+					currentValue += Convert.ToInt32(matchedString);
+					operatorString = string.Empty;
+					continue;
+				}
+				else if (operatorString == "-")
+				{
+					currentValue -= Convert.ToInt32(matchedString);
+					operatorString = string.Empty;
+					continue;
+				}
+				currentValue = Convert.ToInt32(matchedString);
+			}
+			else if (new Regex("^(-|[+])$").IsMatch(matchedString))
+			{
+				operatorString = matchedString;
+				testList.Add(matchedString);
+			}
+		}
+		return $"{currentValue}";
+		//return string.Join(", ", testList);
+		//return "calc";
 	}
 }
