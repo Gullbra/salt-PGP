@@ -122,18 +122,32 @@ internal class Calculator
 {
 	internal static string Calc(string line, List<KeyValuePair<string, string>> variableList)
 	{
-		MatchCollection matches = new Regex("(^|\\s)(-\\d+|\\d+|[+]|-)").Matches(line);
+		MatchCollection matches = new Regex("(^|\\s)([(].+[)]|[a-zA-Z]|-[a-zA-Z]|-\\d+|\\d+|[+]|-)").Matches(line);
 
 		string operatorString = string.Empty;
 		int currentValue = 0;
 
-		List<string> testList = new();
 		foreach (Match match in matches)
 		{
 			string matchedString = match.Value.Trim();
+
+			if (new Regex("^[(].+[)]$").IsMatch(matchedString))
+				matchedString = Calc(matchedString[1..^1], variableList);
+
+			if (new Regex("(^|^[-])[a-zA-Z]$").IsMatch(matchedString))
+			{
+				Match varToSearch = new Regex("[a-zA-Z]").Match(matchedString);
+				matchedString = matchedString
+					.Replace(
+						varToSearch.Value, 
+						variableList
+							.Find(kvp => kvp.Key == varToSearch.Value)
+							.Value
+					);
+			}
+
 			if (new Regex("(^|^[-])\\d+$").IsMatch(matchedString))
 			{
-				testList.Add(matchedString);
 				if (operatorString == "+")
 				{
 					currentValue += Convert.ToInt32(matchedString);
@@ -151,11 +165,8 @@ internal class Calculator
 			else if (new Regex("^(-|[+])$").IsMatch(matchedString))
 			{
 				operatorString = matchedString;
-				testList.Add(matchedString);
 			}
 		}
 		return $"{currentValue}";
-		//return string.Join(", ", testList);
-		//return "calc";
 	}
 }

@@ -58,6 +58,8 @@ public class ExtremeOOPTests
 	[DataTestMethod]
 	[DataRow("PRINT 1 + 2 - 3", "0\n")]
 	[DataRow("PRINT 4 + -3", "1\n")]
+	[DataRow("PRINT 4 - (2 + 2)", "0\n")]
+	[DataRow("A=12\nPRINT A + 1", "13\n")]
 
 	public void PrintCalculationsTests(string input, string output)
 	{
