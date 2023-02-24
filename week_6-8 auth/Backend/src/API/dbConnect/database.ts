@@ -3,10 +3,9 @@ import path from 'path';
 const {verbose} = pkg;
 const sqlite3 = verbose();
 import fs from "fs";
-import { IProductsSQL, IStoreSQL, IUserSQL } from '../interfaces/interfaces';
+import { IProductsSQL, IStoreSQL, IUserSQL } from '../../interfaces/interfaces';
 
 const DBSOURCE = path.join("database", "db.sqlite")
-//const DBSOURCE = "./db.sqlite"
 
 const getUsersAsJson = (): Promise<IUserSQL[]> => fs.promises
   .readFile("./database/mock/User_Mock_data.json")
