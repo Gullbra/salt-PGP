@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "concurrently --kill-others \"cd frontend && npm start && cd ..\" \"cd backend && npm start && cd ..\""
+    "dev": "concurrently --kill-others \"cd backend && npm run dev && cd ..\" \"cd frontend && npm start && cd ..\""
   },
   "dependencies": {
     "concurrently": "^7.6.0"

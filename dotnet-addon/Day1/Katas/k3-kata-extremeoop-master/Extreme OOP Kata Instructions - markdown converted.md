@@ -4,14 +4,16 @@
 
 A funny and useful exercise for smart programmers of all ages
 
-The object of the game is to develop a program, following two sets of rules.
+The object of the game is to develop a program, following two sets of rules.<br><br>
 
-### TDD Rules
+### TDD Rules<br>
+
 1. You can’t write production code without a failing test
 2. You can’t have more than one failing test at a time
-3. You can’t write a new test until your code is properly refactored
+3. You can’t write a new test until your code is properly refactored<br><br>
 
-### Extreme OOP Rules
+### Extreme OOP Rules<br>
+
 1. Use only one level of indentation per method.
 2. Don’t use the elsekeyword.
 3. Wrap all primitives and strings.
@@ -20,12 +22,11 @@ The object of the game is to develop a program, following two sets of rules.
 6. Keep all entities small.
 7. Don’t use any classes with more than two instance variables.
 8. Use first-class collections.
-9. Don’t use any getters/setters/properties
+9. Don’t use any getters/setters/properties<br><br>
 
+## Explanation of the rules<br>
 
-## Explanation of the rules
-
-### Use only one level of indentation per method.
+### 1. Use only one level of indentation per method.<br>
 
 Like this:
 ```C#
@@ -35,17 +36,17 @@ void collectRows(StringBuffer buffer)
     doSomething(buf, i);
 }
 ```
+<br>
 
+### 2. Don’t use the else keyword.<br>
 
-### Don’t use the else keyword.
+Ever. You may use an early return. Other techniques like polymorphism and null objects can help.<br><br>
 
-Ever. You may use an early return. Other techniques like polymorphism and null objects can help.
+### 3. Wrap all primitives and strings<br>
 
-### Wrap all primitives and strings
+No method should have an argument that is either a primitive type or a String.<br><br>
 
-No method should have an argument that is either a primitive type or a String.
-
-### Use only one dot per line
+### 4. Use only one dot per line<br>
 
 The Pryce-McKinnon example: don’t do like this:
 
@@ -53,22 +54,23 @@ The Pryce-McKinnon example: don’t do like this:
 dog.getBody().getTail().wag();
 ```
 
+
 Do like this:
 ```C#
 dog.expressHappiness();
 ```
 
-and let the implementation decide what this means.
+and let the implementation decide what this means.<br><br>
 
-### Don’t abbreviate
+### 5. Don’t abbreviate<br>
 
-Try to keep method and class names to one or two words. 
+Try to keep method and class names to one or two words. <br><br>
 
-### Keep all entities small.
+### 6. Keep all entities small.<br>
 
-No file longer than 50 lines, no package with more than 10 files.
+No file longer than 50 lines, no package with more than 10 files.<br><br>
 
-### Don’t use any classes with more than two instance variables.
+### 7. Don’t use any classes with more than two instance variables.<br>
 
 Instead of doing this,
 
@@ -100,20 +102,21 @@ class GivenNames
   List names;
 }
 ```
+<br>
 
-### Use first-class collections
+### 8. Use first-class collections<br>
 
-If a class contains a collection, then it must be the only instance variable in that class.
+If a class contains a collection, then it must be the only instance variable in that class.<br><br>
 
-### Don’t use any getters/setters/properties
+### 9. Don’t use any getters/setters/properties<br>
 
-Tell, don’t ask. Don’t meddle in the internals of other objects. If the other object has the data, then let the other object perform the operation.
+Tell, don’t ask. Don’t meddle in the internals of other objects. If the other object has the data, then let the other object perform the operation.<br><br>
 
-### How to develop extremely OO code with TDD
+## How to develop extremely OO code with TDD<br>
 
-See the Mock Roles, not Objects paper.
+See the Mock Roles, not Objects paper.<br><br>
 
-## The exercise
+## The exercise<br>
 
 We are to develop an interpreter for (something similar to) Commodore 64 BASIC
 
@@ -254,26 +257,25 @@ PRINT 1 - (2 + 3)
 output:
 -4
 ```
+<br>
 
 ## References
 
 The idea for the whole exercise is due to:
 
-Jeff Bay, Object Calisthenics, in The ThoughtWorks Anthology, Pragmatic Bookshelf, 2008.
+* Jeff Bay, Object Calisthenics, in The ThoughtWorks Anthology, Pragmatic Bookshelf, 2008.
 
 The C64 Basic kata was mentioned in the Agile Finland wiki:
 
-http://wiki.agilefinland.com/?CodingDojo20070606
+* http://wiki.agilefinland.com/?CodingDojo20070606
 
 The rationale for the “don’t use any getters” rule is well explained in
 
-Andy Hunt, Dave Thomas: Keep It DRY, Shy, and Tell the Other Guy
-
+* Andy Hunt, Dave Thomas: Keep It DRY, Shy, and Tell the Other Guy
 http://media.pragprog.com/articles/may\_04\_oo1.pdf
 
 The mock-objects approach to TDD is explained best in:
 
-Mock Roles, not Objects by Steve Freeman, Nat Pryce, Tim Mackinnon, Joe Walnes.
-
+* Mock Roles, not Objects by Steve Freeman, Nat Pryce, Tim Mackinnon, Joe Walnes.
 http://www.jmock.org/oopsla2004.pdf
 
