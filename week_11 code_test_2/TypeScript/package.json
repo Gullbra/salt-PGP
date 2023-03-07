@@ -4,6 +4,7 @@
   "description": "a code test",
   "main": "./src/server.ts",
   "scripts": {
+    "start": "echo use \"npm run dev\" or \"npm run production\" instead",
     "dev": "nodemon ./src/server.ts",
     "transpile": "tsc *",
     "production": "node ./dist/server.js"
