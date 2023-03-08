@@ -1,0 +1,19 @@
+[
+  {
+    "user_id": "1",
+    "first_name": "Martin",
+    "last_name": "Gullbrandsson",
+    "email": "martin.gullbrandson@appliedtechnology.se",
+    "hashed_pwd": "",
+    "bookings": [
+      {
+        "route_id": "a35d65d2",
+        "flight_id": "ee1d3931"
+      },
+      {
+        "route_id": "8efc39dd",
+        "flight_id": "e1c7bbb3"
+      }
+    ]
+  }
+]

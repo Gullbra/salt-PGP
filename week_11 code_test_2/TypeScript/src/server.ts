@@ -1,35 +1,20 @@
 import express from 'express'
 import { fetcheroo } from './dataFetcher'
+import { IItinerary, IRoute, IUser } from './interfaces'
+import { validateUserMiddleware } from './validateUser'
 
 const app = express()
 app.use(express.json())
 
-const envObj = {
-  port: 3005
-}
-
-interface IItinerary {
-  flight_id: string,
-  departureAt: string,
-  arrivalAt: string,
-  availableSeats: number,
-  prices: {
-    currency: string,
-    adult: number,
-    child: number
-  }
-}
-
-interface IRoute {
-  route_id: string,
-  departureDestination: string,
-  arrivalDestination: string,
-  itineraries: IItinerary[]
-}
+const envObj = { port: 3005 }
 
 app.route('/api').get((_, res) => fetcheroo().then(data => res.json(data)))
 
-// ! Accepts query params: routeId, departure, arrival
+/**
+ *  @param routeId
+ *  @param departure
+ *  @param arrival
+ */ 
 app.route('/api/routes').get(async (req, res) => {
   fetcheroo()
     .then((routes: IRoute[]) => {
@@ -54,17 +39,22 @@ app.route('/api/routes').get(async (req, res) => {
     .catch(err => res.json(`Should not be possible, what have you done? \n\n${err.message}`))
 })
 
-// ! Accepts query params: lowLimit, highLimit, departure, arrival
+/**
+ *  @param lowLimit
+ *  @param highLimit
+ *  @param departure
+ *  @param arrival
+ */ 
 app.route('/api/routes/:routeId/itineraries').get((req, res) => {
   fetcheroo()
     .then((routes: IRoute[]) => {
       const route = routes.find(route => route.route_id === req.params.routeId)
       
-      if (!route) return res.json("Invalid routeId: No route found")
+      if (!route) 
+        return res.json("Invalid routeId: No route found")
 
-      if (!req.query.lowLimit || !req.query.highLimit || (!req.query.departure && !req.query.arrival)) {
+      if (!req.query.lowLimit || !req.query.highLimit || (!req.query.departure && !req.query.arrival))
         return route.itineraries
-      }
 
       return route.itineraries.filter(itinerary => {
         const timeItinerary = req.query.departure 
@@ -78,9 +68,11 @@ app.route('/api/routes/:routeId/itineraries').get((req, res) => {
       })
     })
     .then(filteredItineraries => res.json(filteredItineraries))
+    .catch(err => res.json({error: err.message}))
 })
 
-app.route('*').get((_, res) => res.send(`<h1>404 - Nothing here</h1>\n<p>Try <a href=\"http://localhost:${envObj.port}/api/\">/api/</a>instead<p>`))
+app.route('/api/users/:userId').patch(validateUserMiddleware, (_, res) => res.send("Not implemented"))
 
+app.route('*').get((_, res) => res.send(`<h1>404 - Nothing here</h1>\n<p>Try <a href=\"http://localhost:${envObj.port}/api/\">/api/</a>instead<p>`))
 
 app.listen(envObj.port, () => console.log(`📡 server listening to http://localhost:${envObj.port}`))
