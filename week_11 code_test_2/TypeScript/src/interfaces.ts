@@ -1,8 +1,8 @@
 export interface IItinerary {
   flight_id: string,
-  departureAt: string,
-  arrivalAt: string,
-  availableSeats: number,
+  departure_at: string,
+  arrival_at: string,
+  available_seats: number,
   prices: {
     currency: string,
     adult: number,
@@ -12,9 +12,15 @@ export interface IItinerary {
 
 export interface IRoute {
   route_id: string,
-  departureDestination: string,
-  arrivalDestination: string,
+  departure_destination: string,
+  arrival_destination: string,
   itineraries: IItinerary[]
+}
+
+export interface IBooking {
+  flight_id: string
+  adult_tickets: number,
+  child_tickets: number,
 }
 
 export interface IUser {
@@ -23,9 +29,5 @@ export interface IUser {
   last_name: string,
   email: string,
   hashed_pwd: string,
-  bookings: {
-    flight_id: string
-    adult_tickets: string,
-    child_tickets: string,
-  } []
+  bookings: IBooking[]
 }

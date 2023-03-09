@@ -1,7 +1,8 @@
 import { fetcheroo } from '../dataFetcher'
-import { martinsClient } from './database'
-import { IRoute, IUser } from '../interfaces'
+import { newClient } from './dbConnect'
+import { IUser } from '../interfaces'
 import md5 from 'md5'
+import { Client } from 'pg'
 
 const sqlDropTables = `
   DROP TABLE IF EXISTS users_bookings_table;
@@ -14,16 +15,16 @@ const sqlDropTables = `
 const sqlCreateTables = `
   CREATE TABLE IF NOT EXISTS routes_table (
     route_id CHAR(8) PRIMARY KEY,
-    departureDestination VARCHAR(40),
-    arrivalDestination VARCHAR(40)
+    departure_destination VARCHAR(40),
+    arrival_destination VARCHAR(40)
   );
 
   CREATE TABLE IF NOT EXISTS itineraries_table (
     flight_id CHAR(8) PRIMARY KEY,
-    departureAt VARCHAR(30),
-    arrivalAt VARCHAR(30),
-    availableSeats SMALLINT
-      CONSTRAINT no_overcrowding CHECK (availableSeats >= 0),
+    departure_at VARCHAR(30),
+    arrival_at VARCHAR(30),
+    available_seats SMALLINT
+      CONSTRAINT no_overcrowding CHECK (available_seats >= 0),
     route_id VARCHAR(8) REFERENCES routes_table
       ON DELETE RESTRICT
   );
@@ -56,17 +57,17 @@ const sqlCreateTables = `
 const sqlInsertIntoRoutes = `
   INSERT INTO routes_table(
     route_id,
-    departureDestination,
-    arrivalDestination
+    departure_destination,
+    arrival_destination
   )
   VALUES( $1, $2, $3 );
 `
 const sqlInsertIntoItineraries = `
   INSERT INTO itineraries_table(
     flight_id,
-    departureAt,
-    arrivalAt,
-    availableSeats,
+    departure_at,
+    arrival_at,
+    available_seats,
     route_id
   )
   VALUES( $1, $2, $3, $4, $5 );
@@ -100,8 +101,25 @@ const sqlInsertIntoBookings = `
   VALUES( $1, $2, $3, $4 );
 `
 
+interface IItinerary {
+  flight_id: string,
+  departureAt: string,
+  arrivalAt: string,
+  availableSeats: number,
+  prices: {
+    currency: string,
+    adult: number,
+    child: number
+  }
+}
+interface IRoute {
+  route_id: string,
+  departureDestination: string,
+  arrivalDestination: string,
+  itineraries: IItinerary[]
+}
 
-export const purgedb = async () => {
+const dbPurge = async (martinsClient: Client) => {
   console.log("🔥 Purging db...")
 
   return martinsClient.query(sqlDropTables)
@@ -111,12 +129,12 @@ export const purgedb = async () => {
 }
 
 
-export const initdb = async () => {
-  await martinsClient.connect()
-  await purgedb()
+export const dbInit = async () => {
+  const martinsClient = await newClient()
+  await dbPurge(martinsClient)
   console.log("🛠 Initializing db...")
 
-  const jsonPromiseFlightData: Promise<IRoute[]> = fetcheroo('data')
+  const jsonPromiseFlightData: Promise<IRoute[] & { departureAt: string, arrivalDestination: string,  }> = fetcheroo('data')
   const jsonPromiseUserData: Promise<IUser[]> = fetcheroo('users')
   const dbPromises: Promise<any>[] = [];
 
@@ -128,7 +146,7 @@ export const initdb = async () => {
     dbPromises.push(
       martinsClient.query(sqlInsertIntoRoutes, [ route.route_id, route.departureDestination, route.arrivalDestination ])
         .then(() => {
-          route.itineraries.forEach( async (itinerary) => {
+          route.itineraries.forEach(async(itinerary) => {
             martinsClient.query(sqlInsertIntoItineraries, [
               itinerary.flight_id,
               itinerary.departureAt,
@@ -162,7 +180,7 @@ export const initdb = async () => {
             md5(user.hashed_pwd)
           ])
           .then(() => {
-            user.bookings.forEach( async (booking) => {
+            user.bookings.forEach(async(booking) => {
               martinsClient.query(sqlInsertIntoBookings, [
                 user.user_id,
                 booking.flight_id,
