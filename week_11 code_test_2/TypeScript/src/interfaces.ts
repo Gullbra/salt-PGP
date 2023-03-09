@@ -24,7 +24,8 @@ export interface IUser {
   email: string,
   hashed_pwd: string,
   bookings: {
-    route_id: string,
     flight_id: string
+    adult_tickets: string,
+    child_tickets: string,
   } []
 }

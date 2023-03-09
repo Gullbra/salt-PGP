@@ -4,15 +4,17 @@
     "first_name": "Martin",
     "last_name": "Gullbrandsson",
     "email": "martin.gullbrandson@appliedtechnology.se",
-    "hashed_pwd": "",
+    "hashed_pwd": "I'm Just Awesome",
     "bookings": [
       {
-        "route_id": "a35d65d2",
-        "flight_id": "ee1d3931"
+        "flight_id": "ee1d3931",
+        "adult_tickets": 1,
+        "child_tickets": 0
       },
       {
-        "route_id": "8efc39dd",
-        "flight_id": "e1c7bbb3"
+        "flight_id": "e1c7bbb3",
+        "adult_tickets": 6,
+        "child_tickets": 0
       }
     ]
   }

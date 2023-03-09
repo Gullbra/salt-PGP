@@ -124,4 +124,4 @@ app.route('/api/users/:userId/bookings').all(validateUserMiddleware)
 
 app.route('*').get((_, res) => res.send(`<h1>404 - Nothing here</h1>\n<p>Try <a href=\"http://localhost:${envObj.port}/api/\">/api/</a>instead<p>`))
 
-app.listen(envObj.port, () => console.log(`📡 server listening to http://localhost:${envObj.port}`))
+app.listen(envObj.port, () => console.log(`📡 server listening to http://localhost:${envObj.port}\n`))
