@@ -1,15 +1,22 @@
 import { RequestHandler } from "express"
 
 export const validateUserMiddleware: RequestHandler = (req, res, next) => {
-  if (!req.body.email) 
-    return res.status(401).json({error: "No email/username provided"})
 
-  if (!req.body.password) 
-    return res.status(401).json({error: "No password provided"})
+  console.log("\nValidation: not implemented\n")
+  next()
 
-  return validateUser(req.body.email, req.body.password)
-    ? res.status(401).json({error: "Validation failed"})
-    : next()
+  // if (!req.params.userId)
+  //   return 
+
+  // if (!req.body.email) 
+  //   return res.status(401).json({error: "No email/username provided"})
+
+  // if (!req.body.password) 
+  //   return res.status(401).json({error: "No password provided"})
+
+  // return validateUser(req.body.email, req.body.password)
+  //   ? next()
+  //   : res.status(401).json({error: "Validation failed"})
 }
 
 export const validateUser = (email: string, password: string) => {
