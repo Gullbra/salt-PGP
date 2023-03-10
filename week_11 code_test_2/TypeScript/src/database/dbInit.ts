@@ -1,4 +1,4 @@
-import { fetcheroo } from '../dataFetcher'
+import { fetcheroo } from './dataFetcher'
 import { newClient } from './dbConnect'
 import { IUser } from '../interfaces'
 import md5 from 'md5'
