@@ -5,6 +5,20 @@ import { QueryResult } from 'pg';
 
 export const router = express.Router();
 
+const objectifyItinerary = ((itinerary:IItinerary & IPrices) => {
+  return {
+    flight_id: itinerary.flight_id,
+    departure_at: itinerary.departure_at,
+    arrival_at: itinerary.arrival_at,
+    available_seats: itinerary.available_seats,
+    prices: {
+      currency: itinerary.currency,
+      adult: itinerary.adult,
+      child: itinerary.child
+    }
+  }
+})
+
 
 /**
  *  @param lowLimit
@@ -67,7 +81,7 @@ router.route('/api/routes/:routeId/itineraries')
           FROM itineraries_table it
             INNER JOIN prices_table pr
               ON it.flight_id = pr.flight_id
-          WHERE it.route_id = $1 AND ${queryColumn} >= $2 AND ${queryColumn} =< $3
+          WHERE it.route_id = $1 AND ${queryColumn} > $2 AND ${queryColumn} < $3
           ORDER BY ${queryColumn};
         `, 
         [req.params.routeId, limits[0], limits[1]]
@@ -75,6 +89,29 @@ router.route('/api/routes/:routeId/itineraries')
     }) ()
     
     queryPromise 
-      .then(queryRes => res.json(queryRes.rows))
+      .then(queryRes => res.json(queryRes.rows.map(itinerary => objectifyItinerary(itinerary))))
       .catch(err => res.json({error: err.message}))
+  })
+
+router.route('/api/routes/:routeId/itineraries/:flightId')
+  .get(async(req, res) => {
+    const martinsClient = await newClient()
+  
+    martinsClient.query(
+      `
+        SELECT it.*, pr.currency, pr.adult, pr.child
+        FROM itineraries_table it
+          INNER JOIN prices_table pr
+            ON it.flight_id = pr.flight_id
+        WHERE it.route_id = $1 AND it.flight_id = $2
+      `, 
+      [req.params.routeId, req.params.flightId]
+    )
+    .then((res: QueryResult<IItinerary & IPrices>) => res.rows)
+    .then(itineraries => {
+      return itineraries.length === 0 
+        ? res.json({error: "No such itinerary. Return to sender."})
+        : res.json(objectifyItinerary(itineraries[0]))
+    })
+    .catch(err => res.json({err: err.message}))    
   })

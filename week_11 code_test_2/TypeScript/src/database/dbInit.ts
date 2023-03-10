@@ -136,14 +136,14 @@ export const dbInit = async () => {
 
   const jsonPromiseFlightData: Promise<IRawRoute[]> = fetcheroo('data')
   const jsonPromiseUserData: Promise<IUser[]> = fetcheroo('users')
-  const dbPromises: Promise<any>[] = [];
+  const promiseCollection: Promise<any>[] = [];
 
   await martinsClient.query(sqlCreateTables)
     .then(() => console.log("... ✔ All tables created"))
     .catch(err => console.log({status: "... ❌ All tables NOT created", error: err.message}));
 
   (await jsonPromiseFlightData).forEach(async(route) => {
-    dbPromises.push(
+    promiseCollection.push(
       martinsClient.query(sqlInsertIntoRoutes, [ route.route_id, route.departureDestination, route.arrivalDestination ])
         .then(() => {
           route.itineraries.forEach(async(itinerary) => {
@@ -166,12 +166,12 @@ export const dbInit = async () => {
     )
   });
 
-  Promise.all([jsonPromiseUserData, ...dbPromises])
+  Promise.all([jsonPromiseUserData, ...promiseCollection])
     .then((res) => {
-      dbPromises.length = 0
+      promiseCollection.length = 0
 
       res[0].forEach(async(user) => {
-        dbPromises.push(
+        promiseCollection.push(
           martinsClient.query(sqlInsertIntoUsers, [
             user.user_id,
             user.first_name,
@@ -192,9 +192,9 @@ export const dbInit = async () => {
         )
       })
 
-      Promise.all(dbPromises)
-        .catch(err => console.log({status: "... ❌ All data NOT inserted", error: err.message}))
+      Promise.all(promiseCollection)
         .then(() => console.log("... ✔ All data inserted"))
+        .catch(err => console.log({status: "... ❌ All data NOT inserted", error: err.message}))
         .finally(() => console.log("db init done, innit'?\n"))
     })
     .catch(err => console.log({status: "... ❌ All data NOT inserted", error: err.message}))

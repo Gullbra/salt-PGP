@@ -31,24 +31,25 @@ router.route('/api/routes')
       })
       .then(filteredRoutes => res.json({status: "Successful retrieval!", data: filteredRoutes}))
       .catch(err => res.json({error: err.message}))
-      .finally(() => martinsClient.end())
   })
 
 router.route('/api/routes/:routeId')
   .get(async (req, res) => {
     const martinsClient = await newClient()
   
-    martinsClient.query(`
-      SELECT * FROM routes_table 
-      WHERE route_id = $1
-    `, [req.params.routeId]
+    martinsClient.query(
+      `
+        SELECT * FROM routes_table 
+        WHERE route_id = $1
+      `, 
+      [req.params.routeId]
     )
     .then((res: QueryResult<IRoute>) => res.rows)
     .then(routes => {
-      if (routes.length === 0)
-        return res.json({error: "No such route. Return to sender."})
-  
-      return res.json({status: "Successful retrieval!", data: routes[0]})
+      return routes.length === 0 
+        ? res.json({error: "No such route. Return to sender."})
+        : res.json({status: "Successful retrieval!", data: routes[0]})
     })
+    .catch(err => res.json({err: err.message}))
   })
 
