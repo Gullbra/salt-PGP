@@ -3,11 +3,18 @@ export interface IItinerary {
   departure_at: string,
   arrival_at: string,
   available_seats: number,
-  prices: {
+  prices?: {
     currency: string,
     adult: number,
     child: number
   }
+}
+
+export interface IPrices {
+  flight_id: string,
+  currency: string,
+  adult: number,
+  child: number  
 }
 
 export interface IRoute {

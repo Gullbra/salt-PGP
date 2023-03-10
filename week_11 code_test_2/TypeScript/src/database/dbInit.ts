@@ -21,8 +21,8 @@ const sqlCreateTables = `
 
   CREATE TABLE IF NOT EXISTS itineraries_table (
     flight_id CHAR(8) PRIMARY KEY,
-    departure_at VARCHAR(30),
-    arrival_at VARCHAR(30),
+    departure_at TIMESTAMPTZ,
+    arrival_at TIMESTAMPTZ,
     available_seats SMALLINT
       CONSTRAINT no_overcrowding CHECK (available_seats >= 0),
     route_id VARCHAR(8) REFERENCES routes_table
@@ -101,7 +101,7 @@ const sqlInsertIntoBookings = `
   VALUES( $1, $2, $3, $4 );
 `
 
-interface IItinerary {
+interface IRawItinerary {
   flight_id: string,
   departureAt: string,
   arrivalAt: string,
@@ -112,11 +112,11 @@ interface IItinerary {
     child: number
   }
 }
-interface IRoute {
+interface IRawRoute {
   route_id: string,
   departureDestination: string,
   arrivalDestination: string,
-  itineraries: IItinerary[]
+  itineraries: IRawItinerary[]
 }
 
 const dbPurge = async (martinsClient: Client) => {
@@ -134,7 +134,7 @@ export const dbInit = async () => {
   await dbPurge(martinsClient)
   console.log("🛠 Initializing db...")
 
-  const jsonPromiseFlightData: Promise<IRoute[] & { departureAt: string, arrivalDestination: string,  }> = fetcheroo('data')
+  const jsonPromiseFlightData: Promise<IRawRoute[]> = fetcheroo('data')
   const jsonPromiseUserData: Promise<IUser[]> = fetcheroo('users')
   const dbPromises: Promise<any>[] = [];
 
