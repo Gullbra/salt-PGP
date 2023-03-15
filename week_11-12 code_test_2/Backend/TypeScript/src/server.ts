@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 
 import { dbInit } from './database/dbInit'
 import { router as flightRoutesEnpoints } from "./routes/flightRoutesEnpoints";
@@ -9,6 +10,7 @@ const app = express()
 const envObj = { port: 3005 }
 
 app.use(express.json())
+app.use(cors({ origin: ['http://localhost:3000'] }))
 app.use('/', flightRoutesEnpoints)
 app.use('/', itinerariesEndpoints)
 app.use('/', usersEnpoints)

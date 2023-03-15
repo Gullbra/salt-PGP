@@ -3,7 +3,6 @@ export interface IItinerary {
   departure_at: string,
   arrival_at: string,
   available_seats: number,
-  route_id? : string
   prices?: {
     currency: string,
     adult: number,
