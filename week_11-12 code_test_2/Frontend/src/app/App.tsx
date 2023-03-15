@@ -18,12 +18,12 @@ interface IRoutesState {
   } []
 }
 
-interface IItinerariesState {
+interface IItineraryState {
   flightId: string,
   departureAt: string,
   arrivalAt: string,
   availableSeats: number,
-  routeId? : string
+  routeId?: string
   prices?: {
     currency: string,
     adult: number,
@@ -31,16 +31,13 @@ interface IItinerariesState {
   }
 }
 
+
+
 function App() {
   const [ routesState, setRoutesState ] = useState<IRoutesState>({} as IRoutesState)
-  const [ itinerariesState, setItinerariesState ] = useState<IItinerariesState[]>({} as IItinerariesState[])
-  // const [departureDate, setDepartureDate] = useState<Date>(new Date())
-  // const [arrivalDate, setArrivalDate] = useState<Date>(new Date())
-  // const [flightsState, setFlightsState] = useState<any>(null)
+  const [ flightsToShow, setflightsToShow ] = useState<IItineraryState[]>({} as IItineraryState[])
 
   const refForm = useRef<HTMLFormElement>(null)
-
-  console.log(routesState)
 
   useEffect(() => {
     if (firstRender) {
@@ -48,21 +45,21 @@ function App() {
 
       myFetcheroo('routes')
         .then((response: { data: IRoute[] }) => {
-          const availableDestinations = (() => {
-            const departureSet = new Set<string>()
-            const arrivalSet = new Set<string>()
-
-            response.data.forEach(route => {
-              departureSet.add(route.departure_destination)
-              arrivalSet.add(route.arrival_destination)
-            })
-
-            return [Array.from(departureSet), Array.from(arrivalSet)]
-          })()
-
           setRoutesState({
-            availableDeparturesDest: availableDestinations[0],
-            availableArrivalsDest: availableDestinations[1],
+            ...(() => {
+              const departureSet = new Set<string>()
+              const arrivalSet = new Set<string>()
+  
+              response.data.forEach(route => {
+                departureSet.add(route.departure_destination)
+                arrivalSet.add(route.arrival_destination)
+              })
+  
+              return { 
+                availableDeparturesDest: Array.from(departureSet), 
+                availableArrivalsDest: Array.from(arrivalSet) 
+              }
+            }) (),
             routes: response.data.map(route => {
               return {
                 routeId: route.route_id,
@@ -73,12 +70,47 @@ function App() {
           })
         })
         .catch(err => console.log(err.message))
+        .finally(() => console.log("📮 Axios called"))
     }
   })
 
   const formHandleroo = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); 
-    window.alert("Form to send! Not Implemented")
+    event.preventDefault();
+
+    const mockObj  = {
+      departureDestination: "Stockholm",
+      arrivalDestination: "Oslo",
+
+      lowLimit: "2023-03-28T11:00:00.000Z",
+      highLimit: "2023-04-03T13:00:00.000Z",
+      queryType: "timeDeparture"
+    }
+
+    const desiredRoute = routesState.routes.find(route => { return (
+      route.arrivalDestination === mockObj.arrivalDestination &&
+      route.departureDestination === mockObj.departureDestination
+    )})
+
+    if (!desiredRoute)
+      {console.log("Error: No route found!"); return setflightsToShow([])}
+
+    const endpoint = `routes/${desiredRoute.routeId}/itineraries`
+
+    const queryParams = {
+      lowLimit: mockObj.lowLimit,
+      highLimit: mockObj.highLimit,
+      queryType: mockObj.queryType
+    }
+
+    /** 
+     * @param lowLimit
+     * @param highLimit
+     * @param queryType (priceAdult, priceChild, timeDeparture, timeArrival)
+    */
+    myFetcheroo(endpoint, { params: queryParams })
+      .then(response => console.log(response))
+      .catch(err => console.log(err.message))
+      .finally(() => console.log("📮 Axios called"))
   }
 
 
@@ -104,8 +136,11 @@ function App() {
           <p className='selection-wrapper__asterisk'>{"*as long as you're going to Oslo, Sthlm or Amsterdam. No baggage on flight."}</p>
 
           <form onSubmit={formHandleroo} ref={refForm}>
-            <input type="text" />
-            <input type="submit" />
+            {/* 
+              <label htmlFor=""></label>
+              <input type="text" />
+            */}
+            <input type="submit" /> 
             {/* <ReactDatePicker
               // showIcon
               selected={departureDate}
