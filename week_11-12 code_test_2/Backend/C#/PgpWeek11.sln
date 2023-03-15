@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonRead", "JsonRead\JsonRead.csproj", "{671CB591-F80E-449F-B648-035CC0F57965}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{7BBFA43A-C9C1-4C62-BB4C-0AF2B6156317}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightFinder", "API\FlightFinder.csproj", "{D85B9D43-E9EF-4E56-B067-4F7346F1428B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{671CB591-F80E-449F-B648-035CC0F57965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{671CB591-F80E-449F-B648-035CC0F57965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{671CB591-F80E-449F-B648-035CC0F57965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{671CB591-F80E-449F-B648-035CC0F57965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BBFA43A-C9C1-4C62-BB4C-0AF2B6156317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BBFA43A-C9C1-4C62-BB4C-0AF2B6156317}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BBFA43A-C9C1-4C62-BB4C-0AF2B6156317}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BBFA43A-C9C1-4C62-BB4C-0AF2B6156317}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85B9D43-E9EF-4E56-B067-4F7346F1428B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85B9D43-E9EF-4E56-B067-4F7346F1428B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85B9D43-E9EF-4E56-B067-4F7346F1428B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85B9D43-E9EF-4E56-B067-4F7346F1428B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

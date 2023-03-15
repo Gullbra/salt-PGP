@@ -136,7 +136,7 @@ export const dbInit = async () => {
 
   const jsonPromiseFlightData: Promise<IRawRoute[]> = fetcheroo('data')
   const jsonPromiseUserData: Promise<IUser[]> = fetcheroo('users')
-  const promiseCollection: Promise<any>[] = [];
+  const promiseCollection: Promise<void>[] = [];
 
   await martinsClient.query(sqlCreateTables)
     .then(() => console.log("... ✔ All tables created"))
