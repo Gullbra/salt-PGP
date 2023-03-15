@@ -56,3 +56,40 @@ react-render {
 .site-selection__selection-wrapper {
   width: var(--width-content);
 }
+
+.site__flights-display {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flights-display__display-wrapper {
+  width: var(--width-content);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.display-wrapper__route-display{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.2rem 0.4rem;
+
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+
+  border: 1px solid black;
+  border-radius: 0.5rem;
+
+  height: 10rem;
+  width: 100%;
+}
+.route-display__time-display {
+  background-color: aquamarine;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+}

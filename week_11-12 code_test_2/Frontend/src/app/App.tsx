@@ -4,7 +4,7 @@ import { myFetcheroo } from './util/myFetcheroo';
 
 import './styles/base.css';
 import "react-datepicker/dist/react-datepicker.css";
-import { IRoute } from './util/interfaces';
+import { IRoute, IItinerary } from './util/interfaces';
 
 let firstRender = true
 
@@ -23,7 +23,11 @@ interface IItineraryState {
   departureAt: string,
   arrivalAt: string,
   availableSeats: number,
-  routeId?: string
+  route?: {
+    routeId: string,
+    departureDestination: string,
+    arrivalDestination: string,
+  },
   prices?: {
     currency: string,
     adult: number,
@@ -31,11 +35,9 @@ interface IItineraryState {
   }
 }
 
-
-
 function App() {
   const [ routesState, setRoutesState ] = useState<IRoutesState>({} as IRoutesState)
-  const [ flightsToShow, setflightsToShow ] = useState<IItineraryState[]>({} as IItineraryState[])
+  const [ flightsToShow, setflightsToShow ] = useState<IItineraryState[]>([])
 
   const refForm = useRef<HTMLFormElement>(null)
 
@@ -108,11 +110,25 @@ function App() {
      * @param queryType (priceAdult, priceChild, timeDeparture, timeArrival)
     */
     myFetcheroo(endpoint, { params: queryParams })
-      .then(response => console.log(response))
+      .then((response: IItinerary[]) => setflightsToShow(
+        response.map(itinerary => {
+          return {
+            flightId: itinerary.flight_id,
+            departureAt: itinerary.departure_at,
+            arrivalAt: itinerary.arrival_at,
+            availableSeats: itinerary.available_seats,
+            route: { ...desiredRoute },
+            ...(() => {
+              if (itinerary.prices)
+                return { prices: {...itinerary.prices} }
+              return {}
+            }) ()
+          }
+        })
+      ))
       .catch(err => console.log(err.message))
       .finally(() => console.log("📮 Axios called"))
   }
-
 
   return (
     <>
@@ -148,9 +164,51 @@ function App() {
             /> */}
             
           </form>
-
         </flex-wrapper>
       </section>
+
+      {flightsToShow.length > 0 && (
+        <section className='site__flights-display'>
+          <flex-wrapper class='flights-display__display-wrapper'>
+            {
+            flightsToShow.map(flight => (
+              <article key={flight.flightId} className='display-wrapper__route-display'>
+                <div className='route-display__time-display'>
+                  <div className='time-display__departure-box'>
+                    <p>{new Date(flight.departureAt).toLocaleDateString().split(' ')[0]}</p>
+                    <p>{new Date(flight.departureAt).toLocaleTimeString().split(' ')[0]}</p>
+                    <h3>{flight.route?.departureDestination}</h3>
+                  </div>
+
+                  <div className='time-display__duration-box'>
+                    <p>{`- ${
+                      (() => {
+                        const timeDiffInMin = Math.round((new Date(flight.arrivalAt).getTime() - new Date(flight.departureAt).getTime())/(1000 * 60))
+
+                        return `${Math.floor(timeDiffInMin/60)} h ${timeDiffInMin % 60} min`
+                      }) ()
+                    } -`}</p>
+                  </div>
+
+                  <div className='time-display__arrival-box'>
+                    <p>{new Date(flight.arrivalAt).toLocaleDateString().split(' ')[0]}</p>
+                    <p>{new Date(flight.arrivalAt).toLocaleTimeString().split(' ')[0]}</p>
+                    <h3>{flight.route?.arrivalDestination}</h3>
+                  </div>
+
+                </div>
+                
+                <div>
+                  <h4>Prices:</h4>
+                  <p>{`Per Adult: ${flight.prices?.adult} ${flight.prices?.currency}`}</p>
+                  <p>{`Per Child: ${flight.prices?.child} ${flight.prices?.currency}`}</p>
+                </div>
+              </article>
+            ))
+            }
+          </flex-wrapper>
+        </section>
+      )}
     </>
   );
 }
