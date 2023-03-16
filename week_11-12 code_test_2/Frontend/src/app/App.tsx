@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactDatePicker from 'react-datepicker';
-import SelectSearch from 'react-select-search'
-import 'react-select-search/style.css'
+import ReactDatePicker from 'react-datepicker'; 
+  import "react-datepicker/dist/react-datepicker.css";
+import SelectSearch from 'react-select-search'; 
+  import 'react-select-search/style.css';
 
 import './styles/base.css';
-import "react-datepicker/dist/react-datepicker.css";
 import { IRoute, IItinerary } from './util/interfaces';
 import { myFetcheroo } from './util/myFetcheroo';
 
@@ -37,12 +37,24 @@ interface IItineraryState {
   }
 }
 
+interface IQueryParams {
+  departureDestination: string,
+  arrivalDestination: string,
+
+  lowLimit: number,
+  highLimit: number,
+  queryType: string,
+}
+
 function App() {
   const [ routesState, setRoutesState ] = useState<IRoutesState>({} as IRoutesState)
   const [ flightsToShow, setflightsToShow ] = useState<IItineraryState[]>([])
+  const [ queryParamsState, setQueryParamsState ] = useState<IQueryParams>({
+    lowLimit: Date.now(),
+    highLimit: Date.now()+1000*3600*24*7
+  } as IQueryParams)
+  console.log(queryParamsState)
 
-  const refDepartureSelect = useRef<HTMLSelectElement>(null)
-  const refArrivalSelect = useRef<HTMLSelectElement>(null)
 
   useEffect(() => {
     if (firstRender) {
@@ -78,7 +90,7 @@ function App() {
         .finally(() => console.log("📮 Axios called"))
     }
   })
-
+    
   const formHandleroo = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -88,8 +100,18 @@ function App() {
       queryType: "timeDeparture"
     }
 
-    const inputDepartureDest = refDepartureSelect.current?.value
-    const inputArrivalDest = refArrivalSelect.current?.value
+    const inputDepartureDest = queryParamsState?.departureDestination
+    const inputArrivalDest = queryParamsState?.arrivalDestination
+
+    const { inputLowLimit, inputHighLimit } = (() => {
+      if (["timeDeparture", "timeArrival"].includes(mockObj.queryType)) {
+        return {
+          inputLowLimit: new Date(queryParamsState.lowLimit).toLocaleString(),
+          inputHighLimit: new Date(queryParamsState.highLimit).toLocaleString()
+        }
+      }
+      return {inputLowLimit: "", inputHighLimit: ""}
+    }) ()
 
     if (!inputDepartureDest || !inputArrivalDest)
       {console.log("Error: Input destinations error!"); return setflightsToShow([])}
@@ -105,8 +127,8 @@ function App() {
     const endpoint = `routes/${desiredRoute.routeId}/itineraries`
 
     const queryParams = {
-      lowLimit: mockObj.lowLimit,
-      highLimit: mockObj.highLimit,
+      lowLimit: inputLowLimit,
+      highLimit: inputHighLimit,
       queryType: mockObj.queryType
     }
 
@@ -159,40 +181,42 @@ function App() {
 
           {routesState?.availableDeparturesDest && routesState?.availableArrivalsDest && (
             <form className='selection-wrapper__selection-form' onSubmit={formHandleroo}>
-              {/* 
-              {routesState?.availableArrivalsDest && (
-                <SelectSearch
-                  options={routesState.availableDeparturesDest.map(item => {return {name: item, value: item}})} 
-                  search
-                  placeholder='...choose departure destination'
-                />
-              )} 
-              */}
-              <select ref={refDepartureSelect} className='selection-form__departure-dest' required>
-                <option value="">...Where from?</option>
+              <SelectSearch
+                options={routesState.availableDeparturesDest.map(item => {return {name: item, value: item}})} 
+                search
+                value={queryParamsState.departureDestination}
+                onChange={(value) => setQueryParamsState((prev) => {return {...prev, departureDestination: String(value)}})}
+                placeholder='...choose departure destination'
+              />
+              <SelectSearch
+                options={routesState.availableArrivalsDest.map(item => {return {name: item, value: item}})} 
+                search
+                value={queryParamsState.arrivalDestination}
+                onChange={(value) => setQueryParamsState((prev) => {return {...prev, arrivalDestination: String(value)}})}
+                placeholder='...choose arrival destination'
+              />
 
-                {routesState.availableDeparturesDest.map(dest => (
-                  <option key={dest} value={dest}>{dest}</option>
-                ))}
-              </select>
+              
+              <ReactDatePicker
+                showTimeSelect
+                selected={new Date(queryParamsState.lowLimit)}
+                onChange={(value) => setQueryParamsState((prev) => { return value ? {...prev, lowLimit: value.getTime()} : prev })}
+                startDate={new Date(queryParamsState.lowLimit)}
+                endDate={new Date(queryParamsState.highLimit)}
+                maxDate={new Date(queryParamsState.highLimit)}
+              />
+              <ReactDatePicker
+                showTimeSelect
+                selected={new Date(queryParamsState.highLimit)}
+                onChange={(value) => setQueryParamsState((prev) => { return value ? {...prev, highLimit: value.getTime()} : prev })}
+                startDate={new Date(queryParamsState.lowLimit)}
+                endDate={new Date(queryParamsState.highLimit)}
+                minDate={new Date(queryParamsState.lowLimit)}
+              /> 
 
-              <select ref={refArrivalSelect} className='selection-form__arrival-dest' required>
-                <option value="">...Where to?</option>
-
-                {routesState.availableArrivalsDest.map(dest => (
-                  <option key={dest} value={dest}>{dest}</option>
-                ))}
-              </select>
-
+             
               <button type="submit">Find Flights</button> 
 
-              {/* 
-              <ReactDatePicker
-                // showIcon
-                selected={departureDate}
-                onChange={(date: Date) => setDepartureDate(date)}
-              /> 
-              */}
               
             </form>
           )}

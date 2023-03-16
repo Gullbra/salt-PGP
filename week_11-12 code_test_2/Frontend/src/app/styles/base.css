@@ -53,6 +53,8 @@ react-render {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  z-index: 100;
 }
 .site-header__header-wrapper {
   padding-left: 1rem;
