@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactDatePicker from 'react-datepicker';
-import { myFetcheroo } from './util/myFetcheroo';
+import SelectSearch from 'react-select-search'
+import 'react-select-search/style.css'
 
 import './styles/base.css';
 import "react-datepicker/dist/react-datepicker.css";
 import { IRoute, IItinerary } from './util/interfaces';
+import { myFetcheroo } from './util/myFetcheroo';
 
 let firstRender = true
 
@@ -39,7 +41,8 @@ function App() {
   const [ routesState, setRoutesState ] = useState<IRoutesState>({} as IRoutesState)
   const [ flightsToShow, setflightsToShow ] = useState<IItineraryState[]>([])
 
-  const refForm = useRef<HTMLFormElement>(null)
+  const refDepartureSelect = useRef<HTMLSelectElement>(null)
+  const refArrivalSelect = useRef<HTMLSelectElement>(null)
 
   useEffect(() => {
     if (firstRender) {
@@ -80,17 +83,20 @@ function App() {
     event.preventDefault();
 
     const mockObj  = {
-      departureDestination: "Stockholm",
-      arrivalDestination: "Oslo",
-
       lowLimit: "2023-03-28T11:00:00.000Z",
       highLimit: "2023-04-03T13:00:00.000Z",
       queryType: "timeDeparture"
     }
 
+    const inputDepartureDest = refDepartureSelect.current?.value
+    const inputArrivalDest = refArrivalSelect.current?.value
+
+    if (!inputDepartureDest || !inputArrivalDest)
+      {console.log("Error: Input destinations error!"); return setflightsToShow([])}
+
     const desiredRoute = routesState.routes.find(route => { return (
-      route.arrivalDestination === mockObj.arrivalDestination &&
-      route.departureDestination === mockObj.departureDestination
+      route.arrivalDestination === inputArrivalDest &&
+      route.departureDestination === inputDepartureDest
     )})
 
     if (!desiredRoute)
@@ -135,8 +141,8 @@ function App() {
       <header className='site__site-header'>
         <flex-wrapper class='site-header__header-wrapper'>
           <flex-wrapper class='header-wrapper__title-wrapper'>
-            <h1 className='header-wrapper__main-title'>Icarius Travels</h1>
-            <p className='header-wrapper__sub-title'>We aim for the f***ing sun</p>
+            <h1 className='header-wrapper__main-title'><i>Icarus Travels</i></h1>
+            <p className='header-wrapper__sub-title'>We'll get you to the sun, or die trying</p>
           </flex-wrapper>
 
           <flex-wrapper class='header-wrapper__menu-wrapper'>
@@ -151,27 +157,52 @@ function App() {
           <p className='selection-wrapper__desc'>{"One-way or return? Expensive or cheap? We've got just the right flight for you!*"}</p>
           <p className='selection-wrapper__asterisk'>{"*as long as you're going to Oslo, Sthlm or Amsterdam. No baggage on flight."}</p>
 
-          <form onSubmit={formHandleroo} ref={refForm}>
-            {/* 
-              <label htmlFor=""></label>
-              <input type="text" />
-            */}
-            <input type="submit" /> 
-            {/* <ReactDatePicker
-              // showIcon
-              selected={departureDate}
-              onChange={(date: Date) => setDepartureDate(date)}
-            /> */}
-            
-          </form>
+          {routesState?.availableDeparturesDest && routesState?.availableArrivalsDest && (
+            <form className='selection-wrapper__selection-form' onSubmit={formHandleroo}>
+              {/* 
+              {routesState?.availableArrivalsDest && (
+                <SelectSearch
+                  options={routesState.availableDeparturesDest.map(item => {return {name: item, value: item}})} 
+                  search
+                  placeholder='...choose departure destination'
+                />
+              )} 
+              */}
+              <select ref={refDepartureSelect} className='selection-form__departure-dest' required>
+                <option value="">...Where from?</option>
+
+                {routesState.availableDeparturesDest.map(dest => (
+                  <option key={dest} value={dest}>{dest}</option>
+                ))}
+              </select>
+
+              <select ref={refArrivalSelect} className='selection-form__arrival-dest' required>
+                <option value="">...Where to?</option>
+
+                {routesState.availableArrivalsDest.map(dest => (
+                  <option key={dest} value={dest}>{dest}</option>
+                ))}
+              </select>
+
+              <button type="submit">Find Flights</button> 
+
+              {/* 
+              <ReactDatePicker
+                // showIcon
+                selected={departureDate}
+                onChange={(date: Date) => setDepartureDate(date)}
+              /> 
+              */}
+              
+            </form>
+          )}
         </flex-wrapper>
       </section>
 
       {flightsToShow.length > 0 && (
         <section className='site__flights-display'>
           <flex-wrapper class='flights-display__display-wrapper'>
-            {
-            flightsToShow.map(flight => (
+            {flightsToShow.map(flight => (
               <article key={flight.flightId} className='display-wrapper__route-display'>
                 <div className='route-display__time-display'>
                   <div className='time-display__departure-box'>
@@ -184,7 +215,6 @@ function App() {
                     <p>{`- ${
                       (() => {
                         const timeDiffInMin = Math.round((new Date(flight.arrivalAt).getTime() - new Date(flight.departureAt).getTime())/(1000 * 60))
-
                         return `${Math.floor(timeDiffInMin/60)} h ${timeDiffInMin % 60} min`
                       }) ()
                     } -`}</p>
@@ -204,8 +234,7 @@ function App() {
                   <p>{`Per Child: ${flight.prices?.child} ${flight.prices?.currency}`}</p>
                 </div>
               </article>
-            ))
-            }
+            ))}
           </flex-wrapper>
         </section>
       )}
