@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactDatePicker from 'react-datepicker'; 
-  import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css";
 import SelectSearch from 'react-select-search'; 
-  import 'react-select-search/style.css';
+import 'react-select-search/style.css';
 
 import './styles/base.css';
 import { IRoute, IItinerary } from './util/interfaces';
@@ -46,15 +46,22 @@ interface IQueryParams {
   queryType: string,
 }
 
+interface ISortingState {
+  value: string,
+  direction: string
+}
+
 function App() {
   const [ routesState, setRoutesState ] = useState<IRoutesState>({} as IRoutesState)
   const [ flightsToShow, setflightsToShow ] = useState<IItineraryState[]>([])
   const [ queryParamsState, setQueryParamsState ] = useState<IQueryParams>({
     lowLimit: Date.now(),
-    highLimit: Date.now()+1000*3600*24*7
+    highLimit: Date.now() + 1000*3600*24*7
   } as IQueryParams)
-  console.log(queryParamsState)
-
+  const [ sortingState, setSortingState ] = useState<ISortingState>({
+    value: "departureAt",
+    direction: "ascending"
+  })
 
   useEffect(() => {
     if (firstRender) {
@@ -158,6 +165,40 @@ function App() {
       .finally(() => console.log("📮 Axios called"))
   }
 
+  const sortFunction = (a: IItineraryState, b: IItineraryState) => {
+    if(sortingState.value === "departureAt") {
+      if (sortingState.direction === "ascending") 
+        return new Date(a.arrivalAt).getTime() - new Date(b.departureAt).getTime()
+
+      if (sortingState.direction === "descending") 
+        return new Date(b.departureAt).getTime() - new Date(a.arrivalAt).getTime()
+    }
+
+    if(sortingState.value === "priceAdult") {
+      if  (!a.prices?.adult || !b.prices?.adult)
+        return 0
+
+      if (sortingState.direction === "ascending") 
+        return a.prices?.adult - b.prices?.adult
+
+      if (sortingState.direction === "descending") 
+      return  b.prices?.adult - a.prices?.adult
+    }
+
+    if(sortingState.value === "priceChild") {
+      if  (!a.prices?.child || !b.prices?.child)
+        return 0
+
+      if (sortingState.direction === "ascending") 
+        return a.prices?.child - b.prices?.child
+
+      if (sortingState.direction === "descending") 
+      return  b.prices?.child - a.prices?.child
+    }
+
+    return 0
+  }
+
   return (
     <>
       <header className='site__site-header'>
@@ -177,7 +218,7 @@ function App() {
         <flex-wrapper class='site-selection__selection-wrapper'>
           <h2 className='selection-wrapper__title'>Find your flight!</h2>
           <p className='selection-wrapper__desc'>{"One-way or return? Expensive or cheap? We've got just the right flight for you!*"}</p>
-          <p className='selection-wrapper__asterisk'>{"*as long as you're going to Oslo, Sthlm or Amsterdam. No baggage on flight."}</p>
+          <p className='selection-wrapper__asterisk'>{"*as long as you're going to Oslo, Sthlm or Amsterdam."}</p>
 
           {routesState?.availableDeparturesDest && routesState?.availableArrivalsDest && (
             <form className='selection-wrapper__selection-form' onSubmit={formHandleroo}>
@@ -196,7 +237,6 @@ function App() {
                 placeholder='...choose arrival destination'
               />
 
-              
               <ReactDatePicker
                 showTimeSelect
                 selected={new Date(queryParamsState.lowLimit)}
@@ -214,10 +254,7 @@ function App() {
                 minDate={new Date(queryParamsState.lowLimit)}
               /> 
 
-             
-              <button type="submit">Find Flights</button> 
-
-              
+              <button type="submit">Find Flights</button>               
             </form>
           )}
         </flex-wrapper>
@@ -225,8 +262,29 @@ function App() {
 
       {flightsToShow.length > 0 && (
         <section className='site__flights-display'>
+
           <flex-wrapper class='flights-display__display-wrapper'>
-            {flightsToShow.map(flight => (
+
+            <div className='flights-display__sorting-options'>
+              <select className='sorting-options__attribute-select' 
+                value={sortingState.value}
+                onChange={event => setSortingState({...sortingState, value: event.target.value})}
+              >
+                <option value="departureAt">Departure Time</option>
+                <option value="priceAdult">Price - Adult</option>
+                <option value="priceChild">Price - Child</option>
+              </select>
+
+              <select className='sorting-options__direction-select' 
+                value={sortingState.direction}
+                onChange={event => setSortingState({...sortingState, direction: event.target.value})}
+              >
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+              </select>
+            </div>
+
+            {flightsToShow.sort(sortFunction).map(flight => (
               <article key={flight.flightId} className='display-wrapper__route-display'>
                 <div className='route-display__time-display'>
                   <div className='time-display__departure-box'>
