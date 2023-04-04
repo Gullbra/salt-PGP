@@ -2,23 +2,9 @@ import express from 'express';
 import { newClient } from '../database/dbConnect';
 import { IItinerary, IPrices } from '../interfaces';
 import { QueryResult } from 'pg';
+import { objectifyItinerary } from '../objectifyItinerary';
 
 export const router = express.Router();
-
-const objectifyItinerary = ((itinerary:IItinerary & IPrices) => {
-  return {
-    flight_id: itinerary.flight_id,
-    departure_at: itinerary.departure_at,
-    arrival_at: itinerary.arrival_at,
-    available_seats: itinerary.available_seats,
-    prices: {
-      currency: itinerary.currency,
-      adult: itinerary.adult,
-      child: itinerary.child
-    }
-  }
-})
-
 
 /**
  *  @param lowLimit

@@ -5,9 +5,26 @@ import { QueryResult } from 'pg';
 
 export const router = express.Router();
 
+const findConnecting = (routes: IRoute[], departureDestination: string, arrivalDestination: string) => {
+  const departureRoutes = routes.filter(route => route.departure_destination === departureDestination)
+  const arrivalRoutes = routes.filter(route => route.arrival_destination === arrivalDestination)
+
+  const connectingRoutes = departureRoutes.map(firstConnection => {
+    const secondConnection = arrivalRoutes.find(arrRoute => arrRoute.departure_destination === firstConnection.arrival_destination)
+
+    return secondConnection ? [
+      firstConnection,
+      secondConnection
+    ] : []
+  }).filter(connection => connection.length > 0)
+
+  return connectingRoutes
+}
+
 /**
  *  @param departureDestination
  *  @param arrivalDestination
+ *  @param allowConnecting
  */ 
 router.route('/api/routes')
   .get(async (req, res) => {
@@ -23,6 +40,17 @@ router.route('/api/routes')
 
         if (!req.query.arrivalDestination)
           return routes.filter(route => route.departure_destination === String(req.query.departureDestination))
+
+        if (req.query.allowConnecting)
+          return {
+            directRoutes: 
+              routes.filter(route => (
+                route.departure_destination === String(req.query.departureDestination) && 
+                route.arrival_destination === String(req.query.arrivalDestination)
+              )),
+            connectingRoutes: 
+              findConnecting(routes, String(req.query.departureDestination), String(req.query.arrivalDestination))
+          }
 
         return routes.filter(route => (
           route.departure_destination === String(req.query.departureDestination) && 
