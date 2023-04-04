@@ -1,55 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDatePicker from 'react-datepicker'; 
 import "react-datepicker/dist/react-datepicker.css";
 import SelectSearch from 'react-select-search'; 
 import 'react-select-search/style.css';
 
 import './styles/base.css';
-import { IRoute, IItinerary } from './util/interfaces';
+import { IRoute, IItinerary, IRoutesState, IItineraryState, IQueryParams, ISortingState } from './util/interfaces';
 import { myFetcheroo } from './util/myFetcheroo';
 
 let firstRender = true
-
-interface IRoutesState {
-  availableArrivalsDest: string[]
-  availableDeparturesDest: string[]
-  routes: {
-    routeId: string,
-    departureDestination: string,
-    arrivalDestination: string,
-  } []
-}
-
-interface IItineraryState {
-  flightId: string,
-  departureAt: string,
-  arrivalAt: string,
-  availableSeats: number,
-  route?: {
-    routeId: string,
-    departureDestination: string,
-    arrivalDestination: string,
-  },
-  prices?: {
-    currency: string,
-    adult: number,
-    child: number
-  }
-}
-
-interface IQueryParams {
-  departureDestination: string,
-  arrivalDestination: string,
-
-  lowLimit: number,
-  highLimit: number,
-  queryType: string,
-}
-
-interface ISortingState {
-  value: string,
-  direction: string
-}
 
 function App() {
   const [ routesState, setRoutesState ] = useState<IRoutesState>({} as IRoutesState)
@@ -223,14 +182,14 @@ function App() {
           {routesState?.availableDeparturesDest && routesState?.availableArrivalsDest && (
             <form className='selection-wrapper__selection-form' onSubmit={formHandleroo}>
               <SelectSearch
-                options={routesState.availableDeparturesDest.map(item => {return {name: item, value: item}})} 
+                options={routesState.availableDeparturesDest.map(item => {return {name: item, value: item}}).filter(item => item.name !== queryParamsState.arrivalDestination)} 
                 search
                 value={queryParamsState.departureDestination}
                 onChange={(value) => setQueryParamsState((prev) => {return {...prev, departureDestination: String(value)}})}
                 placeholder='...choose departure destination'
               />
               <SelectSearch
-                options={routesState.availableArrivalsDest.map(item => {return {name: item, value: item}})} 
+                options={routesState.availableArrivalsDest.map(item => {return {name: item, value: item}}).filter(item => item.name !== queryParamsState.departureDestination)} 
                 search
                 value={queryParamsState.arrivalDestination}
                 onChange={(value) => setQueryParamsState((prev) => {return {...prev, arrivalDestination: String(value)}})}

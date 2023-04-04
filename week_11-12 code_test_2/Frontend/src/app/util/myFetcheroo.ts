@@ -1,12 +1,16 @@
 import axios from "axios"
 
 export const myFetcheroo = (endpoint: string, options?: { params: {[key: string]: string | number} }) => {
-  const optionsObj = (() => {
-    if (options?.params)
-      return { params: options.params }
+  // ? Was there a reason for writing this like this?
+  // const optionsObj = (() => {
+  //   if (options?.params)
+  //     return { params: options.params }
 
-    return {}
-  }) ()
+  //   return {}
+  // }) ()
+  const optionsObj = options?.params
+    ? { params: options.params }
+    : {}
 
   return axios.get(`http://localhost:3005/api/${endpoint}`, optionsObj)
     .then(response => response.data)

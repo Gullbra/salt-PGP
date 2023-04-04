@@ -4,11 +4,11 @@
   "description": "a code test",
   "main": "./src/server.ts",
   "scripts": {
-    "start": "echo use \"npm run dev\" or \"npm run production\" instead",
-    "dev": "nodemon ./src/server.ts",
+    "start": "npm run dev-db-local",
+    "dev-db-local": "cross-env DB_LOCAL=true nodemon ./src/server.ts",
+    "dev-db-hosted": "nodemon ./src/server.ts",
     "transpile": "tsc *",
-    "production": "node ./dist/server.js",
-    "init-db": "ts-node --esm ./src/database/populateDb.ts"
+    "production": "node ./dist/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "@types/node": "^18.14.6",
     "@types/pg": "^8.6.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.21",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"

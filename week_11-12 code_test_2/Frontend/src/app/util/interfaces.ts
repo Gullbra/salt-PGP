@@ -38,3 +38,44 @@ export interface IUser {
   hashed_pwd: string,
   bookings: IBooking[]
 }
+
+export interface IRoutesState {
+  availableArrivalsDest: string[]
+  availableDeparturesDest: string[]
+  routes: {
+    routeId: string,
+    departureDestination: string,
+    arrivalDestination: string,
+  } []
+}
+
+export interface IItineraryState {
+  flightId: string,
+  departureAt: string,
+  arrivalAt: string,
+  availableSeats: number,
+  route?: {
+    routeId: string,
+    departureDestination: string,
+    arrivalDestination: string,
+  },
+  prices?: {
+    currency: string,
+    adult: number,
+    child: number
+  }
+}
+
+export interface IQueryParams {
+  departureDestination: string,
+  arrivalDestination: string,
+
+  lowLimit: number,
+  highLimit: number,
+  queryType: string,
+}
+
+export interface ISortingState {
+  value: string,
+  direction: string
+}
